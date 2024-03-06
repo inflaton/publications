@@ -1,373 +1,453 @@
-@article{campino2021initial,
-  title={Initial Coin Offerings (ICOs): the importance of human capital},
-  author={Campino, Jos{\'e} and Brochado, Ana and Rosa, {\'A}lvaro},
-  journal={Journal of Business Economics},
-  pages={1--38},
-  year={2021},
-  publisher={Springer}
-}
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+%\usepackage{natbib}
 
-@article{tiwari2020future,
-  title={The future of raising finance-a new opportunity to commit fraud: a review of initial coin offering (ICOs) scams},
-  author={Tiwari, Milind and Gepp, Adrian and Kumar, Kuldeep},
-  journal={Crime, Law and Social Change},
-  volume={73},
-  pages={417--441},
-  year={2020},
-  publisher={Springer}
-}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
 
-@article{chamorro2021financing,
-  title={Financing of start-ups via initial coin offerings and gender equality},
-  author={Chamorro Dom{\'\i}nguez, Mar{\'\i}a de la Concepci{\'o}n},
-  journal={The Fourth Industrial Revolution and Its Impact on Ethics: Solving the Challenges of the Agenda 2030},
-  pages={183--197},
-  year={2021},
-  publisher={Springer}
-}
+\begin{document}
+%
+\title{From Tweets to Token Sales: Assessing ICO Success through Social Media Sentiments}
+%
+\titlerunning{Assessing ICO Success through Social Media Sentiments}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
 
-@article{vivion2020supporting,
-  title={Supporting informed decision-making about vaccination: an analysis of two official websites},
-  author={Vivion, M and Hennequin, C and Verger, P and Dub{\'e}, E},
-  journal={Public health},
-  volume={178},
-  pages={112--119},
-  year={2020},
-  publisher={Elsevier}
-}
+\author{Donghao HUANG\inst{1}\orcidID{0009-0005-6767-4872} \and
+SAMUEL\inst{1}\orcidID{0009-0008-2153-8076} \and 
+Quoc Toan HUYNH\inst{1}\orcidID{0009-0008-1968-9262} \and
+Zhaoxia WANG\thanks{Corresponding Author}\inst{1}\orcidID{0000-0001-7674-5488}}
 
-@article{boreiko2019new,
-  title={New blockchain intermediaries: do ICO rating websites do their job well?},
-  author={Boreiko, Dmitri and Vidusso, Gioia},
-  year={2019},
-  publisher={SSRN}
-}
+%
+\authorrunning{D. Huang et al.}
+%\authorrunning{F. Author et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{School of Computing and Information Systems, Singapore Management University, 80 Stamford Rd, Singapore 178902, Singapore \\ \texttt{\{dh.huang.2023, samuel1.2021, qthuynh.2020, zxwang\}@smu.edu.sg}}
+%
 
-@article{chursook2022twitter,
-  title={Twitter sentiment analysis and expert ratings of initial coin offering fundraising: evidence from australia and singapore markets},
-  author={Chursook, Anchaya and Dawod, Ahmad Yahya and Chanaim, Somsak and Naktnasukanjn, Nathee and Chakpitak, Nopasit},
-  journal={TEM Journal},
-  volume={11},
-  number={1},
-  pages={44},
-  year={2022},
-  publisher={UIKTEN-Association for Information Communication Technology Education and~…}
-}
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
 
-@article{giudici2019impact,
-  title={The impact of governance signals on ICO fundraising success},
-  author={Giudici, Giancarlo and Adhami, Saman},
-  journal={Journal of Industrial and Business Economics},
-  volume={46},
-  number={2},
-  pages={283--312},
-  year={2019},
-  publisher={Springer}
-}
+With the advent of social network technology, the influence of collective opinions has significantly impacted business, marketing, and fundraising. Particularly in the blockchain space, Initial Coin Offerings (ICOs) gain substantial exposure across various online platforms. Yet, the intricate relationships among these elements remain largely unexplored. This study aims to investigate the relationships between social media sentiment, engagement metrics, and ICO success. We hypothesize a positive correlation between favorable sentiment in ICO-related tweets and overall project success. Additionally, we recognize social media engagement indicators (mentions, retweets, likes, follower counts) as critical factors affecting ICO performance. Employing machine learning techniques, we conduct sentiment analysis on tweets, discerning emotional nuances and categorizing expressions as positive or negative. Employing established classification methods, we further analyze engagement data to reveal its impact on ICO interest and awareness. Our research findings offer insights into the predictive potential of social media strategies for ICO success and underscore the importance of investor sentiment and engagement in the volatile cryptocurrency landscape. These insights provide actionable guidance for aspiring crypto founders in formulating effective business development strategies. 
 
-@article{morkunas2019blockchain,
-  title={How blockchain technologies impact your business model},
-  author={Morkunas, Vida J and Paschen, Jeannette and Boon, Edward},
-  journal={Business Horizons},
-  volume={62},
-  number={3},
-  pages={295--306},
-  year={2019},
-  publisher={Elsevier}
-}
 
-@book{daskalakis2020introduction,
-  title={An introduction to cryptocurrencies: the crypto market ecosystem},
-  author={Daskalakis, Nikos and Georgitseas, Panagiotis},
-  year={2020},
-  publisher={Routledge},
-  note="pp.41--55"
-}
+The source codes and datasets of this paper are accessible at GitHub: https://github.com/inflaton/Success-Indicators-of-Initial-Coin-Offerings
 
-@article{howell2020initial,
-  title={Initial coin offerings: Financing growth with cryptocurrency token sales},
-  author={Howell, Sabrina T and Niessner, Marina and Yermack, David},
-  journal={The Review of Financial Studies},
-  volume={33},
-  number={9},
-  pages={3925--3974},
-  year={2020},
-  publisher={Oxford University Press}
-}
+\keywords{Cryptocurrency \and Initial Coin Offerings(ICOs) \and Sentiment analysis \and Social media \and Machine Learning }
 
-@article{choi2017giving,
-  title={Giving a new makeover to STEAM: Establishing YouTube beauty gurus as digital literacy educators through messages and effects on viewers},
-  author={Choi, Grace Y and Behm-Morawitz, Elizabeth},
-  journal={Computers in Human Behavior},
-  volume={73},
-  pages={80--91},
-  year={2017},
-  publisher={Elsevier}
-}
+\end{abstract}
 
-@article{albrecht2020behavior,
-  title={The behavior of blockchain ventures on Twitter as a determinant for funding success},
-  author={Albrecht, Simon and Lutz, Bernhard and Neumann, Dirk},
-  journal={Electronic Markets},
-  volume={30},
-  number={2},
-  pages={241--257},
-  year={2020},
-  publisher={Springer}
-}
 
-@article{mohd2020liability,
-  title={Liability risks in shareholders’ engagement via electronic communication and social media},
-  author={Mohd-Sulaiman, Aiman Nariman and Hingun, Mohsin},
-  journal={International Journal of Law and Management},
-  volume={62},
-  number={6},
-  pages={539--555},
-  year={2020},
-  publisher={Emerald Publishing Limited}
-}
 
-@article{appel2020future,
-  title={The future of social media in marketing},
-  author={Appel, Gil and Grewal, Lauren and Hadi, Rhonda and Stephen, Andrew T},
-  journal={Journal of the Academy of Marketing science},
-  volume={48},
-  number={1},
-  pages={79--95},
-  year={2020},
-  publisher={Springer}
-}
+\section{Introduction}
 
-@inproceedings{calderwood2019travel,
-  title={The travel and tourism competitiveness report 2019},
-  author={Calderwood, Lauren Uppink and Soshkin, Maksim},
-  year={2019},
-  organization={World Economic Forum}
-}
+The emergence of blockchain technology and cryptocurrencies has transformed fundraising through methods like Initial Coin Offerings (ICOs) and Initial Exchange Offerings (IEOs) \cite{campino2021initial}. ICOs, also known as token sales, provide cost-effective fundraising avenues by issuing new coins on blockchain-based platforms. Social media platforms, particularly Twitter, have significantly contributed to the promotion and dissemination of information about both ICOs and IEOs \cite{tiwari2020future}.
 
-@article{fisch2021motives,
-  title={Motives and profiles of ICO investors},
-  author={Fisch, Christian and Masiak, Christian and Vismara, Silvio and Block, Joern},
-  journal={Journal of Business Research},
-  volume={125},
-  pages={564--576},
-  year={2021},
-  publisher={Elsevier}
-}
+IEOs, facilitated by cryptocurrency exchanges, involve these platforms managing fundraising campaigns by issuing new tokens \cite{chamorro2021financing}. Acting as intermediaries between projects and investors, these exchanges offer comprehensive crowd sale services \cite{vivion2020supporting}. The ICO model witnessed substantial funding, with 3,782 ICOs launched in 2018 alone, collectively raising nearly \$11.4 billion \cite{boreiko2019new}, \cite{giudici2019impact}. Despite fluctuations, the prevalence of ICOs persisted in 2021, with 113 hosted on Coincodex \cite{giudici2019impact}, \cite{daskalakis2020introduction}. The foundation of an ICO rests on its whitepaper, outlining project details such as business strategy, token sale structure, fund allocation, team composition, and development roadmap \cite{daskalakis2020introduction}. Utilizing the broad reach of social media, ICOs frequently leverage platforms like Twitter to promote their offerings within the crypto community \cite{drobetz2019investor}.
 
-@article{prokofieva2015twitter,
-  title={Twitter-based dissemination of corporate disclosure and the intervening effects of firms' visibility: Evidence from Australian-listed companies},
-  author={Prokofieva, Maria},
-  journal={Journal of Information Systems},
-  volume={29},
-  number={2},
-  pages={107--136},
-  year={2015},
-  publisher={American Accounting Association}
-}
+Businesses utilize Airdrop initiatives to increase awareness about emerging ICOs or IEOs, rewarding participants with digital tokens or cryptocurrency for engaging in marketing activities. This involves actions like joining Telegram groups, following on social media platforms, retweeting, and tagging friends, fostering community engagement and brand endorsement \cite{howell2020initial}. Social media, especially Twitter, plays a vital role in the success of ICOs and IEOs, offering swift, cost-effective means to raise capital, supported by blockchain's efficiency in creating digital tokens through smart contracts, ensuring security and reliability \cite{morkunas2019blockchain}.
 
-@article{campino2021success,
-  title={Success factors of initial coin offering (ICO) projects},
-  author={Campino, Jos{\'e} and Brochado, Ana and Rosa, A},
-  journal={Success Factors of Initial Coin Offering (ICO) projects},
-  number={2},
-  pages={252--262},
-  year={2021},
-  publisher={Economics Bulletin}
-}
+Existing studies on ICOs and IEOs often focus solely on direct social media mentions, neglecting the potential impact of indirect interactions. This study aims to bridge this gap by comprehensively analyzing both direct and indirect social media interactions related to crypto projects. It explores sentiment and engagement levels in direct tweets, replies mentioning token keywords, and project announcements on Twitter. By predicting ICOs success using social media sentiment and engagement, this study seeks to uncover their interrelation, offering insights into the factors influencing ICOs and IEOs success on social media.
 
-@article{campino2021success,
-  title={Success factors of initial coin offering (ICO) projects},
-  author={Campino, Jos{\'e} and Brochado, Ana and Rosa, A},
-  journal={Success Factors of Initial Coin Offering (ICO) projects},
-  number={2},
-  pages={252--262},
-  year={2021},
-  publisher={Economics Bulletin}
-}
 
-@inproceedings{alchykava2021ico,
-  title={ICO Performance: Analysis of Success Factors.},
-  author={Alchykava, Maryia and Yakushkina, Tatiana},
-  booktitle={IMS},
-  pages={241--249},
-  year={2021}
-}
+The main contributions of this paper are summarized as follows:
+\begin{enumerate}
+    \item The study delves into the intricate relationships among social media, such as Tweets, and ICO success in the blockchain space, which remains largely unexplored. This contributes to filling the gap in understanding how these elements interact and influence each other.
+    
+     \item By employing machine learning techniques for social media sentiment analysis and analyzing engagement data, the research aims to reveal the predictive potential of social media strategies for ICO success. This contribution offers valuable insights for crypto founders, indicating the importance of effective social media utilization in driving project success.
+     
+    \item The research findings offer actionable guidance for aspiring crypto founders by emphasizing the significance of investor sentiment and engagement in the volatile cryptocurrency landscape. This contribution provides practical advice for formulating effective business development strategies in the blockchain industry.
+\end{enumerate}
 
-@article{belitski2022success,
-  title={Success factors of initial coin offerings},
-  author={Belitski, Maksim and Boreiko, Dmitri},
-  journal={The Journal of Technology Transfer},
-  volume={47},
-  number={6},
-  pages={1690--1706},
-  year={2022},
-  publisher={Springer}
-}
 
-@article{lyandres2020ico,
-  title={ICO success and post-ICO performance},
-  author={Lyandres, Evgeny and Palazzo, Berardino and Rabetti, Daniel},
-  year={2020}
-}
+%The source codes and datasets of this paper are accessible at GitHub %\footnote{\url{https://github.com/inflaton/Success-Indicators-of-Initial-Coin-Offerings}}.
 
-@article{albrecht2019sentiment,
-  title={How sentiment impacts the success of blockchain startups--an analysis of social media data and initial coin offerings},
-  author={Albrecht, Simon and Lutz, Bernhard and Neumann, Dirk},
-  year={2019}
-}
+\section{Related Work \& Motivations}
+ICOs have become a popular means for startups to raise funds. However, the success of ICOs is influenced by various factors that need to be considered for a comprehensive understanding of their fundraising outcomes. 
 
-@article{mirtaheri2021identifying,
-  title={Identifying and analyzing cryptocurrency manipulations in social media},
-  author={Mirtaheri, Mehrnoosh and Abu-El-Haija, Sami and Morstatter, Fred and Ver Steeg, Greg and Galstyan, Aram},
-  journal={IEEE Transactions on Computational Social Systems},
-  volume={8},
-  number={3},
-  pages={607--617},
-  year={2021},
-  publisher={IEEE}
-}
+As social media platforms continue to evolve, there has been a notable surge in individual and organizational engagement, with a growing emphasis on expressing and sharing opinions~\cite {fu2013social,chen2020comparing}. Consequently, social media sentiment analysis has garnered widespread popularity~\cite {wang2014enhancing,wang2023mimusa,teo2023knowledge}. Such sentiment analysis of social media serves as a vital method for individuals and organizers facilitating a deeper understanding of prevailing opinions and sentiments~\cite {wang2014anomaly,wang2014issues,hu2023msrl,wang2023learning}, thereby aiding  decision-making processes crucial for business success.
 
-@Article{fi12030060,
-AUTHOR = {Kummer, Sebastian and Herold, David M. and Dobrovnik, Mario and Mikl, Jasmin and Schäfer, Nicole},
-TITLE = {A Systematic Review of Blockchain Literature in Logistics and Supply Chain Management: Identifying Research Questions and Future Directions},
-JOURNAL = {Future Internet},
-VOLUME = {12},
-YEAR = {2020},
-NUMBER = {3},
-ARTICLE-NUMBER = {60},
-URL = {https://www.mdpi.com/1999-5903/12/3/60},
-ISSN = {1999-5903},
-ABSTRACT = {Potential blockchain applications in logistics and transport (LSCM) have gained increasing attention within both academia and industry. However, as a field in its infancy, blockchain research often lacks theoretical foundations, and it is not clear which and to what extent organizational theories are used to investigate blockchain technology in the field of LSCM. In response, based upon a systematic literature review, this paper: (a) identifies the most relevant organizational theories used in blockchain literature in the context of LSCM; and (b) examines the content of the identified organizational theories to formulate relevant research questions for investigating blockchain technology in LSCM. Our results show that blockchain literature in LSCM is based around six organizational theories, namely: agency theory, information theory, institutional theory, network theory, the resource-based view and transaction cost analysis. We also present how these theories can be used to examine specific blockchain problems by identifying blockchain-specific research questions that are worthy of investigation.},
-DOI = {10.3390/fi12030060}
-}
 
-@article{freeman2018enhancing,
-  title={Enhancing trust in the cryptocurrency marketplace: A reputation scoring approach},
-  author={Freeman, Dan and McWilliams, Tim and Bhattacharyya, Sudip and Hall, Craig and Peillard, Pablo},
-  journal={SMU Data Science Review},
-  volume={1},
-  number={3},
-  pages={5},
-  year={2018}
-}
+Social media sentiment analysis has become indispensable in the financial domain, supported by numerous studies highlighting its effectiveness and contributions~\cite{wang2018stock,hu2021stock,wang2023learning}. While these studies have identified various predictors of success, Campino et al. stress the necessity for a more comprehensive analysis of social media's evolving role in ICO outcomes~\cite{campino2021success}. Despite identifying key predictors such as third-party ratings and detailed whitepapers, the study lacks depth in exploring the multifaceted influence of social media on ICO performance.
 
-@article{drobetz2019investor,
-  title={Investor sentiment and initial coin offerings},
-  author={Drobetz, Wolfgang and Momtaz, Paul P and Schr{\"o}der, Henning},
-  journal={The Journal of Alternative Investments},
-  volume={21},
-  number={4},
-  pages={41--55},
-  year={2019},
-  publisher={Pageant Media}
-}
+%We contend that a deeper examination of social media dynamics is essential for a comprehensive understanding of ICO success factors and for informing strategic decision-making in this rapidly evolving landscape.
 
-@article{wang2023learning,
-  title={Learning-based stock trending prediction by incorporating technical indicators and social media sentiment},
-  author={Wang, Zhaoxia and Hu, Zhenda and Li, Fang and Ho, Seng-Beng and Cambria, Erik},
-  journal={Cognitive Computation},
-  volume={15},
-  number={3},
-  pages={1092--1102},
-  year={2023},
-  publisher={Springer}
-}
+Some researchers have underscored the importance of factors such as detailed project information, idea uniqueness, and team competencies \cite{alchykava2021ico}. Yet, they often overlook the significant influence of social media on investor behavior. 
+Another study identified conditions to enhance ICO credibility, including registration, GitHub code publication, and early funding \cite{belitski2022success}. However, this overlooks potential drawbacks such as the effort required to secure funding and risks associated with code transparency.
 
-@inproceedings{hu2021stock,
-  title={Stock market trend forecasting based on multiple textual features: a deep learning method},
-  author={Hu, Zhenda and Wang, Zhaoxia and Ho, Seng-Beng and Tan, Ah-Hwee},
-  booktitle={2021 IEEE 33rd International Conference on Tools with Artificial Intelligence (ICTAI)},
-  pages={1002--1007},
-  year={2021},
-  organization={IEEE}
-}
+In a separate analysis, Lyandres et al. identified various ICO success factors, including hardcap, whitepaper informativeness, pre-ICO social media activity, bonuses, and transparency \cite{lyandres2020ico}. However, its limited time scope and lack of consideration for negative sentiment impact are notable limitations.
 
-@inproceedings{wang2018stock,
-  title={Stock market prediction analysis by incorporating social and news opinion and sentiment},
-  author={Wang, Zhaoxia and Ho, Seng-Beng and Lin, Zhiping},
-  booktitle={2018 IEEE International Conference on Data Mining Workshops (ICDMW)},
-  pages={1375--1380},
-  year={2018},
-  organization={IEEE}
-}
+Twitter sentiment analysis plays a pivotal role in evaluating ICO effectiveness \cite{albrecht2020behavior}. The platform's global reach facilitates succinct communication, fostering high engagement rates \cite{mohd2020liability}. Analyzing meticulously collected Twitter comments related to ICOs, sentiment analysis unveils behavioral and social sentiment patterns among investors. These insights serve as a foundation for devising effective marketing strategies \cite{calderwood2019travel}.
 
-@inproceedings{wang2016fine,
-  title={Fine-grained sentiment analysis of social media with emotion sensing},
-  author={Wang, Zhaoxia and Chong, Chee Seng and Lan, Landy and Yang, Yinping and Ho, Seng Beng and Tong, Victor Joo Chuan },
-  booktitle={2016 Future technologies conference (FTC)},
-  pages={1361--1364},
-  year={2016},
-  organization={IEEE}
-}
 
-@inproceedings{wang2014issues,
-  title={Issues of social data analytics with a new method for sentiment analysis of social media data},
-  author={Wang, Zhaoxia and Tong, Victor Joo Chuan and Chan, David},
-  booktitle={2014 IEEE 6th International Conference on Cloud Computing Technology and Science},
-  pages={899--904},
-  year={2014},
-  organization={IEEE}
-}
-@inproceedings{wang2014anomaly,
-  title={Anomaly detection through enhanced sentiment analysis on social media data},
-  author={Wang, Zhaoxia and Tong, Victor Joo Chuan and Xin, Xin and Chin, Hoong Chor},
-  booktitle={2014 IEEE 6th international conference on cloud computing technology and science},
-  pages={917--922},
-  year={2014},
-  organization={IEEE}
-}
-@inproceedings{fu2013social,
-  title={Social media for supply chain risk management},
-  author={Fu, XJ and Goh, Rick SM and Tong, JC and Ponnambalam, L and Yin, XF and Wang, ZX and Xu, HY and Lu, SF},
-  booktitle={2013 IEEE International Conference on Industrial Engineering and Engineering Management},
-  pages={206--210},
-  year={2013},
-  organization={IEEE}
-}
+Influencer-driven product tweets significantly influence brand trust and consumer decisions. Twitter discussions bolster brand recognition and attract new audiences, leading to increased sales \cite{appel2020future}. Our study aims to comprehensively explore global social media strategies' impact on ICO success, contrasting with regional studies \cite{chursook2022twitter}. Understanding social media's influence aids startups in refining marketing strategies and engaging with investors. Analyzing social media metrics and sentiment guides effective investor targeting and platform selection for ICO promotion. A holistic social media study offers invaluable insights for ICO fundraising efforts.
 
-@inproceedings{chen2020comparing,
-  title={Comparing ELM with SVM in the field of sentiment classification of social media text data},
-  author={Chen, Zhihuan and Wang, Zhaoxia and Lin, Zhiping and Yang, Ting},
-  booktitle={Proceedings of ELM 2018 9},
-  pages={336--344},
-  year={2020},
-  organization={Springer}
-}
 
-@article{wang2023mimusa,
-	Author = {Wang, Zhaoxia and Hu, Zhenda and Ho, Seng-Beng and Cambria, Erik and Tan, Ah-Hwee},
-	Date-Modified = {2023-10-15 08:44:21 +0000},
-	Journal = {Neural Computing and Applications},
-	Pages = {15907--15921},
-	Publisher = {Springer},
-	Title = {{MiMuSA}---mimicking human language understanding for fine-grained multi-class sentiment analysis},
-	Volume = {35},
-	Year = {2023}}
+% \subsection{Maintaining the Integrity of the Specifications}
 
-@article{hu2023msrl,
-  title={MSRL-Net: A multi-level semantic relation-enhanced learning network for aspect-based sentiment analysis},
-  author={Hu, Zhenda and Wang, Zhaoxia and Wang, Yinglin and Tan, Ah-Hwee},
-  journal={Expert Systems with Applications},
-  volume={217},
-  pages={119492},
-  year={2023},
-  publisher={Elsevier}
-}
+\section{Hypotheses}
+Hypothesis 1: Positive sentiment expressed in tweets mentioning an ICO is correlated with its success. Sentiment analysis of tweets can provide valuable insights into public perception of a cryptocurrency project. The NRC Word-Emotion Association Lexicon can be used to analyse the emotional content of tweets and identify positive and negative sentiments. A higher proportion of positive tweets is likely to indicate a successful ICO. Sentiment analysis can be performed by collecting and analyzing tweets mentioning the ICO and their respective replies. Table \ref{tab1} illustrates some examples of original and reply tweet data that were used for the analysis.
 
-@inproceedings{teo2023knowledge,
-  title={Knowledge Graph enhanced Aspect-Based Sentiment Analysis Incorporating External Knowledge},
-  author={Teo, Autumn and Wang, Zhaoxia and Pen, Haibo and Subagdja, Budhitama and Ho, Seng-Beng and Quek, Boon Kiat},
-  booktitle={2023 IEEE International Conference on Data Mining Workshops (ICDMW)},
-  pages={791--798},
-  year={2023},
-  organization={IEEE}
-}
-@inproceedings{wang2014enhancing,
-  title={Enhancing machine-learning methods for sentiment classification of web data},
-  author={Wang, Zhaoxia and Tong, Victor Joo Chuan and Chin, Hoong Chor},
-  booktitle={Information Retrieval Technology: 10th Asia Information Retrieval Societies Conference, AIRS 2014, Kuching, Malaysia, December 3-5, 2014. Proceedings 10},
-  pages={394--405},
-  year={2014},
-  organization={Springer}
-}
+\begin{table}[htbp]
+\caption{Example of data used for sentiment analysis.}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & \textbf{Tweet Content} & \textbf{Sentiment} \\
+ \hline
+Original Tweet & Just bought more \$SOL, & Positive \\
+& feeling great about this investment!! & \\
+\hline
+Reply & I'm not convinced,  & Negative \\
+& I think \$SOL is overvalued & \\
+\hline
+Reply & Quite bullish on it too,  & Positive \\
+&the fundamentals are really strong& \\
+\hline
+Reply & Waiting to see how the market  & Negative \\
+& develops, but currently looking for & \\
+&  better options in the market & \\
+\hline
+\end{tabular}
+\label{tab1}
+\end{center}
+\end{table}
+
+Hypothesis 2: The level of engagement on social media, such as the number of mentions, retweets, likes, and followers, is positively associated with the success of an ICO. Engagement on social media can indicate the level of awareness and interest in a cryptocurrency project among potential investors. By collecting data on the number of mentions, retweets, likes, and followers of the project and the users mentioning it, we can measure the level of engagement and use it to predict the success of an ICO. Table \ref{tab2} illustrates an example of the engagement metrics used, and the number of each metric collected for the \$MATIC crypto token.
+
+\begin{table}[htbp]
+\caption{Example of data used for engagement metrics.}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Metric} & \textbf{Data collected for \$MATIC} \\
+\hline
+Number of mentions & 799,849 \\
+\hline
+Number of retweets & 1,471,118 \\
+\hline
+Number of likes & 1,280,414 \\
+\hline
+Number of project followers & 34,755,686 \\
+\hline
+\end{tabular}
+\label{tab2}
+\end{center}
+\end{table}
+
+\section{Dataset}
+
+ICOs data was collected from iconbench\footnote{\url{www.icobench.com}} and cryptoran\footnote{\url{www.cryptorank.io}} using a combination of manual download and automatic scraping using Python beautiful soup package\footnote{\url{https://beautiful-soup-4.readthedocs.io/}}. For each cryptocurrency project, we recorded ICO-related data as summarized in Table \ref{tab3}.
+
+\begin{table}[htbp]
+\caption{ICO data collected.}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Data description} & \textbf{Data type} & \textbf{Hypothesis} \\
+\hline
+Project name & String & 1, 2 \\
+\hline
+Project token & String & 1, 2 \\
+\hline
+Soft cap & Integer & 1, 2 \\
+\hline
+Total raised & Integer & 1, 2 \\
+\hline
+ICO Date & Date & 1, 2 \\
+\hline
+\end{tabular}
+\label{tab3}
+\end{center}
+\end{table}
+
+
+Data from Twitter was gathered using the Twitter API and Scrapy\footnote{\url{https://scrapy.org/}}, an open-source Python framework. The collection encompassed two categories of tweets: those that included a cryptocurrency project's keyword, marked by the prefix ``\$'' followed by the token's name (e.g., ``\$SOL'' or ``\$MATIC''), and tweets emanating from the project's official Twitter handle. For tweets featuring the token keyword, we compiled data on the number of retweets, likes, and the poster's follower count, in addition to the content of any responses. However, tweets originating from the project’s own account were excluded from direct analysis as they primarily represent official communications from the cryptocurrency project's team, thus deemed not directly pertinent to the research hypotheses.
+
+
+Tweets are categorized into direct mentions and indirect mentions. A direct mention occurs when a tweet explicitly contains the token keyword. An indirect mention refers to a tweet that either responds to another tweet featuring the token keyword or replies to a tweet from the project's official Twitter handle. It's important to highlight that to avoid look-ahead bias, only tweets published prior to the dates of a token's ICO are considered relevant for assessing the ICO's prospective success.
+
+After collecting the above data, we processed and transformed it to obtain useful information. For each cryptocurrency project, we recorded the following twitter data as summarized in Table \ref{tab4}:
+
+\begin{table}[htbp]
+\caption{Twitter data collected.}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Data description} & \textbf{Data type} & \textbf{Hypothesis} \\
+\hline
+Content of tweets - direct mentions & List of String & 1 \\
+\hline
+Content of tweets - indirect mentions & List of String & 1 \\
+\hline
+Total number of direct mentions & Integer & 2 \\
+\hline
+Total number of indirect mentions & Integer & 2 \\
+\hline
+Total number of likes & Integer & 2 \\
+\hline
+Total number of retweets & Integer & 2 \\
+\hline
+Number of official account followers & Integer & 2 \\
+\hline
+Total number of followers of  & Integer & 2 \\
+users mentioning project && \\
+\hline
+\end{tabular}
+\label{tab4}
+\end{center}
+\end{table}
+
+\section{Experiment \& Methodology}
+
+\subsection{Data Processing}
+%To better cater to machine learning models used in investigating the two proposed hypotheses, we processed and transformed the data into trainable formats.
+
+For the facilitation of machine learning algorithms in the examination of our hypotheses, data preprocessing was undertaken to convert the raw data into a format amenable to algorithmic training.
+
+
+Sentiment analysis was a pivotal component of our study, aimed at capturing the emotional undercurrents embedded in both overt and covert mentions. This was achieved by leveraging the NRC Word-Emotion Association Lexicon\footnote{\url{https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm}}, a compendium that assigns sentiments—either positive or negative—to various words. We utilized TextBlob\footnote{\url{https://textblob.readthedocs.io/}}, a Python library recognized for its simple API that enables execution of several natural language processing (NLP) tasks, including sentiment analysis. This was instrumental in quantifying the sentiment polarity of each tweet. Figure \ref{fig1} provides a visual representation of the sentiment evaluation conducted on tweets pertaining to the DUO Network (DUO) ICO.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.5\textwidth}{!}{%
+\begin{tikzpicture}
+% \begin{axis}[
+% 	x tick label style={
+% 		/pgf/number format/1000 sep=},
+% 	ylabel=Count,
+% 	enlargelimits=0.05,
+% 	legend style={at={(0.5,-0.1)},
+% 	anchor=north,legend columns=-1},
+% 	ybar interval=0.7,
+% ]
+
+\begin{axis}[ybar, symbolic x coords = {Negative Direct, Positive Direct, Negative Indirect, Positive Indirect}, xtick = data, ylabel = Count, x tick label style={rotate=45,anchor=east}]
+\addplot 
+	coordinates {(Negative Direct, 180) (Positive Direct, 266)
+		 (Negative Indirect, 1689) (Positive Indirect, 2208)};
+\end{axis}
+\end{tikzpicture}
+}%
+\caption{Sentiment scores for DUO Network (DUO) tweets.}
+\label{fig1}
+\end{figure}
+
+
+
+The success of an ICO was quantitatively determined by comparing the total capital raised against the soft cap defined by the project, with the latter serving as the minimum required funding level. In our corpus of 816 ICOs, 582 were classified as having achieved success by surpassing their respective soft caps, whereas 234 were deemed unsuccessful for not meeting these financial benchmarks. The dataset was structured into 12 columns, each representing a discrete attribute of an ICO from a specific cryptocurrency project. A condensed overview of these attributes is delineated in Table \ref{tab5}, which can be found in the Appendix.
+
+\subsection{Machine Learning Methods}
+
+The objective of the current research was to forecast the potential success of Initial Coin Offerings (ICOs) by categorizing them as likely to succeed or not. This was based on an array of input variables, all represented by integer values, including attributes like 'soft\_cap', 'total\_positive\_direct\_mentions', among others. We segmented the data into two distinct groups: one for training, constituting 80\% of the entire dataset, and the other for testing, making up the remaining 20\%. Our methodological approach encompassed the deployment of six diverse algorithms, specifically Support Vector Machines (SVMs), Logistic Regression, Random Forest, Naïve Bayes, Categorical Boosting (CatBoost), and Neural Network. These methods were selected for their proven competency in executing classification tasks. The process of parameter optimization was conducted through grid search with the aim of maximizing accuracy.
+
+
+
+
+\section{Results \& Discussion}
+
+\subsection{Individual hypothesis testing}
+The classification methods were first applied to hypothesis 1 - ``Positive sentiment expressed in tweets mentioning an ICO is correlated with its success'' by using only the x variables directly linked to sentiments (variables 2, 3, 5, 6 in Table \ref{tab5}). Table \ref{tab6} illustrates the performance outcomes of each predictive model. 
+
+%A comparison with existing model built on local sentiment(11) is shown in figure 2. 
+
+\begin{table}[htbp]
+\caption{Hypothesis 1 predictive results}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1 Score} \\
+\hline
+Naïve Bayes & 65.9\% & 66.0\% & 98.1\% & 78.9\% \\
+\hline
+SVM & 65.2\% & 65.2\% & \textbf{100.0\%} & 79.0\% \\
+\hline
+Logistic Regression & 66.5\% & \textbf{81.7\%} & 62.6\% & 70.9\% \\
+\hline
+Random Forest & 73.8\% & 75.4\% & 88.8\% & 81.5\% \\
+\hline
+CatBoost & 73.8\% & 75.4\% & 88.8\% & 81.5\% \\
+\hline
+Neural Network & \textbf{74.4\%} & 76.0\% & 88.8\% & \textbf{81.9\%} \\
+\hline
+\end{tabular}
+\label{tab6}
+\end{center}
+\end{table}
+
+%\begin{figure}[htp]
+%    \centering
+%    \includegraphics[width=10cm]{table_5-relatedworks}
+%    \caption{Comparison to Related Works (11)}
+%    \label{fig:relatedworks}
+%\end{figure}
+
+Next, the same methods were applied to hypothesis 2 - ``The level of engagement on social media, such as the number of mentions, retweets, likes, and followers, is positively associated with the success of an ICO'' by using the remaining variables which are directly linked to level of engagement. Table \ref{tab7} presents the performance outcomes for each predictive model.
+
+%A comparison with existing model built on expert opinion (11) is shown in figure 3.
+
+\begin{table}[htbp]
+\caption{Hypothesis 2 predictive results}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+\hline
+Naïve Bayes & 64.6\% & 65.4\% & 97.2\% & 78.2\% \\
+\hline
+SVM & 65.2\% & 65.2\% & \textbf{100.0\%} & 79.0\% \\
+\hline
+Logistic Regression & 65.2\% & \textbf{82.9\%} & 58.9\% & 68.9\% \\
+\hline
+Random Forest & \textbf{76.8\%} & 78.0\% & 89.7\% & \textbf{83.5\%} \\
+\hline
+CatBoost & 76.2\% & 76.6\% & 91.6\% & 83.4\% \\
+\hline
+Neural Network & 73.8\% & 76.2\% & 86.9\% & 81.2\% \\
+\hline
+\end{tabular}
+\label{tab7}
+\end{center}
+\end{table}
+%\begin{figure}[htp]
+%    \centering
+%    \includegraphics[width=10cm]{table_6-relatedworks}
+%    \caption{Comparison to Related Works (11)}
+%    \label{fig:relatedworks}
+%\end{figure}
+
+The results shown in Table \ref{tab6} suggest that the models trained to test Hypothesis 1 yielded moderate performance scores, with the highest accuracy achieved by the Neural Network model at 74.4\%. The F1 Scores ranged from 70.9\% to 81.9\%, which is moderately high. These results indicate that Hypothesis 1 has some merit and performs decently in predicting the success of ICOs based on positive sentiment expressed in tweets.
+
+In contrast, the models trained to test Hypothesis 2 in Table \ref{tab7} performed better overall, with the highest accuracy achieved by the Random Forest model at 76.8\%. The Precision and Recall scores for all models were relatively high, ranging from 65.2\% to 82.9\% for Precision and 58.9\% to 100.0\% for Recall, respectively. The F1 Scores ranged from 68.9\% to 83.5\%, which is slightly higher than the accuracy/F1 scores achieved in the models trained to test Hypothesis 1. These results suggest that while sentiment expressed through tweets may be a moderately strong predictor of ICO success (hypothesis 1), the level of engagement a crypto project has on social media might act as a better predictor (hypothesis 2), supporting the plausibility of hypothesis 2 over hypothesis 1.
+
+\subsection{Combined hypotheses testing}
+A combination of the feature sets from both hypotheses was tested for predictive power. This appeared to improve the overall performance, particularly for the CatBoost model, as seen in Table \ref{tab8}. 
+%A comparison with existing model built on local sentiment and expert opinion is shown in figure 4.
+
+\begin{table}[htbp]
+\caption{Combined predictive results}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+\hline
+Naïve Bayes & 64.0\% & 65.2\% & 96.3\% & 77.7\% \\
+\hline
+SVM & 65.2\% & 65.2\% & \textbf{100.0\%} & 79.0\% \\
+\hline
+Logistic Regression & 64.6\% & 85.5\% & 55.1\% & 67.0\% \\
+\hline
+Random Forest & \textbf{78.0\%} & \textbf{79.3\%} & 89.7\% & 84.2\% \\
+\hline
+CatBoost & \textbf{78.0\%} & 77.1\% & 94.4\% & \textbf{84.9\%} \\
+\hline
+Neural Network & 67.1\% & 66.5\% & \textbf{100\%} & 79.9\% \\
+\hline
+\end{tabular}
+\label{tab8}
+\end{center}
+\end{table}
+%\begin{figure}[htp]
+%    \centering
+%    \includegraphics[width=10cm]{table_7-relatedworks}
+%    \caption{Comparison to Related Works (11)}
+%    \label{fig:relatedworks}
+%\end{figure}
+%The performance of the proposed model seems to be lacking in comparison to the related work's. This could be due to the difference in taking global data compared to local data only. 
+
+%Overall, the results suggest that both Hypothesis 1 and 2 may have value in predicting the success of ICOs, especially when used together. The CatBoost model performed the best overall in terms of accuracy.
+
+The findings indicate that both Hypothesis 1 and Hypothesis 2 could be effective in forecasting ICO success, particularly when applied in conjunction. Among the tested models, CatBoost and Random Forest emerged as the top performers in accuracy.
+
+\subsection{Further Discussion}
+
+There are several potential reasons why the level of engagement on social media may be a more reliable predictor of the success of an ICO than positive sentiment expressed in tweets. One reason is that the level of engagement on social media is a more comprehensive measure of interest and support for a project, considering factors such as the number of mentions, retweets, likes, and followers \cite{albrecht2019sentiment}. Positive sentiment expressed in tweets, on the other hand, may not capture all forms of engagement and may be influenced by factors such as bots and fake accounts \cite{mirtaheri2021identifying}.
+
+Furthermore, the sentiment expressed in tweets may not always reflect the true feelings and opinions of the wider community \cite{fi12030060}. For example, some people may not reply to tweets or publicly express their support or interest in a project, but may still be engaged with the project on other levels, such as following its social media pages or participating in ICOs and purchasing the tokens without posting anything on Twitter. In contrast, the level of engagement on social media provides a more comprehensive and holistic view of the level of interest and engagement in a project.
+
+Another potential reason why positive sentiment expressed in tweets may not be as strong an indicator of success as the level of engagement on social media is that sentiment can be influenced by a variety of factors, including competitors, influencers, and external events. For example, a project that is in direct competition with another project may receive a high volume of negative sentiment simply because of the rivalry, even if the project itself is strong and has potential for success. Therefore, sentiment expressed in tweets may not always accurately reflect the actual quality and potential of a project.
+
+Another point to consider is that negative sentiment expressed on social media can sometimes have unintended positive effects. In the age of information overload, negative tweets or comments may grab more attention than positive ones and can generate buzz and discussion around a project, leading to increased visibility and exposure \cite{freeman2018enhancing}. It is also important to note that bad marketing is still marketing, and negative sentiment can still create awareness and interest in a project. Therefore, when evaluating the potential success of a project, it is essential to consider both positive and negative sentiment expressed on social media. While positive sentiment is a good indicator of potential success, it should not be the sole metric to evaluate a project, as it can be influenced by external factors such as competitors or influencers. Ultimately, a more comprehensive view of sentiment and engagement on social media is necessary to accurately evaluate the potential success of a project.
+
+Overall, the level of engagement on social media appears to be a more reliable predictor of the success of an ICO than positive sentiment expressed in tweets. The comprehensive and holistic nature of engagement metrics such as mentions, retweets, likes, and followers, combined with their relative independence from external factors such as competition and sentiment, make them a more robust and reliable measure of interest and support for a project.
+
+Our findings highlight the crucial role of social media engagement in predicting ICO success, suggesting a strategic focus on enhancing online interactions. ICO projects should prioritize increasing social media activities like mentions, retweets, and followers to attract and sustain interest. A concise strategy would involve creating engaging content, managing active communities, and collaborating with influencers to amplify visibility. This approach underscores the importance of both engagement quantity and sentiment quality, guiding projects to optimize their social media presence for better funding outcomes.
+
+\section{Conclusion}
+
+
+This research explores how Twitter sentiment and engagement influence ICO fundraising outcomes. It was discovered that a positive sentiment on Twitter correlates with greater fundraising achievements. Twitter serves as a crucial channel for ICO promotion and a source for investors to obtain cryptocurrency-related information. The findings indicate that ICOs receiving more positive commentary and engagement on Twitter tend to secure higher funding amounts. Notably, a strong relationship was observed between the fundraising success of an ICO and both its Twitter sentiment and the volume of its direct and indirect followers. To assess predictive accuracy, six classifiers were employed: Support Vector Machines, Logistic Regression, Random Forest, Naïve Bayes, Categorical Boosting, and Neural Network. Among these, Random Forest and Categorical Boosting emerged as the most effective, leading in performance across two of the four evaluation metrics.
+
+In addition to the current research, there are still many avenues to explore regarding the impact of social media on ICO success. One potential area of future work is to investigate "pump and dump" ICO projects, where the followers and their respective interactions are likely to be AI bots and paid Twitter accounts, specially paid to pump the projects. These types of projects have been known to manipulate social media sentiment and create an artificial hype around the project, leading to short-term gains but ultimately resulting in significant losses for unsuspecting investors. Understanding the impact of these tactics on ICO success could be valuable in detecting and avoiding such fraudulent projects.
+
+Another area for future research is to explore how a few extremely influential figures can single-handedly affect the price of a crypto project. The impact of these influential figures on social media sentiment can be significant and may lead to short-term gains or losses for investors. Studying the impact of such influencers on ICO success could provide insights into the role of individual powerhouses in the cryptocurrency market and could lead to a better understanding of how to mitigate risks associated with their influence. 
+
+Additionally, further research is needed to explore the connection between social media marketing expenses and the financial performance of ICO projects. Investigating how an ICO's governance signals influence fundraising success can provide valuable insights into key success factors. Furthermore, understanding the broader impact of cryptocurrencies and blockchain technologies on businesses is crucial for predicting the future of ICOs.
+
+\section*{Acknowledgment}
+The authors extend their sincere appreciation to the SMU student assistants, namely Jolie Zhi Yi FONG, and Yvonne LIM, for their contributions to this research. The authors would like to thank Prof. Zhiping LIN and Juncheng CHEN, an NTU PhD student, for the valuable discussions. 
+
+\bibliographystyle{splncs04}
+\bibliography{ref}
+
+\appendix
+\section{Appendix}
+%{\tiny
+\begin{table*}[htbp]
+\caption{Feature labels and description.}
+\begin{center}
+\begin{tabular}{|p{10mm}|p{46mm}|p{20mm}|p{50mm}|}
+\hline
+\textbf{Index} & \textbf{Column} & \textbf{Data type} & \textbf{Description} \\
+\hline
+1 & total\_direct\_mentions & Integer & Total number of direct mentions \\
+\hline
+2 & total\_positive\_direct\_mentions & Integer & Total number of direct mentions with positive sentiment \\
+\hline
+3 & total\_negative\_direct\_mentions & Integer & Total number of direct mentions with negative sentiment \\
+\hline
+4 & total\_indirect\_mentions & Integer & Total number of indirect mentions \\
+\hline
+5 & total\_positive\_indirect\_mentions & Integer & Total number of indirect mentions with positive sentiment \\
+\hline
+6 & total\_negative\_indirect\_mentions & Integer & Total number of indirect mentions with negative sentiment \\
+\hline
+7 & total\_retweets & Integer & Total retweets of tweets with token keyword and official account tweets \\
+\hline
+8 & total\_likes& Integer & Total likes of tweets with token keyword and official account tweets \\
+\hline
+9 & total\_project\_followers & Integer & Total followers of official account \\
+\hline
+10 & total\_indirect\_followers & Integer & Total followers of users mentioning the project \\
+\hline
+11 & soft\_cap & Integer & Project soft cap \\
+\hline
+12 & ico\_success & Integer & Boolean (0 or 1) to indicate success of ICO \\
+\hline
+\end{tabular}
+\label{tab5}
+\end{center}
+\end{table*}
+%} % End of the small font size scope
+
+\end{document}
