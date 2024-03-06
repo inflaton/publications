@@ -170,25 +170,36 @@ About the Generation Quality, we focused on the key metrics below:
 \begin{enumerate}
 %    \item \textbf{Faithfulness}: This measures the factual accuracy of the model's responses against the given context. It is calculated based on the consistency of the generated answer with the retrieved context, with values ranging from 0 to 1, where a higher score indicates greater factual accuracy.
 
-    \item \textbf{Faithfulness}: This metric evaluates the model's responses for factual consistency against the provided context. The evaluation hinges on how well the response aligns with the context provided, with the scoring scale running from 0 to 1 — a higher score denotes superior factual alignment. To determine this, we first identify a series of claims within the generated answer. Subsequently, each claim is cross-referenced against the given context to ascertain whether it can be logically derived from it. The formula for calculating the faithfulness score is as follows:
+    \item \textbf{Faithfulness}: 
+    %This metric evaluates the model's responses for factual consistency against the provided context. The evaluation hinges on how well the response aligns with the context provided, with the scoring scale running from 0 to 1—a higher score denotes superior factual alignment. To determine this, we first identify a series of claims within the generated answer. Subsequently, each claim is cross-referenced against the given context to ascertain whether it can be logically derived from it. The formula for calculating the faithfulness score is as follows:
+%%I rewrite this portion below
+    This metric assesses the model's responses for factual consistency within the provided context. The evaluation is based on how well the response aligns with the context, rated on a scale from 0 to 1, where a higher score indicates better factual alignment.
+    To determine the score, we identify a series of claims within the generated answer. Each claim is then cross-referenced against the given context to determine if it can be logically derived from it.
+
+    The formula for calculating the faithfulness score is as follows~\cite{es2023ragas,adams2023meta}: %I add this reference here, right?
+
 
 \[
-    Faithfulness\;Score = \frac{Number\;of\;contextually\;supported\;claims\;in\;the\;response}{Total\;number\;of\;claims\;in\;the\;response}
+    FS = \frac{Number\;of\;contextually\;supported\;claims\;in\;the\;response}{Total\;number\;of\;claims\;in\;the\;response}
 \]
-
+where $FS$ represents Faithfulness Score.
     In this process, we employ GPT-4-Turbo to facilitate the identification and verification of claims.
+%%I rewrite this portion above. stop here
 
 %    \item \textbf{Answer Relevance}: This metric assesses how pertinent the generated answer is to the given prompt. It evaluates if the response is complete and free from redundant information. Computed using the question and answer, scores range between 0 and 1, with higher scores reflecting better relevance.
     
     \item \textbf{Answer Relevance}: This metric evaluates the relevance of the generated response to the initial prompt. It examines whether the answer is comprehensive and devoid of extraneous information. Scores are calculated on a scale from 0 to 1, based on the question and answer, where higher values denote greater relevance.
 
-    A response is deemed relevant when it addresses the question directly and fittingly. Our relevance assessment emphasizes penalizing answers that are either not exhaustive or that include unnecessary details, rather than assessing factual correctness. To compute this score, the GPT-4-Turbo language model is engaged to generate questions from the given answer multiple times. The mean cosine similarity between these questions and the original question is then measured. The formula for calculating the answer relevance score is as follows:
+    A response is deemed relevant when it addresses the question directly and fittingly. Our relevance assessment emphasizes penalizing answers that are either not exhaustive or that include unnecessary details, rather than assessing factual correctness. To compute this score, the GPT-4-Turbo language model is engaged to generate questions from the given answer multiple times. The mean cosine similarity between these questions and the original question is then measured. The formula for calculating the answer relevance score is as follows\cite{es2023ragas}:
 \[
-    Answer\;Relevance\;Score = \frac{ \sum cosine\_similarity(generated\;question,\;original\;question)}{Number\;of\;generated\;questions}
+    ARS = \frac{ \sum cosine\_similarity(generated\;question,\;original\;question)}{Number\;of\;generated\;questions}
 \]
+where $ARS$ represents Answer Relevance Score.    
     This process is predicated on the idea that if the answer adequately addresses the initial question, GPT-4-Turbo should be able to generate questions from the answer that are substantially similar to the original question.
     
-    \item \textbf{Overall Score}: We computed this as the harmonic mean of Faithfulness and Answer Relevance, providing a comprehensive measure of the quality of the generated answers.
+%    \item \textbf{Overall Score}: We computed this as the harmonic mean of Faithfulness and Answer Relevance, providing a comprehensive measure of the quality of the generated answers.
+    
+    \item \textbf{Overall Score}: This metric is the harmonic mean of the faithfulness score and the answer relevance score. It provides a balanced measure of the quality of generated answers, accounting for both the fidelity of the response to factual content and its relevance to the original question. Higher scores indicate better overall performance in producing accurate and relevant answers. The formula for calculating the overall score is as follows:
 
 \[
     Overall\;Score = \frac{2 \times Faithfulness\;Score \times  Answer\;Relevanc\;Score}{Faithfulness\;Score + Answer\;Relevanc\;Score}
@@ -204,10 +215,10 @@ About the Generation Quality, we focused on the key metrics below:
  The formula for calculating the inference speed is as follows:
 
 \[
-    Inference\;Speed = \frac{Total\;number\;of\;tokens\;(words\;or\;pieces\;of\;words)\;generated}{Total\;inference\;time}
+    IS = \frac{Total\;number\;of\;tokens\;(words\;or\;pieces\;of\;words)\;generated}{Total\;inference\;time}
 \]
-  
-These metrics, especially the first two based on the generation RAGAS\cite{es2023ragas} scores, were essential in comparing Orca 2's performance against other LLMs like Llama-2 and OpenAI models in our RAG scenarios. They provided a detailed assessment of each model's capability in generating accurate, relevant, and timely responses.
+where $IS$ represents Inference Speed.   
+These metrics, especially the first three based on the generation RAGAS\cite{es2023ragas} scores, were essential in comparing Orca 2's performance against other LLMs like Llama-2 and OpenAI models in our RAG scenarios. They provided a detailed assessment of each model's capability in generating accurate, relevant, and timely responses.
 
 \subsection{Experiment Setup}
 %Our methodology encompassed a series of meticulously crafted experiments to evaluate the efficacy of Orca 2 in various Retrieval Augmented Generation (RAG) settings. We employed a Python script\footnote{\url{https://github.com/inflaton/Evaluation-of-Orca-2-for-RAG/blob/main/qa\_chain\_test.py}} which was designed to simulate a dialogue between a user and a RAG system, posing the following questions sequentially:
