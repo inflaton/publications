@@ -1,0 +1,97 @@
+\section{Dataset}
+
+The dataset used in this study, named the \textit{Global Maritime Risk Incident Dataset (GMRID)}, consists of an extensive collection of global maritime risk data, with a primary focus on incidents and disasters. The original dataset contains 5,744 records, each characterized by 52 distinct attributes. A detailed examination revealed that most of these attributes were manually appended after the initial data collection process. This manual enrichment indicates that the core dataset initially consisted of two fundamental attributes: \textit{Category} and \textit{Details}.
+
+%To automate the data collection process, a classification model is necessary to accurately label each maritime disruption according to its risk category.
+
+Before applying the dataset to classification models, several preprocessing steps were undertaken to enhance the quality of the text data in the \textit{Details} column. These steps included converting text to lowercase, tokenizing, removing punctuation, eliminating stopwords, and lemmatizing words. Such preprocessing was essential to standardize the data and reduce noise, thereby improving model performance.
+
+The dataset includes a \textit{Category} column summarizing the types of disruptions; however, this column was initially unstructured, containing 857 unique labels. To address this issue, the \textit{Category} column was split using a comma delimiter, resulting in 111 unique labels. Recognizing that this number remained too large for effective classification, further consolidation reduced the number of labels to eight primary categories. Table~\ref{tab:event_categories} presents the mapping between the eight primary categories and the initial unstructured categories. This mapping is performed by four human annotators, who are researchers involved in this study.
+
+During our experiments, we observed significant discrepancies between the labels generated through the manual process described above and those produced by the \textit{gpt-4o} model. A manual review of these discrepancies showed a preference for the \textit{gpt-4o} model's labeling in 9 out of 10 cases (refer to Table \ref{tab:comparison_results} in Section \ref{subsec:v1_vs_v2}). As a result, we opted to use the \textit{gpt-4o} model with a 5-shot prompting strategy to relabel all entries in the dataset. The revised dataset is referred to as \textit{GMRID v2}, while the original dataset is referred to as \textit{GMRID v1}.
+
+%zx better showcase the difference between v1 and V2
+
+\begin{table*}[ht]
+\caption{Mapping of Initial Unstructured Categories to Eight Primary Categories for Maritime Risk Classification. This table illustrates the consolidation of 857 unique labels into 8 primary categories, demonstrating the process of data refinement for more effective classification. The mapping was performed by four human annotators involved in the study.}
+% , showcasing the manual effort required in preparing the dataset for automated classification tasks.}
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.13}
+\resizebox{.7\textwidth}{!}{
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash\hspace{0pt}}p{2.3cm}|>{\raggedright\arraybackslash\hspace{0pt}}X|}
+\hline
+\textbf{Primary Categories} & \textbf{Initial Unstructured Categories} \\
+\hline
+Weather & Flooding, Severe Winds, Weather Advisory, Tropical Cyclone, Storm, Ice Storm, Earthquake, Tornado, Typhoon, Landslide, Water, Hurricane, Wildfire, Blizzard, Hail \\
+\hline
+Worker Strike & Mine Workers Strike, Production Halt, Protest, Riot, Port Strike, General Strike, Civil Service Strike, Civil Unrest Advisory, Cargo Transportation Strike, Energy Sector Strike \\
+\hline
+Administrative Issue & Port Congestion, Police Operations, Roadway Closure, Disruption, Cargo, Industrial Action, Port Disruption, Cargo Disruption, Power Outage, Port Closure, Maritime Advisory, Train Delays, Ground Transportation Advisory, Public Transportation Disruption, Trade Regulation, Customs Regulation, Regulatory Advisory, Industry Directives, Security Advisory, Public Holidays, Customs Delay, Public Health Advisory, Detention, Aviation Advisory, Waterway Closure, Plant Closure, Border Closure, Delay, Industrial Zone Shutdown, Trade Restrictions, Closure, Truck Driving Ban, Insolvency, Environmental Regulations, Postal Disruption, Travel Warning \\
+\hline
+Human Error & Workplace Accident, Individuals in Focus, Military Operations, Flight Delays, Cancellations, Political Info, Political Event \\
+\hline
+Cyber Attack & Network Disruption, Ransomware, Data Breach, Phishing \\
+\hline
+Terrorism & Bombing, Warehouse Theft, Public Safety, Security, Organized Crime, Piracy, Kidnap, Shooting, Robbery, Cargo Theft, Bomb Detonation, Terror Attack, Outbreak Of War, Militant Action \\
+\hline
+Accident & Hazmat Response, Maritime Accident, Vehicle Accident, Death, Injury, Non-industrial Fire, Chemical Spill, Industrial Fire, Fuel Disruption, Airline Incident, Crash, Explosion, Train Accident, Derailment, Sewage Disruption, Barge Accident, Bridge Collapse, Structure Collapse, Airport Accident, Force Majeure, Telecom Outage \\
+\hline
+Others & Miscellaneous Events, Miscellaneous Strikes, Outbreak of Disease \\
+\hline
+\end{tabularx}
+}
+\label{tab:event_categories}
+\end{table*}
+
+
+% To streamline our analysis and enhance the relevance of our findings, we selected eight attributes that most effectively represent the dataset. These attributes were organized into four categories to facilitate a more structured examination, as illustrated in Table \ref{tab:attributes_table}.
+
+% \begin{table*}[ht!]
+% \centering
+% \resizebox{\textwidth}{!}{
+% \begin{tabular}{|p{0.2\textwidth}|p{0.75\textwidth}|}
+% \hline
+% \textbf{Attributes} & \textbf{Explanation and Example} \\ \hline
+% \multicolumn{2}{|l|}{\textbf{1. News Attributes}} \\ \hline
+% Headline & The headline of the news, for example: \\
+% & \textit{“Access road to Yantian container terminals closed from November 24-26”} \\ \hline
+% Details & Summary of the news, this attribute details the causation of the incident, specific location, and time of the event, for example: \\
+% & \textit{“Local sources report on November 23 that due to roadwork on the Wutong Bridge, a key access road to A gate to the Yantian container terminals will be closed from November 24 at 00:00 to November 26 at 08:00 local time. This will likely cause delays in pick-up and deliveries of containers to the port as drivers will need to divert to gate B to enter the port.”} \\ \hline
+% \multicolumn{2}{|l|}{\textbf{2. Important Categorical Attributes}} \\ \hline
+% Severity & Attributes that categorize the incidents' severity into four levels: \\
+% & \textit{‘minor’, ‘moderate’, ‘severe’, and ‘extreme’} \\ \hline
+% Region & Values are the countries where incidents occurred, for example: \\
+% & \textit{“China”, “United States”, “Australia”, etc.} \\ \hline
+% Category & The attributes are the type of the incident or disaster, for example: \\
+% & \textit{‘Trade restriction’, ‘Travel Warning’, ‘Port Congestion’, etc.} \\ \hline
+% \multicolumn{2}{|l|}{\textbf{3. Geographical Attributes}} \\ \hline
+% Lat (Latitude) & \textit{“29.52”, “29.86875”} \\ \hline
+% Log (Longitude) & \textit{“121.3319”, “31.03305”} \\ \hline
+% \multicolumn{2}{|l|}{\textbf{4. Time Series Attributes}} \\ \hline
+% Datetime & In the format of Day/Month/Year Hour:Minute \\
+% & \textit{“7/1/19 9:50”, “27/4/19 15:46”} \\ \hline
+% \end{tabular}
+% }
+% \caption{Overview of Selected Attributes and Their Explanations}
+% \label{tab:attributes_table}
+% \end{table*}
+
+% \subsection{Exploratory Data Analysis}
+
+% Our analysis of over 5,000 recorded incidents reveals that China, the United States, and Australia report the highest number of cases (Figure~\ref{fig:top_regions}). Notably, 497 of these incidents were categorized as severe or extreme (Figure~\ref{fig:event_severity}), indicating their significant economic impact or substantial loss of life.
+
+% \begin{figure*}[ht]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{figures/top_regions.png}
+%     \caption{Geographic Distribution of Reported Incidents}
+%     \label{fig:top_regions}
+% \end{figure*}
+
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=\columnwidth]{figures/event_severity.png}
+%     \caption{Distribution of Incident Severity Across All Cases}
+%     \label{fig:event_severity}
+% \end{figure}

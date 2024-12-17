@@ -1,0 +1,23 @@
+\section{Related Work}
+
+\subsection{Traditional Machine Learning Approaches}
+
+Before the emergence of large language models (LLMs), traditional machine learning approaches, such as Support Vector Machines (SVM), Na\"ive Bayes (NB), and k-Nearest Neighbors (KNN), were widely utilized for text classification tasks~\cite{chalea}. Luo conducted a comprehensive analysis of these methods, demonstrating that SVM consistently outperformed other classifiers, such as Na\"ive Bayes and Logistic Regression, in terms of classification accuracy for English text documents~\cite{luo2021efficient}. The study highlighted the effectiveness of SVM, achieving classification rates exceeding 90\% when using more than 4,000 features, while the Rocchio classifier yielded the best results for smaller feature sets.
+
+\subsection{Large Language Models and Their Impact}
+
+The advent of large language models (LLMs) has significantly transformed natural language processing methodologies. Brown et al. introduced GPT-3, a 175-billion-parameter autoregressive language model capable of performing various NLP tasks, such as translation, question-answering, and text completion, with strong performance in a few-shot learning setting, where the model is prompted with only a few examples instead of requiring task-specific fine-tuning~\cite{brown2020language}. This few-shot capability is particularly valuable in domains like maritime risk assessment, where adaptability to new and diverse input data is essential. Brown et al.'s study underscores that scaling up language models can lead to significant improvements in few-shot learning, which can be leveraged to enhance the classification and extraction of incident information in specialized datasets.
+
+\subsection{Expanding Capabilities of LLMs}
+
+Further evaluations have demonstrated the expanding capabilities of LLMs across various domains:
+
+\begin{itemize}
+    \item \textbf{Affective Computing:} Amin et al. (2023) evaluated the performance of ChatGPT models, including GPT-3.5, on affective computing tasks such as suicide tendency detection, personality assessment, and sentiment analysis~\cite{senticnet}, confirming the emerging capabilities of ChatGPT in these areas~\cite{amin2023will}. The study found that while ChatGPT models performed comparably to classical NLP methods like Bag-of-Words and Word2Vec, they still lagged behind fine-tuned language models such as RoBERTa for specific tasks.
+
+    \item \textbf{Text Summarization:} Basyal and Sanghvi (2023) investigated the capabilities of LLMs in text summarization, conducting a comparative study across different LLMs. Their findings demonstrated that models like OpenAI's text-davinci-003 significantly outperformed others in generating concise summaries, as indicated by higher BLEU, ROUGE, and BERT scores~\cite{basyal2023text}.
+
+    \item \textbf{Text Classification:} Chae and Davidson (2023) conducted a comprehensive study on the application of LLMs for text classification, from zero-shot learning to fine-tuning approaches~\cite{chae2023large}. Their research demonstrated how different LLM architectures, including GPT variants, perform in text classification tasks, highlighting their ability to generalize with minimal training examples. The study indicated that while larger models, such as GPT-3 and GPT-4, achieve higher accuracy, smaller models fine-tuned on specific datasets can also perform competitively at a fraction of the cost, making them an attractive option for many research applications. It further discussed the trade-offs between proprietary and open-source models, emphasizing the importance of evaluating models for bias and transparency.
+
+    \item \textbf{Retrieval Augmented Generation (RAG):} Recent studies have explored the use of LLMs in Retrieval Augmented Generation (RAG) and in-context learning tasks. Huang and Wang (2024) evaluated Microsoft's Orca 2 in RAG applications, comparing it with models like GPT-4 and GPT-3.5-Turbo~\cite{huang2024evaluation}. Their study found that Orca 2 excelled in generating high-quality responses efficiently on consumer-grade GPUs. Similarly, Huang et al. (2024) assessed Llama 2's performance in in-context learning using the MS MARCO dataset~\cite{huang2024performance}. The results showed that Llama-2 models performed comparably to OpenAI's offerings, with Llama-2-13b-chat-hf slightly outperforming GPT-3.5-turbo in answer quality.
+\end{itemize}
