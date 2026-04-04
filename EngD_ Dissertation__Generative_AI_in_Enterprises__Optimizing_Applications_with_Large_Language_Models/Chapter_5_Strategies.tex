@@ -556,20 +556,20 @@ Table~\ref{tab:thinking_complexity} compares thinking and non-thinking modes acr
 \toprule
 \textbf{Dataset} & \textbf{Model} & \textbf{Non-think.} & \textbf{Thinking} & \textbf{Diff.} & \textbf{SR} & \textbf{FR (\%)} \\
 \midrule
-\multirow{4}{*}{IMDB} & Qwen3-4B & 98.2 & 98.4 & \textcolor{blue}{+0.2} & 5.5× & \multirow{4}{*}{\textcolor{orange}{36}} \\
-& Qwen3-14B & 98.4 & 98.9 & \textcolor{blue}{+0.5} & 4.3× & \\
-& Magistral-24B & 97.4 & 96.9 & \textcolor{red}{-0.5} & 9.7× & \\
-& Granite3.3-8B & 98.3 & 96.0 & \textcolor{red}{-2.2} & 1.0× & \\
+\multirow{4}{*}{IMDB} & Qwen3-4B & 98.2 & 98.4 & \textcolor{blue}{+0.2} & 5.5$\times$ & \multirow{4}{*}{\textcolor{orange}{36}} \\
+& Qwen3-14B & 98.4 & 98.9 & \textcolor{blue}{+0.5} & 4.3$\times$ & \\
+& Magistral-24B & 97.4 & 96.9 & \textcolor{red}{-0.5} & 9.7$\times$ & \\
+& Granite3.3-8B & 98.3 & 96.0 & \textcolor{red}{-2.2} & 1.0$\times$ & \\
 \midrule
-\multirow{4}{*}{Amazon} & Qwen3-8B & 84.5 & 84.8 & \textcolor{blue}{+0.3} & 5.4× & \multirow{4}{*}{\textcolor{orange}{57}} \\
-& Magistral-24B & 81.6 & 80.7 & \textcolor{red}{-0.9} & 14.4× & \\
-& Qwen3-32B & 89.0 & 84.8 & \textcolor{red}{-6.8} & 11.5× & \\
-& Granite3.3-2B & 74.1 & 63.9 & \textcolor{red}{-10.2} & 2.1× & \\
+\multirow{4}{*}{Amazon} & Qwen3-8B & 84.5 & 84.8 & \textcolor{blue}{+0.3} & 5.4$\times$ & \multirow{4}{*}{\textcolor{orange}{57}} \\
+& Magistral-24B & 81.6 & 80.7 & \textcolor{red}{-0.9} & 14.4$\times$ & \\
+& Qwen3-32B & 89.0 & 84.8 & \textcolor{red}{-6.8} & 11.5$\times$ & \\
+& Granite3.3-2B & 74.1 & 63.9 & \textcolor{red}{-10.2} & 2.1$\times$ & \\
 \midrule
-\multirow{4}{*}{GoEmotions} & Magistral-24B & 35.0 & 43.7 & \textcolor{blue}{+8.8} & 54.4× & \multirow{4}{*}{\textcolor{blue}{14}} \\
-& Qwen3-14B & 40.3 & 47.0 & \textcolor{blue}{+6.6} & 8.4× & \\
-& Qwen3-32B & 39.8 & 45.9 & \textcolor{blue}{+6.2} & 7.4× & \\
-& Qwen3-8B & 41.0 & 44.0 & \textcolor{blue}{+3.1} & 8.3× & \\
+\multirow{4}{*}{GoEmotions} & Magistral-24B & 35.0 & 43.7 & \textcolor{blue}{+8.8} & 54.4$\times$ & \multirow{4}{*}{\textcolor{blue}{14}} \\
+& Qwen3-14B & 40.3 & 47.0 & \textcolor{blue}{+6.6} & 8.4$\times$ & \\
+& Qwen3-32B & 39.8 & 45.9 & \textcolor{blue}{+6.2} & 7.4$\times$ & \\
+& Qwen3-8B & 41.0 & 44.0 & \textcolor{blue}{+3.1} & 8.3$\times$ & \\
 \bottomrule
 \end{tabular}
 }
@@ -582,7 +582,7 @@ Key findings across 42 zero-shot comparisons:
     
     \item \textbf{Few-shot convergence patterns:} Thinking advantages often diminish with examples. Magistral exhibits dramatic shifts: Amazon from +12.2 pp (zero-shot) to -0.9 pp (best-shot); IMDB from +2.1 pp to -0.5 pp. This suggests that on simpler tasks, examples provide sufficient guidance without reasoning overhead.
     
-    \item \textbf{Efficiency trade-offs:} Speed ratios range from 1.0× to 54.4×, with highest overhead on GoEmotions (Magistral: 54.4×). Mean overhead across model families: Granite 1.0×--5.5×, Qwen3 2.5×--11.5×, Magistral 9.7×--54.4×.
+    \item \textbf{Efficiency trade-offs:} Speed ratios range from 1.0$\times$ to 54.4$\times$, with highest overhead on GoEmotions (Magistral: 54.4$\times$). Mean overhead across model families: Granite 1.0$\times$--5.5$\times$, Qwen3 2.5$\times$--11.5$\times$, Magistral 9.7$\times$--54.4$\times$.
 \end{enumerate}
 
 \subsubsection{Aggregate Performance Across Task Complexity}
@@ -629,7 +629,7 @@ Key observations from Pareto analysis:
     
     \item \textbf{Cost-performance curves:} IMDB shows flat frontier at high F1, indicating diminishing returns from additional compute. GoEmotions exhibits steeper slope, where latency increases yield greater accuracy improvements.
     
-    \item \textbf{Practical guidance:} Base models dominate for most sentiment classification tasks. Reasoning should be reserved for complex emotion recognition where 2--4 pp improvements justify 2.1×--54× computational overhead.
+    \item \textbf{Practical guidance:} Base models dominate for most sentiment classification tasks. Reasoning should be reserved for complex emotion recognition where 2--4 pp improvements justify 2.1$\times$--54$\times$ computational overhead.
 \end{enumerate}
 
 \subsubsection{Summary of Task Complexity Findings}
@@ -852,7 +852,7 @@ This chapter addressed RQ3 by examining deployment configurations, reasoning enh
 \begin{enumerate}[leftmargin=*]
     \item \textbf{Open-source competitiveness:} Fine-tuned Qwen2.5 and Llama3.1 models match or exceed GPT-4o on complex reasoning tasks. Qwen2.5-72B achieves 80.88\% F1 on TSQA with only 10-shot prompting, surpassing GPT-4o's 80.36\%. This extends the open-source viability findings from Chapter~\ref{ch:rag} to reasoning-intensive tasks.
     
-    \item \textbf{Task-complexity-dependent reasoning effectiveness:} Comprehensive evaluation across 504 configurations reveals that reasoning effectiveness is systematically task-dependent. Base/non-thinking models outperform reasoning variants by $4.8 \pm 6.3$ pp on binary classification (IMDB) and $3.6 \pm 2.2$ pp on 5-class sentiment (Amazon), while reasoning models achieve $2.0 \pm 1.0$ pp advantage on 27-class emotion recognition (GoEmotions). This task-complexity hypothesis provides principled guidance: reserve reasoning for complex multi-class problems where accuracy gains justify 2.1×--54× computational overhead.
+    \item \textbf{Task-complexity-dependent reasoning effectiveness:} Comprehensive evaluation across 504 configurations reveals that reasoning effectiveness is systematically task-dependent. Base/non-thinking models outperform reasoning variants by $4.8 \pm 6.3$ pp on binary classification (IMDB) and $3.6 \pm 2.2$ pp on 5-class sentiment (Amazon), while reasoning models achieve $2.0 \pm 1.0$ pp advantage on 27-class emotion recognition (GoEmotions). This task-complexity hypothesis provides principled guidance: reserve reasoning for complex multi-class problems where accuracy gains justify 2.1$\times$--54$\times$ computational overhead.
     
     \item \textbf{Distillation transfer limitations:} Reasoning patterns optimized for mathematical and logical tasks transfer poorly to simpler sentiment classification. Failure rates decrease with task complexity: 100\% (IMDB), 80\% (Amazon), 50\% (GoEmotions), indicating reasoning distillation becomes more beneficial as classification granularity increases.
     

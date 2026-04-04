@@ -344,22 +344,22 @@ Table~\ref{tab:asr_overall_performance} summarizes overall performance metrics a
 \textbf{Model} & \textbf{Platform} & \textbf{SR (\%)} & \textbf{Time (s)} & \textbf{Steps} \\
 \midrule
 \multicolumn{5}{l}{\textit{Closed-source models}} \\
-gpt-4o-mini & OpenAI & 99.3 & 7.6 ± 1.6 & 8.6 ± 1.2 \\
-gpt-4o & OpenAI & 98.8 & 12.4 ± 13.2 & 8.5 ± 0.6 \\
-gpt-4.1-nano & OpenAI & 85.7 & 8.6 ± 12.3 & 18.5 ± 18.6 \\
-gpt-4.1-mini & OpenAI & 99.5 & 8.6 ± 2.7 & 9.6 ± 1.9 \\
-gpt-4.1 & OpenAI & \textbf{100.0} & 8.3 ± 7.7 & 9.9 ± 9.7 \\
-claude-3-5-sonnet & Anthropic & 97.8 & 18.7 ± 6.3 & 8.5 ± 0.5 \\
-claude-3-7-sonnet & Anthropic & 99.3 & 16.8 ± 12.3 & 8.5 ± 0.7 \\
+gpt-4o-mini & OpenAI & 99.3 & 7.6 $\pm$ 1.6 & 8.6 $\pm$ 1.2 \\
+gpt-4o & OpenAI & 98.8 & 12.4 $\pm$ 13.2 & 8.5 $\pm$ 0.6 \\
+gpt-4.1-nano & OpenAI & 85.7 & 8.6 $\pm$ 12.3 & 18.5 $\pm$ 18.6 \\
+gpt-4.1-mini & OpenAI & 99.5 & 8.6 $\pm$ 2.7 & 9.6 $\pm$ 1.9 \\
+gpt-4.1 & OpenAI & \textbf{100.0} & 8.3 $\pm$ 7.7 & 9.9 $\pm$ 9.7 \\
+claude-3-5-sonnet & Anthropic & 97.8 & 18.7 $\pm$ 6.3 & 8.5 $\pm$ 0.5 \\
+claude-3-7-sonnet & Anthropic & 99.3 & 16.8 $\pm$ 12.3 & 8.5 $\pm$ 0.7 \\
 \midrule
 \multicolumn{5}{l}{\textit{Open-weight models}} \\
-qwen2.5:3b & RTX A6000 & 13.9 & 8.1 ± 19.0 & 18.8 ± 14.7 \\
-qwen2.5:7b & RTX A6000 & 57.3 & 9.9 ± 10.2 & 20.7 ± 22.0 \\
-qwen2.5:14b & RTX A6000 & 96.6 & \textbf{7.3 ± 8.0} & 8.6 ± 2.2 \\
-qwen2.5:32b & RTX A6000 & \textbf{100.0} & 13.9 ± 16.9 & 8.5 ± 0.5 \\
-qwen2.5:72b & RTX A6000 & 95.1 & 39.3 ± 24.8 & 8.7 ± 4.2 \\
-functionary-small & RTX A6000 & 7.5 & 4.0 ± 21.6 & 5.6 ± 3.7 \\
-functionary-medium & RTX A6000 & 53.2 & 30.8 ± 242.6 & 7.8 ± 2.8 \\
+qwen2.5:3b & RTX A6000 & 13.9 & 8.1 $\pm$ 19.0 & 18.8 $\pm$ 14.7 \\
+qwen2.5:7b & RTX A6000 & 57.3 & 9.9 $\pm$ 10.2 & 20.7 $\pm$ 22.0 \\
+qwen2.5:14b & RTX A6000 & 96.6 & \textbf{7.3 $\pm$ 8.0} & 8.6 $\pm$ 2.2 \\
+qwen2.5:32b & RTX A6000 & \textbf{100.0} & 13.9 $\pm$ 16.9 & 8.5 $\pm$ 0.5 \\
+qwen2.5:72b & RTX A6000 & 95.1 & 39.3 $\pm$ 24.8 & 8.7 $\pm$ 4.2 \\
+functionary-small & RTX A6000 & 7.5 & 4.0 $\pm$ 21.6 & 5.6 $\pm$ 3.7 \\
+functionary-medium & RTX A6000 & 53.2 & 30.8 $\pm$ 242.6 & 7.8 $\pm$ 2.8 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -597,7 +597,7 @@ Figure~\ref{fig:MAS-design} presents the overall architecture of the CMAS4G2 fra
 \label{fig:MAS-design}
 \end{figure}
 
-CMAS4G2 leverages Microsoft’s AutoGen Swarm framework to orchestrate interactions among three specialized agents:
+CMAS4G2 leverages Microsoft's AutoGen Swarm framework to orchestrate interactions among three specialized agents:
 
 \begin{itemize}[leftmargin=*]
     \item \textbf{Supervisor Agent:} Acts as the central orchestration component, managing workflow execution and ensuring correct handoffs between specialized agents.
@@ -641,23 +641,23 @@ Table~\ref{tab:cmas4g2_results} presents performance across model configurations
 
 \begin{table}[htbp]
 \centering
-\caption{CMAS4G2 Performance on 200-Ticket Kill Bill Benchmark. Values are mean±std across 5 runs.}
+\caption{CMAS4G2 Performance on 200-Ticket Kill Bill Benchmark. Values are mean$\pm$std across 5 runs.}
 \label{tab:cmas4g2_results}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}llcccc@{}}
 \toprule
 \textbf{Model} & \textbf{Config} & \textbf{Valid (\%)} & \textbf{Invalid (\%)} & \textbf{Overall (\%)} & \textbf{Coverage (\%)} \\
 \midrule
-Claude Sonnet 4 & -- & \textbf{100.0±0} & \textbf{80.8±0} & \textbf{90.4±0} & \textbf{91.6±0} \\
+Claude Sonnet 4 & -- & \textbf{100.0$\pm$0} & \textbf{80.8$\pm$0} & \textbf{90.4$\pm$0} & \textbf{91.6$\pm$0} \\
 \midrule
-\multirow{2}{*}{GPT-OSS 20B} & medium & 99.2±2 & 76.0±0 & 87.6±1 & 85.4±0 \\
- & high & 1.6±3 & 73.0±0 & 37.3±2 & 16.8±34 \\
+\multirow{2}{*}{GPT-OSS 20B} & medium & 99.2$\pm$2 & 76.0$\pm$0 & 87.6$\pm$1 & 85.4$\pm$0 \\
+ & high & 1.6$\pm$3 & 73.0$\pm$0 & 37.3$\pm$2 & 16.8$\pm$34 \\
 \midrule
-\multirow{2}{*}{Qwen3-32B} & no think & 99.2±1 & 35.2±0 & 67.2±1 & 86.9±0 \\
- & think & 87.2±5 & 69.0±0 & 78.1±2 & 83.7±0 \\
+\multirow{2}{*}{Qwen3-32B} & no think & 99.2$\pm$1 & 35.2$\pm$0 & 67.2$\pm$1 & 86.9$\pm$0 \\
+ & think & 87.2$\pm$5 & 69.0$\pm$0 & 78.1$\pm$2 & 83.7$\pm$0 \\
 \midrule
-\multirow{2}{*}{Qwen3-8B} & no think & 58.8±24 & 41.0±0 & 49.9±12 & 79.5±3 \\
- & think & 98.0±2 & 57.0±0 & 77.5±1 & 79.2±0 \\
+\multirow{2}{*}{Qwen3-8B} & no think & 58.8$\pm$24 & 41.0$\pm$0 & 49.9$\pm$12 & 79.5$\pm$3 \\
+ & think & 98.0$\pm$2 & 57.0$\pm$0 & 77.5$\pm$1 & 79.2$\pm$0 \\
 \bottomrule
 \end{tabular}
 }
