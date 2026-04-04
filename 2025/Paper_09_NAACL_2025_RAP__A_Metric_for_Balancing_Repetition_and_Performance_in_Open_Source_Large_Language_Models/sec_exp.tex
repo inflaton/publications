@@ -1,0 +1,180 @@
+% \subsection{Impact of RPP on Repetition + Performance}
+
+% \subsection{RAP enable tuning to obtain the trade-off between performance and repetition
+% }
+
+% \subsection{Compare the performance using tuned RPP (based on RAP)
+% }
+
+% \subsection{Further Discussions}
+
+\subsection{Experimental settings}
+\textbf{Datasets.} 
+% \begin{table}[]
+% \centering
+% \caption{Datasets used in our experiments. The Size refers to the number of questions or samples in the test set. }
+% \label{tab:dataset}
+% \begin{tabular}{l|l|r}
+% \toprule
+% Dataset                & Task                & \multicolumn{1}{l}{Size} \\ \midrule
+% \webqsp  & Knowledge Base QA   & 1008                     \\
+% \ms     & Open-ended QA       & 500                      \\
+% \mac    & Machine Translation & 1133                    \\ \bottomrule
+% \end{tabular}
+% \end{table}
+We conduct the experiments using three datasets including \webqsp \cite{yih2016value} and \ms
+% \footnote{\url{https://microsoft.github.io/msmarco/}}
+\cite{bajaj2016ms, huang2024performance} for question answering (QA), and \mac \cite{huang2025optimizing} for Chinese-English machine translation (MT). The datasets contain 1,008, 500, and 1,133 testing questions, respectively. To perform RAG on \webqsp, we crawled relevant articles from Wikipedia, and retrieve 8 most relevant document chunks when answering each question for RAG prompting. We also adopt Gemini-1.0-Pro to evaluate for the knowledge base question answering task (KBQA) where the ground-truth answers contains lists of entities instead of natural language text. More details of the dataset and LLM-based KBQA evaluation are presented in the Appendix (\ref{sec:data}). 
+
+% as detailed in Section \ref{sub:data-col-pre}.
+
+% \noindent
+% \textbf{Open-source LLMs.} We evaluate nine open-source LLMs including Llama-2 (7B, 13B, 70B), Llama-3 (8B, 70B), Gemma-1.1 (2B, 7B), Phi-3-mini (3.8B), and Mistral-7B. These are currently some of the most popular open-source LLMs suitable for use in commercial applications (permitted by their licenses).
+% \textbf{Open-source LLMs.} \new{
+% \new{Table \ref{tab:ai_models} provides an overview of all the models utilized in our study, detailing their companies, model names, and corresponding HuggingFace model identifiers. 
+% For QA tasks, we evaluate nine open-source LLMs, including Llama-2 (7B, 13B, 70B), Llama-3 (8B, 70B), Gemma-1.1 (2B, 7B), Phi-3-mini (3.8B), and Mistral-7B. For MT task, we evaluate three open-source LLMs: Phi-3.5-mini (3.8B), Mistral-7B, and Llama-3.1-70B. These models are among the most popular open-source LLMs suitable for use in commercial applications, as permitted by their respective licenses. More details can be found in the Appendix (\ref{subsec:overview_llms}). %\ref{subsec:overview_llms}.
+% }
+\textbf{Open-Source LLMs.} This study evaluates a diverse set of open-source large language models (LLMs) for question answering (QA) and machine translation (MT) tasks. For QA, we assess nine models: Llama-2 (7B, 13B, 70B), Llama-3 (8B, 70B), Gemma-1.1 (2B, 7B), Phi-3-mini (3.8B), and Mistral-7B. For MT, we evaluate three models: Phi-3.5-mini (3.8B), Mistral-7B, and Llama-3.1-70B.
+
+Table~\ref{tab:ai_models} provides an overview of these models, including their respective companies, model names, Hugging Face identifiers, and the tasks they were evaluated on. This selection spans a broad range of model sizes and architectures, representing the state of the art in open-source LLM development. These models are widely used in commercial applications under their respective licenses.
+
+The diversity of this selection enables a robust comparison across model families and sizes, offering insights into the relative strengths of different open-source LLMs in QA and MT tasks.
+
+\begin{table*}[htbp]
+\caption{Overview of Large Language Models and Their Specifications by Task}
+\label{tab:ai_models}
+\centering
+\resizebox{.8\textwidth}{!}{
+\begin{tabular}{l|l|l|l}
+\toprule
+\textbf{Company} & \textbf{Model Name} & \textbf{Hugging Face Model ID} & \textbf{Task} \\
+\midrule
+\multirow{6}{*}{Meta} 
+& Llama-2-7B & meta-llama/Llama-2-7b-chat & QA \\
+& Llama-2-13B & meta-llama/Llama-2-13b-chat & QA \\
+& Llama-2-70B & meta-llama/Llama-2-70b-chat & QA \\
+& Llama-3-8B & meta-llama/Meta-Llama-3-8B-Instruct & QA \\
+& Llama-3-70B & meta-llama/Meta-Llama-3-70B-Instruct & QA \\
+& Llama-3.1-70B & shenzhi-wang/Llama3.1-70B-Chinese-Chat & MT \\
+\midrule
+\multirow{2}{*}{Microsoft} 
+& Phi-3-mini & microsoft/Phi-3-mini-128k-instruct & QA \\
+& Phi-3.5-mini & microsoft/Phi-3.5-mini-instruct & MT \\
+\midrule
+\multirow{2}{*}{Google} 
+& Gemma-1.1-2B & google/gemma-1.1-2b-it & QA \\
+& Gemma-1.1-7B & google/gemma-1.1-7b-it & QA \\
+\midrule
+\multirow{2}{*}{Mistral AI} 
+& Mistral-7B-v0.2 & mistralai/Mistral-7B-Instruct-v0.2 & QA \\
+& Mistral-7B-v0.3 & shenzhi-wang/Mistral-7B-v0.3-Chinese-Chat & MT \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+\textbf{Automating QA and MT Tasks with LLMs.} 
+We developed a Python script specifically designed to evaluate the performance of LLMs on QA and MT tasks. The script leveraged the open-source HuggingFace Transformers library~\cite{wolf2020transformers} and was executed across all models and datasets. For QA tasks, an RPP range of 1.0 to 1.3 was applied, while for MT tasks, an RPP range of 1.0 to 1.1 was used, both with increments of 0.02. To ensure consistency and reproducibility across experiments, the temperature was set to 0 and \texttt{top\_p} was fixed at 0.95.
+% \noindent
+% \textbf{Automated Question Answering with LLMs:} 
+% \textbf{\new{Automated Answer Generation with LLMs:}} 
+% \new{We developed Python scripts to automate interactions with LLMs for generating answers. The scripts were applied to all models and datasets, with the \rp ranging from 1.0 to 1.1 for MT task and up to 1.3 for QA tasks, incremented by 0.02.}
+% We developed a Python script leveraging LangChain and HuggingFace Transformers\footnote{\url{https://huggingface.co/docs/transformers/en/index}} to automate interactions with LLMs for generating answers to questions in the datasets. The script was executed using all models and both datasets, with a repetition penalty ranging from 1.0 to 1.3 in increments of 0.02. 
+% We developed a Python script to automate interactions with LLMs for generating answers. The script was run on all models and datasets, applying \rp ranging from 1.0 to 1.3 in 0.02 increments.
+
+% The questions and generated answers, along with other data elements from the datasets, were stored in CSV files for further data processing, such as detecting repetitions and evaluating performance.
+
+% \noindent
+\textbf{Prompt Templates:} 
+To investigate LLMs’ behaviors under different prompting strategies, we implemented three QA prompt templates: (1) \textit{RAG - Generic Prompt} (\raggen): a uniform basic template for all models; (2) \textit{RAG - Chat Template} (\ragtem): LangChain’s default template tailored to each LLM’s chat format, maintaining the same core content; and (3) \textit{Non-RAG}: simulates a single-turn conversation in the LLM’s chat format.
+For MT, we used two templates: (1) \textit{MT - Generic Prompt} (\mtgen): a basic template applied uniformly, and (2) \textit{MT - Chat Template} (\mttem): a template designed for each LLM’s chat format. Prompt templates are shown in the Appendix (\ref{sec:prompt}). 
+
+% To investigate LLMs’ behaviors under different prompting strategies, we implemented three prompt templates \new{for QA}: (1) \textit{RAG - Generic Prompt} (\raggen): using the same basic prompt template for all the models.
+% (2) \textit{RAG - Chat Template} (\ragtem): using LangChain’s default template to match each LLM’s chat format. While the template varies across model families, the main message content remains the same. 
+% (3) \textit{Non-RAG}: simulates a single-turn conversation between a human and the LLM, following the LLM’s chat format. 
+% \new{For MT, we implemented two prompt templates: 
+% (1) \textit{MT - Generic Prompt} (\mtgen): a basic prompt template applied uniformly across all models, and 
+% (2) \textit{MT - Chat Template} (\mttem): using the template to fit each LLM’s chat format.} 
+%
+% The prompt templates for Llama-3 models is shown in the Appendix. 
+
+% The Non-RAG prompt for Llama-3 models is shown in Listing \ref{list:non-rag} in Appendix.
+
+% \noindent
+\textbf{Evaluation Metrics:} For \webqsp, we use \textit{precision}, \textit{recall}, and \textit{F1} scores. For \mds, \new{we employ BERTScore~\cite{zhang2019bertscore}, using deberta-xlarge-mnli model to ensure optimal performance, as it provides the highest correlation with human evaluations. Results are reported as the average F1 score across the entire dataset, referred to as \textit{BERT-F1}. 
+For \mac, we employ the Crosslingual Optimized Metric for Evaluation of Translation (\textit{COMET}), a neural-based evaluation metric that leverages contextual embeddings from pretrained language models to assess translation quality~\cite{rei2022comet}. COMET has demonstrated strong correlation with human judgments, making it a reliable metric for translation evaluation.}
+%we use ROUGE-L~\cite{lin2004rouge,joshi2023deepsumm} and BLEU-1~\cite{dey2022evaluating} to assess answer quality. 
+%
+For repetition evaluation, we report the repetition ratio (Equation \ref{eq:rr_dataset}).
+%We also introduce an overall performance score, denoted as \hm and calculated as the harmonic mean of BLEU-1 and ROUGE-L.
+% : 
+% \begin{align}
+%     H = \frac{2 \times \text{BLEU-1} \times \text{ROUGE-L}}{\text{BLEU-1} + \text{ROUGE-L}} 
+% \end{align}
+We also report the \rap scores, applied on the corresponding evaluation metrics (Section \ref{sec:rap}).
+
+% Existing metrics: What metrics for WebQSP, What metrics for MS Macro. 
+% NEW: Repetition Factor
+% NEW: Repetition Factor Adjusted Perf Scores
+
+
+
+% \begin{itemize}
+%     \item Investigate the impact of \rp on repetition and performance 
+%     \item \rf to incorporate repetition penalty in the performance so that we can perform hyperparamter tuning 
+    
+% \end{itemize}
+
+
+% \noindent
+% \textbf{Repetition Detection - Baseline Method} 
+% To benchmark our proposed repetition detection method, we develop a baseline method based on \cite{Fu2020ATA} that identifies adjacent identical word phrases using a suffix array \cite{10.5555/320176.320218} sorted lexicographically. The method scans the suffix array in multiple passes, comparing row-adjacent phrases to find exact matches where their index distance equals the phrase length. A greedy approach is then used to extract the longest combination of adjacent repeated phrases. See Appendix for more details.
+% To benchmark our proposed repetition detection method, we develop a baseline method based on \cite{Fu2020ATA} to identify adjacent identical word phrases. To simulate this, tokenized words of the input text are stored in a suffix array \cite{10.5555/320176.320218}, which is sorted lexicographically. 
+% For example, "This is repeated is repeated text" has 6 suffixes (Figure \ref{fig:suffix_array_simulation}) stored as indexes 1, 3, 2, 4, 5, 0. 
+% To find repeated phrases, the method scans the suffix array in $N$ passes, where $N$ equals the size of tokenized words, comparing row-adjacent phrases of length 1 ... $N$. Phrases are considered repeating if they match exactly and their suffix array index distance equals the phrase length. A greedy approach is then used to extract the longest combination of adjacent repeated phrases. 
+% An experimental result demonstrate that \alg is faster by 12\% compared to the baseline method and performs comparably better than the baseline algorithm. Moreover, the method discovers abnormalities in the text that were not addressed by the baseline method, details of which will be provided in section \ref{subsec:evaluating-text-abnormalities}. 
+
+
+
+\input{sec_results}
+
+% \subsection{RAG with Chat Template vs Generic Template}
+% \subsection{RAG (template or generic, depending on if we can have more results for template WebQSP) with non-RAG}
+% \subsection{Repetitions of different settings}
+% Can show the differences between different repetition detection methods (method 1 vs method 3 vs method 3.2)
+% \subsection{Adjusted results vs original}
+
+% \subsection{Ablation study of what Penalty function should be used?}
+% \todo{@Donghao: to add figure + discussion of penalty functions}
+
+% \todo{move to appendix}
+% In this section, we qualitatively evaluate the quality of KBQA evaluation generated by Gemini (Section \ref{sec:gemini}). Table \ref{tab:gemini_eval} show examples of output from Llama 3-70B for five \webqsp questions and the corresponding evaluation from Gemini. In the first example, Gemini is able to extract answer-item is ``Lawrence E. Roberts'', and generate the correct mapping between predicted answer and ground-truth answer, this leads to a correct evaluation. Another correct evaluation is obtained in the second example. However, sometimes Gemini fails to extract correct information from generated text. For example, in the third question, Gemini extracted ``Elizabeth Bowes-Lyon'' is also a predicted answer-item, although from the LLM response, we can see that this is not. This leads to giving this answer with 0.5 precision only, hurting the overall performance of the LLM. Another such cases can be seen in the fifth question where Gemini extracted many keywords from the LLM response, this makes the final score is very low, even though by reading the response, we see that the predicted answer was correct. 
+% To better understand the quality of our LLM-based KBQA evaluation method, we randomly select 100 samples from the experiment results of Llama-3-70B Non-RAG as this setting obtains the best performance on \webqsp. Then, we ask a human user if the user agree with Gemini's evaluation (similar to the analysis we have done above). The agreement is \textbf{89.0\%}. This shows that although not perfect, our LLM-based KBQA evaluation method has some level of reliability which can be used for KBQA evaluation task.  
+% \subsection{Evaluate the Quality of Gemini's Evaluation} 
+% \label{sec:eval_gemini}
+% To evaluate the quality of our LLM-based KBQA evaluation method, we randomly selected 100 samples from the experiment results of Llama-3-70B Non-RAG, as this setting achieved the best performance on WebQSP. We then asked a human user to review and agree with Gemini’s evaluation (similar to the analysis described above). The agreement rate was 89.0\%, indicating that while not perfect, our LLM-based KBQA evaluation method demonstrates a level of reliability that can be utilized for automatically evaluating LLM responses in the KBQA task. For more details of the actual output from Gemini, please see Section \ref{sec:a_gem} in Appendix. 
+
+
+
+% E.g., manually check X samples. Or how? Can mention some question are returned NONE for evaluation. Pick 50 questions, ask human (3 of us?, 3 * 50 or 3*20) to do the same task as Gemini, then we measure precision, recall of Gemini. \todo{to select 150 questions from Llama 3 70B Non RAG, assign 50 to each of us}
+
+% \subsection{Further Discussions}
+
+\subsection{How Severe can Repetition be?}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{image/chart_02_mm.png}
+    \caption{
+    Severity of repetition. Colored squares above indicate the percentage of repetitive responses. X-label contains model, prompting method, and tuned \rpp.
+    % , and the x-label includes the model, prompting method, and tuned value for \rpp. 
+    % The severity of repetition. The leftmost three models have the highest RR for \ms, while the rightmost three have the lowest, along with the repetition ratio (y-axis-right) and text length (y-axis-left). Colored squares above each point indicate the percentage of repeated responses, and the x-label includes the model, prompting method, and tuned value for \rpp. 
+    % 
+    % The severity of repetition. The leftmost three models show the Top-3 highest RR for MS MARCO, while the rightmost three display the lowest. The ratio of repeated text length to text length is also visualized. Colored squares above each point indicate the percentage of repeated questions, with blue, yellow, and red squares marking values below 10\%, between 10-20\%, and above 20\% respectively. The x-label indicates the model, the prompting method, and the RP of the RR. The chart for other models and dataset can be viewed in the appendix.
+    }
+    \vspace{-1em}
+    \label{fig:msmarco_top3}
+\end{figure}
+In our experiments, the length of text repeated can account for up to 97.85\% of the overall text output, while the proportion of responses with repetition across the entire dataset can reach 41.27\%. Figure \ref{fig:msmarco_top3} shows the top-3 highest and lowest RR for \ms. Colored squares above each point indicate the percentage of repeated responses, with blue, yellow, and red squares marking values below 10\%, between 10-20\%, and above 20\%, respectively. Notably, while Gemma-1-1.7B (RAG-GP) has only 3.8\% of responses with repetition, the repeated text case is very severe as it makes up 91.53\% of the overall answer length. In contrast, 30\% of Llama-3-70B (RAG-CT)'s responses contains repetition, but the repeated text only constitutes 1.29\% of the overall length. The length of repeated content can also be substantial. For instance, Llama-2-13B generated repeated content that averaged around 4,000 characters. 
+
+\subsection{Ablation Study: the Effects of Different Penalty Functions}
+\input{sec_penalty_funct}

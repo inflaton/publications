@@ -1,0 +1,36 @@
+\section{Dataset}
+
+To evaluate the logical reasoning abilities of large language models (LLMs), we utilized a dataset released during the recent “Logical Reasoning with LLM” competition organized by Mango TV\footnote{\url{https://challenge.ai.mgtv.com/#/track/25}}. The original dataset comprises three components: a training set, a validation set, and a test set. The training set contains 25,000 user-generated questions paired with labels, including puzzles and their corresponding truths. The validation set consists of 3,000 user-generated questions and labels. The test set includes 30,000 user questions but does not include labels. In our study, we utilized only the training and validation sets, collectively referred to as the “Turtle Soup Question Answering (TSQA)” dataset.
+
+The TSQA dataset, being in Chinese, presents an additional layer of complexity for logical reasoning tasks, especially for LLMs primarily trained on English data. It consists of multiple Turtle Soup games, each identified by a unique Chinese title. For each game, a puzzle in Chinese is provided, which the player must analyze to deduce the truth. The text field contains the player's questions in Chinese, which are then processed by the LLM.
+
+\begin{CJK*}{UTF8}{gbsn}
+The model's responses are limited to five categories: 是(Yes), 不是(No), 不重要(Unimportant), 问法错误(Wrong Question), and 回答正确(Correct Answer). The criteria for judging each answer are as follows:
+\end{CJK*}
+\begin{itemize}
+    \item If the answer to the question can be directly or indirectly found in the puzzle and truth, the model should respond with "Yes" or "No."
+    \item If the answer cannot be directly or indirectly inferred from the puzzle and truth, the model should respond with "Unimportant."
+    \item If the question is not a closed-ended question or is difficult to understand, the model should respond with "Wrong Question."
+    \item If the question accurately reconstructs the truth of the game, the model should respond with "Correct Answer."
+\end{itemize}
+
+The dataset structure, including sample values in both Chinese and their English translations, is illustrated in Table~\ref{tab:tsqa_dataset}. This bilingual presentation helps to demonstrate the nature of the dataset while making it accessible to non-Chinese speakers.
+
+\begin{table*}[h!]
+    \centering
+    \begin{CJK*}{UTF8}{gbsn}
+    \caption{Structure of the Turtle Soup Question Answering (TSQA) Dataset, \small{including sample values in Chinese and their English Translations. Designed to evaluate the logical reasoning capabilities of LLMs, the dataset consists of user-generated questions in Chinese paired with corresponding labels, including puzzles and their truths.}}
+    \label{tab:tsqa_dataset}
+    \resizebox{0.8\textwidth}{!}{
+    \begin{tabular}{|c|>{\centering\arraybackslash}p{0.1\linewidth}|>{\centering\arraybackslash}p{0.25\linewidth}|>{\centering\arraybackslash}p{0.4\linewidth}|} 
+    \hline 
+    Field & Description & Sample Value (Chinese) & Sample Value (English Translation) \\ \hline 
+    title & Title & 甄庄的哭声 & The Crying Sound of Zhenzhuang \\ \hline 
+    puzzle & Puzzle & 在一个安静的夜晚，小村庄的湖边突然传来了阵阵哭泣声。第二天早晨，村长甄锐发现湖边的石头上放着一顶破旧的帽子，但没有人知道这顶帽子是从哪里来的，哭泣声又是为何。请还原故事真相。 & On a quiet night, a series of cries suddenly came from the lakeside in the small village. The next morning, the village head Zhen Rui found an old hat on a stone by the lake, but no one knew where the hat came from or why the crying occurred. Please restore the truth of the story. \\ \hline 
+    truth & Truth & 原来，这顶破旧的帽子属于一个小男孩，他小时候与爷爷在湖边生活。爷爷教他钓鱼、游泳，还告诉他湖中的海龟是他们的朋友。后来，小男孩随父母去了城市生活，但每年夏天都会回到村子探望爷爷。然而，去年夏天，爷爷因病去世，小男孩伤心欲绝。今年夏天，他回到村子，来到湖边，想起和爷爷的美好回忆，忍不住哭泣。他将爷爷的帽子放在湖边的石头上，希望能让爷爷的在天之灵得到安慰。那晚的哭泣声正是小男孩在祭奠他亲爱的爷爷。 & The old hat belonged to a little boy who lived by the lake with his grandfather when he was young. His grandfather taught him how to fish and swim and told him that the turtles in the lake were their friends. Later, the boy moved to the city with his parents, but he returned to the village every summer to visit his grandfather. However, last summer, his grandfather passed away due to illness, leaving the boy heartbroken. This summer, the boy returned to the village, went to the lake, remembered the beautiful times with his grandfather, and couldn't help but cry. He placed his grandfather's hat on the stone by the lake, hoping to bring some comfort to his grandfather's spirit in heaven. The crying that night was the boy mourning his beloved grandfather. \\ \hline
+    text & Player's question & 有个叫甄庄的村子 & There is a village called Zhenzhuang \\ \hline 
+    label & Human label & 是 & Yes \\ \hline 
+    \end{tabular}
+    }
+    \end{CJK*}
+\end{table*}

@@ -1,0 +1,57 @@
+% (Text repetition in generative models. 
+% - text repetition is common issue in many generative models 
+% - many approaches to reduce repetition : Holtzman2019TheCC
+% - investigate the impact of repetition penalty parameter on performance (any)? 
+
+% Evaluating KBQA using LLM or KBQA and LLM)
+% \citet{Holtzman2019TheCC} highlight that text generation models often experience \textit{degeneration}, causing the output to be incoherent or repetitively looping. 
+% \citet{Welleck2019NeuralTG} show that the likelihood objective causes the model to assign excessive probability to repeated and frequent word sequences. 
+\textbf{Text repetition in generative models.} The repetition problem has been a long-standing concern in generative models \cite{Holtzman2019TheCC, Welleck2019NeuralTG}. \citet{Fu2020ATA} show that excessive word repetition occurs when transformer models predict the same subsequent word with high probability. Factors contributing to this issue include self-reinforcing behavior \cite{xu2022learning} and a concept known as \textit{Distribution Collapse}, which results in decreased output diversity over time \cite{emrullah2024self}. 
+Various strategies introduce variation in the generated text by considering a subset of the most probable tokens at each step, namely: greedy \cite{klein-etal-2017-opennmt}, top-k \cite{fan-etal-2018-hierarchical}, temperature \cite{ficler-goldberg-2017-controlling, Caccia2020Language}, and nucleus sampling \cite{Holtzman2019TheCC}. 
+% Various strategies have been proposed to mitigate repetition, such as considering subsets of the most probable tokens (e.g., greedy, top-k, temperature, and nucleus sampling) \cite{klein-etal-2017-opennmt, fan-etal-2018-hierarchical, ficler-goldberg-2017-controlling, Caccia2020Language, Holtzman2019TheCC}, unlikelihood training \cite{Welleck2019NeuralTG}, and reinforcement learning techniques \cite{lagutin2021implicit}. 
+Additionally, managing training data and applying techniques like length penalties and rebalanced encoding have been suggested to alleviate this issue \cite{wu2016googles, klein-etal-2017-opennmt, Fu2020ATA}. 
+Moreover, models like CTRL \cite{Keskar2019CTRLAC} use control codes, including the repetition penalty parameter (\rp), to guide generation and reduce unwanted repetitions; however, determining the optimal \rp value remains challenging, as excessive settings can degrade output quality. This paper explores the impact of \rp on repetition and task performance, introducing \rap as a metric to optimize \rp for better model outcomes.
+
+% % ---
+% \textbf{Text repetition in generative models.} Repetition problem has been a long-standing concern for generative models \cite{Welleck2019NeuralTG}. 
+% \citet{Fu2020ATA} define it as undesirable outcome where adjacent word sequences repeat and show that too many words in transformer models predict the same subsequent word with high probability.
+% \citet{xu2022learning} find that the self-reinforcing behavior of language models contributes to repetitions, while \citealp{emrullah2024self} attribute the problem to a \textit{Distribution Collapse} concept where output diversity decreases over time.
+% Few strategies introduce variation in the generated text by considering a subset of the most probable tokens at each step, namely: greedy \cite{klein-etal-2017-opennmt}, top-k \cite{fan-etal-2018-hierarchical}, temperature \cite{ficler-goldberg-2017-controlling, Caccia2020Language}, and nucleus sampling \cite{Holtzman2019TheCC}. Another adopts unlikelihood training \cite{Welleck2019NeuralTG}, forcing the model to assign lower probabilities to unlikely generations.
+% \citet{lagutin2021implicit} use policy gradient reinforcement learning to fine-tune a model, while \citet{xu2022learning} train a model that reduce the probabilities of sentence-level repetitions using pseudo-repetitive data.
+% \citet{li2023repetition} find repetition in training data correlates with output degeneration, suggesting that training data management can alleviate the problem.
+% Other approaches include length penalty (\citealp{wu2016googles, klein-etal-2017-opennmt}) and rebalanced encoding method \cite{Fu2020ATA}. Most of these solutions are applicable to transformer-based models. (\citealp[]{Radford2018ImprovingLU, Radford2019LanguageMA, brown2020language}).
+% Additionally, models like CTRL \cite{Keskar2019CTRLAC} incorporate control codes, such as the repetition penalty parameter (\rp), to guide the generation process and reduce unwanted repetitions. The definition of repetition penalty by \citealp{Keskar2019CTRLAC} has been adopted by HuggingFace\footnote{\url{huggingface.co/transformers/v2.11.0/main\_classes/model.html}} for public use. 
+% However, determining the optimal value for \rp is challenging, as setting it too high can harm the generated text quality. In this paper, we investigate the impact of \rp on the level of repetition and overall task performance. We also propose a framework to incorporate repetition penalty into model performance, enabling fine-tuning of \rp.
+% ---
+\noindent
+\textbf{LLMs for Question Answering.} 
+Advancements in LLMs have greatly improved QA tasks performance. \citet{Radford2019LanguageMA} show the transfer learning ability of GPT-2 and GPT-3 \cite{brown2020language}, which adapts to new QA tasks with minimal examples. %where pre-trained language models could be fine-tuned with minimal task-specific data to achieve state-of-the-art results in QA tasks. 
+RAG is widely adopted for QA tasks \cite{lazaridou2022internet,muludi2024retrieval}, providing information that aids in generating answers \cite{alawwad2024enhancing}.
+The synergy between LLMs and knowledge graphs \cite{pan2024unifying} has led to increased adoption in LLMs for KBQA tasks \cite{zhang2022greaselm}.
+Another method uses LLMs to convert questions into logical forms, which are executed to get answers \cite{chen2021evaluating,li2023few,xiong2024interactive, wang2024no}. Others augment LLMs with relevant facts retrieved from a KG \cite{Baek2023KnowledgeAugmentedLM, jiang2023structgpt}.
+% In this paper, we aim to use QA tasks to examine the impact of \rp on repetition behavior and the performance of open-source LLMs. We investigate this across two distinct QA tasks, employing both RAG and non-RAG strategies.
+In this paper, we use QA tasks to study the impact of \rp on repetition and the performance of open-source LLMs across two tasks, using both RAG and non-RAG strategies.
+
+\noindent
+\new{
+\textbf{LLMs for Machine Translation (MT).} 
+Large Language Models (LLMs) have made significant strides in machine translation \cite{zhang2023prompting, moslem2023adaptive}. Models such as BERT \cite{devlin2018bert}, GPT-3 \cite{brown2020language}, and T5 \cite{raffel2020exploring} have demonstrated exceptional performance in zero-shot and few-shot translation scenarios \cite{liu2020multilingual}. 
+%Specifically, for Chinese-to-English translation, models like mBERT and XLM-R have effectively leveraged cross-lingual representations to enhance translation quality \cite{conneau2020unsupervised}. 
+A recent comprehensive study evaluated LLMs across zero-shot, few-shot, and fine-tuned paradigms, highlighting trade-offs between model size, translation accuracy, and processing speed \cite{huang2025optimizing}. In this paper, we build on their fine-tuned open-source LLMs and curated dataset to investigate the impact of \rp on repetition and overall performance.
+}
+
+% To tackle this problem, they propose Nucleus Sampling, which involves truncating the unreliable tail of the probability distribution and sampling from the dynamic nucleus of tokens that hold the majority of the probability mass.
+% Many other research works have also tried to overcome this issue. \citet{fan-etal-2018-hierarchical} proposed to use k-sampling approach
+% Many solutions are proposed to alleviate the repetition problem, notably: stochastic sampling \cite{fan-etal-2018-hierarchical},  greedy sampling \cite{klein-etal-2017-opennmt}, top-K sampling \cite{fan-etal-2018-hierarchical}, nucleus sampling \cite{Holtzman2019TheCC},
+
+% temperature sampling \cite{ACKLEY1985147, ficler-goldberg-2017-controlling, Caccia2020Language},  
+
+% (\citealp[]{fan-etal-2018-hierarchical, Holtzman2019TheCC, Welleck2019NeuralTG}).  
+% Many have proposed the causes of the repetition problem. \citealp{Fu2020ATA} theoretically explain that the problem is caused by the fact that there exist too many words predicting the same word as the subsequent word with high probability. Several papers conjecture that it is caused by the model architecture \cite[]{Holtzman2019TheCC, emrullah2024self}. \citealp{emrullah2024self} provide a mathematical explanation for why LLMs tend to generate repetitive text. The paper describes and simulates a \textit{Distribution Collapse} phenomenon, where the diversity of output tokens significantly decreases as generation time increases. This phenomenon, as observed in transformer model, corresponds to the repetition problem as often seen in text generation by language models.
+
+% \citet{li2023few} propose the KB-BINDER pipeline to first generate logical forms using LLMs like Codex \cite{chen2021evaluating} with few-shot strategy, and ground the generated logical forms with entities and relations in the KG to obtain executable query. With a similar approach, \citet{wang2024no} also propose to convert natural language question into structured knowledge representation using LLama \cite{touvron2023llama}. 
+
+
+
+
+

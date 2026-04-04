@@ -1,0 +1,62 @@
+\begin{table}[ht]
+\centering
+\caption{Comparison of model performance on QA (WebQSP and MS MARCO) and MT tasks across different prompting strategies. Bold values highlight the top-performing models for each dataset and prompt type.}
+\label{tab:model-performance}
+\small
+\begin{subtable}{.5\textwidth}
+\centering
+\caption{QA Task Performance}
+\label{tab:qa-performance}
+\resizebox{\textwidth}{!}{  % Resize the subtable to fit within the page width
+\begin{tabular}{@{}llccc@{}}
+\toprule
+\multicolumn{1}{@{}c}{\footnotesize Model} & Dataset & \begin{tabular}[c]{@{}c@{}}\raggen \end{tabular} & \begin{tabular}[c]{@{}c@{}}\ragtem \end{tabular} & \nonrag \\
+\midrule
+\multirow{2}{*}{\footnotesize Gemma-1.1-2B} & WebQSP & 0.397 & 0.361 & 0.175 \\
+ & MS MARCO & 0.272 & \textbf{0.277} & \textbf{0.250} \\
+\midrule
+\multirow{2}{*}{\footnotesize Phi-3-mini} & WebQSP & 0.527 & 0.575 & 0.595 \\
+ & MS MARCO & 0.263 & 0.261 & 0.246 \\
+\midrule
+\multirow{2}{*}{\footnotesize Gemma-1.1-7B} & WebQSP & 0.109 & 0.302 & 0.291 \\
+ & MS MARCO & 0.149 & 0.276 & 0.249 \\
+\midrule
+\multirow{2}{*}{\footnotesize Mistral-7B-v0.2} & WebQSP & \textbf{0.609} & \textbf{0.604} & 0.648 \\
+ & MS MARCO & 0.256 & 0.256 & 0.239 \\
+\midrule
+\multirow{2}{*}{\footnotesize Llama-2-7B} & WebQSP & 0.589 & 0.590 & 0.548 \\
+ & MS MARCO & 0.266 & 0.257 & 0.243 \\
+\midrule
+\multirow{2}{*}{\footnotesize Llama-3-8B} & WebQSP & 0.572 & 0.558 & 0.668 \\
+ & MS MARCO & 0.252 & 0.265 & 0.239 \\
+\midrule
+\multirow{2}{*}{\footnotesize Llama-2-13B} & WebQSP & 0.595 & 0.588 & 0.627 \\
+ & MS MARCO & 0.265 & 0.258 & 0.246 \\
+\midrule
+\multirow{2}{*}{\footnotesize Llama-2-70B} & WebQSP & 0.577 & 0.596 & 0.657 \\
+ & MS MARCO & 0.270 & 0.258 & 0.248 \\
+\midrule
+\multirow{2}{*}{\footnotesize Llama-3-70B} & WebQSP & 0.517 & 0.537 & \textbf{0.710} \\
+ & MS MARCO & \textbf{0.275} & 0.264 & 0.238 \\
+\bottomrule
+\end{tabular}
+}  % End of resizebox
+\end{subtable}
+
+\vspace{0.2cm}
+
+\begin{subtable}{.5\textwidth}
+\centering
+\caption{MT Task Performance}
+\label{tab:mt-performance}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Model & \begin{tabular}[c]{@{}c@{}}\mtgen \end{tabular} & \begin{tabular}[c]{@{}c@{}}\mttem \end{tabular} \\
+\midrule
+Phi-3.5-mini & 0.707 & 0.702 \\
+Mistral-7B-v0.3 & 0.726 & 0.728 \\
+Llama3.1-70B & \textbf{0.743} & \textbf{0.750} \\
+\bottomrule
+\end{tabular}
+\end{subtable}
+\end{table}

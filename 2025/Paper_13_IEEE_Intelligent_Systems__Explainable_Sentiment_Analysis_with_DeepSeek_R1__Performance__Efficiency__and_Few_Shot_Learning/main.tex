@@ -1,0 +1,585 @@
+\documentclass{IEEEcsmag}
+
+\usepackage[colorlinks,urlcolor=blue,linkcolor=blue,citecolor=blue]{hyperref}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\/\do\*\do\-\do\~\do\'\do\"\do\-}
+\usepackage{upmath,color}
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{textcomp}
+\usepackage{url} 
+\usepackage{hyperref}
+\usepackage{listingsutf8}
+\usepackage{booktabs}
+\usepackage{balance}
+\usepackage{minted}
+\usepackage{multirow} 
+\usepackage{rotating}
+\usepackage[T1]{fontenc}
+\usepackage{todonotes}
+\usepackage{float}
+\usepackage{afterpage}
+
+
+\setlength{\parskip}{2pt}
+% \usepackage{titlesec}
+% \titlespacing*{\section}{0pt}{*0.5}{*0.5}  % section: left, before, after
+% \titlespacing*{\subsection}{0pt}{*0.5}{*0.5}
+\usepackage{enumitem} 
+
+\jvol{XX}
+\jnum{XX}
+\paper{8}
+\jmonth{September}
+\jname{IEEE Intelligent Systems}
+\jtitle{Special Issue on Explicable Artificial Intelligence for Affective Computing}
+\pubyear{2025}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+
+\title{Explainable Sentiment Analysis with DeepSeek-R1: Performance, Efficiency, and Few-Shot Learning}
+
+\author{
+\IEEEauthorblockN{Donghao HUANG\textsuperscript{1,2},
+Zhaoxia WANG\textsuperscript{2}}
+\IEEEauthorblockA{\textsuperscript{1}School of Computing and Information Systems, Singapore Management University, Singapore}
+\IEEEauthorblockA{\textsuperscript{2}Research and Development, Mastercard, Arlington, VA, USA}
+\IEEEauthorblockA{dh.huang.2023@smu.edu.sg, zxwang@smu.edu.sg}
+}
+
+\begin{abstract}\looseness-1
+
+Large language models (LLMs) have transformed sentiment analysis, yet balancing accuracy, efficiency, and explainability remains a critical challenge. This study presents the first comprehensive evaluation of DeepSeek-R1—an open-source reasoning model—against OpenAI's GPT-4o and GPT-4o-mini. We test the full 671B model and its distilled variants, systematically documenting few-shot learning curves.
+Our experiments show DeepSeek-R1 achieves a 91.39\% F1 score on 5-class sentiment and 99.31\% accuracy on binary tasks with just 5 shots, an eightfold improvement in few-shot efficiency over GPT-4o. Architecture-specific distillation effects emerge, where a 32B Qwen2.5-based model outperforms the 70B Llama-based variant by 6.69 percentage points. While its reasoning process reduces throughput, DeepSeek-R1 offers superior explainability via transparent, step-by-step traces, establishing it as a powerful, interpretable open-source alternative.
+
+
+
+\keywords{Sentiment Analysis, \and Large Language Models, \and Explainability, \and DeepSeek-R1, \and GPT-4o, \and Few-Shot Learning, \and Emotion Recognition}
+\end{abstract}
+
+\maketitle
+\vspace{-20pt}
+\section{Introduction}
+Sentiment analysis is a fundamental task in natural language processing (NLP) with broad applications in e-commerce, finance, and social media monitoring~\cite{wang2023mimusa,cambria2023seven}. Recent advancements in large language models (LLMs), such as OpenAI's GPT-4, have significantly improved sentiment classification accuracy~\cite{amin2024wide}. 
+However, when viewed as a text classification task, the interplay among reasoning capabilities, explainability, and computational efficiency remains underexplored ~\cite{luo2024local}.
+
+Traditional sentiment analysis models primarily focus on classifying text into broad sentiment categories—positive, neutral, or negative—without providing insights into the reasoning behind their predictions~\cite{wang2025review}. With the growing emphasis on explainability in artificial intelligence, there is an increasing demand for models that not only classify sentiment accurately but also justify their decisions in a transparent manner. DeepSeek-R1~\cite{guo2025deepseek}, an open-source family of reasoning models trained via reinforcement learning, introduces a novel approach by generating step-by-step reasoning processes, distinguishing it from conventional LLMs that prioritize direct responses.
+
+In this study, we conduct a systematic evaluation of DeepSeek-R1, GPT-4o, and GPT-4o-mini on multiple affective computing tasks: Amazon Reviews (5-class sentiment classification), IMDB Movie Reviews (binary classification), and GoEmotions (27-class emotion recognition). We employ few-shot prompting techniques (ranging from 0-shot to 50-shot configurations) to assess the models' in-context learning effectiveness and analyze how each model balances accuracy, reasoning depth, and computational efficiency.
+
+To our knowledge, this is the first in-depth evaluation of DeepSeek-R1’s explainable sentiment analysis against proprietary models. Our key contributions are:
+\begin{itemize}[itemsep=1pt, topsep=1pt, leftmargin=*]
+    \item We systematically evaluate DeepSeek-R1 (full 671B model and distilled variants: 8B, 14B, 32B, 70B) against proprietary models (GPT-4o, GPT-4o-mini) across three sentiment benchmarks: Amazon Reviews (5-class), IMDB Reviews (binary), and GoEmotions (27-class).
+    \item We demonstrate that DeepSeek-R1 delivers transparent, step-by-step reasoning traces while maintaining high accuracy (91.39\% F1 on 5-class sentiment), enabling the first direct comparison of explainability between open and proprietary LLMs.
+    \item Through a 0--50-shot evaluation across all tasks, we uncover that shot optima varies substantially across DeepSeek-R1 models, driven by task complexity, base architecture, and model learning capacity. 
+    
+    \item We show that distillation effectiveness depends on base architecture: the 32B Qwen2.5-based variant outperforms the 70B Llama-based model by 6.69 percentage point, challenging parameter-centric assumptions.
+    \item Our curated datasets, codebase, and complete evaluation results are publicly available on GitHub\footnote{\url{https://github.com/inflaton/Explainable-Sentiment-Analysis-with-DeepSeek-R1}} to support future research in explainable sentiment analysis and reasoning-capable LLMs.
+\end{itemize}
+
+\vspace{-20pt}
+\section{Related Work}
+
+Large Language Models (LLMs) have redefined sentiment analysis through zero- and few-shot learning. GPT-based models, such as GPT-3~\cite{brown2020language} and GPT-4~\cite{zhang2023sentiment}, have shown strong performance in zero-shot and few-shot classification settings. Meanwhile, FLAN-T5~\cite{ghatora2024sentiment} has demonstrated the benefits of instruction tuning for more efficient sentiment analysis.
+
+\noindent\textbf{Reasoning in LLMs for Sentiment Analysis}
+Two major paradigms have emerged for enabling reasoning in LLMs for sentiment analysis: \textit{prompted reasoning} and \textit{native reasoning}.
+
+Prompted Reasoning:
+Chain-of-thought prompting has proven effective for guiding models like GPT-4 through multi-step reasoning tasks~\cite{lu2024analysis}, often enhanced by techniques such as self-consistency decoding~\cite{zhang2025enhancing}. In sentiment analysis, frameworks like THOR~\cite{fei2023thor} apply this method to decompose sentiment into intermediate reasoning steps, yielding strong performance on implicit sentiment tasks. However, these approaches depend on carefully crafted prompts to elicit reasoning from models that are not inherently designed for it.
+
+Native Reasoning:
+DeepSeek-R1~\cite{guo2025deepseek} takes a fundamentally different approach—explicitly trained via reinforcement learning to generate step-by-step reasoning as part of its output. Unlike closed-source models such as OpenAI’s o3 and o4-mini, which provide only summarized reasoning, DeepSeek-R1 produces complete reasoning traces during inference. This enables built-in interpretability and transparent decision-making, which are especially important for tasks like sentiment analysis where intermediate reasoning supports output validation.
+
+\noindent\textbf{Interpretability in Sentiment Analysis}
+For interpretability in sentiment analysis, the previous work by Luo et al.~\cite{luo2024local} discusses the concept of extracting text rationales for sentiment predictions to make them more explainable. Other Recent work by Mabokela et al.~\cite{mabokela2024explainable} integrates pre-trained language models with XAI techniques (e.g., attention visualization, LIME, SHAP) to generate post-hoc explanations for transformer-based sentiment classifiers. These methods typically provide \textit{post-hoc explanations} for model decisions.
+
+Our work bridges these areas by evaluating a reasoning-enabled LLM with \textit{built-in interpretability} on sentiment analysis, distinguishing itself by providing the first comprehensive comparison between DeepSeek-R1's native reasoning capabilities and GPT-4o's prompted reasoning performance. This comparison illuminates the trade-offs between inherent transparency and external explanation methods in sentiment classification tasks.
+
+\noindent\textbf{Few-Shot Learning in Sentiment Analysis}
+Few-shot prompting has emerged as a powerful technique to reduce reliance on labeled datasets~\cite{huang2024automating}. Studies such as BdSentiLLM~\cite{ipa2024bdsentillm} has explored large-scale sentiment classification using minimal examples. However, existing studies have not systematically stretched prompting beyond 20-shot examples, nor have they compared how different reasoning paradigms (native vs. prompted) affect few-shot learning efficiency—gaps this study seeks to address.
+
+\vspace{-20pt}
+\section{Methodology}
+
+\subsection{Datasets}
+
+We evaluate on three datasets:
+
+\begin{itemize}[itemsep=1pt, topsep=1pt, leftmargin=*]
+    \item \textbf{Amazon Reviews}~\cite{mukherjee2019utilization}: A fine-grained sentiment analysis dataset containing 1–5 star ratings mapped to five sentiment classes: \texttt{``Strongly Negative''}, \texttt{``Negative''}, \texttt{``Neutral''}, \texttt{``Positive''}, and  \texttt{``Strongly Positive''}.
+    \item \textbf{IMDB Movie Reviews}~\cite{steinke2022sentiment}: A binary sentiment dataset with labels \texttt{``Negative''} and \texttt{``Positive''}.
+    \item \textbf{GoEmotions}~\cite{demszky2020goemotions,bashynska2024research}: A fine-grained emotion dataset with 27 categories for nuanced sentiment evaluation.
+\end{itemize}
+
+Using the original Amazon Reviews and IMDB Movie Reviews datasets, we constructed a fine-grained dataset via human annotation, consisting of 1,838 Amazon and 1,447 IMDB reviews, respectively. Each dataset was split into 70\% training and 30\% testing sets using a fixed random seed (42) for reproducibility. 
+
+For GoEmotions, we adopt the original splits, exclude entries with multiple labels or \texttt{neutral}, and ensure a single emotion label per instance. We then subsample 1,400 training and 600 test examples using the same seed for consistency.
+
+\vspace{-15pt}
+\subsection{Model Integration}
+
+We compare the following models:
+
+\begin{itemize}[itemsep=1pt, topsep=1pt, leftmargin=*]
+    \item \textbf{DeepSeek-R1 Full Model} (671B parameters)
+    \item \textbf{DeepSeek-R1 Variant  Models} (8B, 14B, 32B, 70B)
+    \item \textbf{OpenAI's GPT-4o and GPT-4o-mini}
+\end{itemize}
+
+The DeepSeek-R1 full model (hereafter referred to as \texttt{DeepSeek-R1}) and OpenAI's models were evaluated using their respective official APIs. The distilled DeepSeek-R1 variant models were executed locally using Ollama\footnote{\url{https://ollama.com/}} on a high-performance PC equipped with an NVIDIA RTX A6000 Ada Generation GPU,
+running Ubuntu 22.04 via the Windows Subsystem for Linux (WSL), is equipped with 48\,GB of VRAM.
+
+Throughout this paper, the distilled models are referred to as \texttt{deepseek-r1:8b}, \texttt{deepseek-r1:14b}, \texttt{deepseek-r1:32b}, and \texttt{deepseek-r1:70b}, following the official naming conventions provided on the Ollama website\footnote{\url{https://ollama.com/library/deepseek-r1}}. For model inference, we used Ollama’s and DeepSeek’s OpenAI-compatible APIs for the DeepSeek-distilled and full models, respectively, as well as OpenAI’s official API for \texttt{GPT-4o} and \texttt{GPT-4o-mini}. We adopted OpenAI’s default inference settings (e.g., \texttt{temperature} = 1.0, \texttt{top\_p} = 1.0, etc.) to ensure standardized and reproducible results.
+
+\vspace{-15pt}
+\subsection{Few-shot Prompting}
+To improve sentiment classification performance, we employed few-shot prompting techniques. To enable explainable sentiment classification, we carefully designed our system prompt to instruct LLMs to provide an explanation alongside the sentiment classification.
+
+\noindent\textbf{System Prompt Template}
+Our system prompt template is structured as follows:
+
+\begin{minted}[fontsize=\scriptsize, breaklines, frame=single]{text}
+You are an advanced sentiment analysis assistant. Your task is to analyze text and provide a sentiment rating along with a brief explanation.
+
+The sentiment rating should be based on a {scale}-point scale: {sentiments}.
+
+Always respond with a JSON object containing the sentiment and the explanation.
+
+{exemplars}
+\end{minted}
+
+\noindent The placeholders in this template are dynamically populated with dataset-specific values:
+
+\begin{itemize}[itemsep=1pt, topsep=1pt, leftmargin=*]
+    \item \texttt{\{scale\}}: Set to 5 for the Amazon Review test set, 2 for the IMDB Movie Reviews test set, and 27 for the GoEmotions test set.
+    \item \texttt{\{sentiments\}}: Defined as appropriate sentiment/emotion categories for each dataset.
+    \item \texttt{\{exemplars\}}: Populated differently based on the task configuration (detailed below).
+\end{itemize}
+
+\noindent\textbf{Exemplar Configuration}
+For zero-shot tasks, the \texttt{\{exemplars\}} field remains empty. For few-shot tasks, exemplars are randomly selected from the training set with a fixed random seed (42), stratified to ensure representation of all sentiment/emotion classes. The same exemplar set is used for all model evaluations at a given shot count to ensure fair comparison. The exemplars are formatted as structured input-output pairs:
+
+\begin{minted}[fontsize=\scriptsize, breaklines, frame=single]{text}               
+Example Inputs and Outputs:
+
+- Input: The only thing good about this movie is the artwork on the promotion poster by H. R. Geiger. Anti-nuke protesters who...
+- Output: {"sentiment":"Negative","explanation":""}
+
+- Input: This product exceeded my expectations in every way possible.
+- Output: {"sentiment":"Positive","explanation":""}
+
+... (additional examples follow the same format)
+\end{minted}
+
+\noindent\textbf{User Prompt Template}
+The user prompt template that accompanies each classification request is:
+
+\begin{minted}[fontsize=\scriptsize, breaklines, frame=single]{text} 
+- Input: {input}
+- Output:
+\end{minted}
+
+\noindent where \texttt{\{input\}} is replaced with the text requiring sentiment classification.
+
+\vspace{-15pt}
+\subsection{Evaluation Metrics}
+
+Model performance was assessed using predictive accuracy on held-out test data, measured by both the weighted F1 score and accuracy through comparisons of LLM outputs with ground truth labels.
+
+\begin{figure*}
+\centering
+\begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=.85\textwidth]{figures/Amazon Reviews Dataset - Confusion Matrix - DeepSeek-R1.pdf}
+    \caption{DeepSeek-R1}
+    \label{fig:confusion_deepseek_sub}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=.85\textwidth]{figures/Amazon Reviews Dataset - Confusion Matrix - GPT-4o.pdf}
+    \caption{GPT-4o}
+    \label{fig:confusion_gpt4o_sub}
+\end{subfigure}
+\caption{Fine-Grained Sentiment Analysis: DeepSeek-R1 vs. GPT-4o. Confusion matrices for 5-level sentiment classification on the Amazon Reviews dataset. (a) DeepSeek-R1 exhibits bidirectional confusion between adjacent classes. (b) GPT-4o shows unidirectional confusion, reflecting a conservative treatment of ``Strongly'' modifiers.}
+\label{fig:confusion_comparison}
+\end{figure*}
+
+Inference speed was evaluated using the following metrics:
+
+\begin{enumerate}
+    \item \textbf{Mean Evaluation Time}: The average time (in seconds) required for the LLM to complete a classification task, abbreviated as \textbf{Time (s)}. It is computed as:
+    \[
+    \text{Mean Evaluation Time} = \frac{\text{Total Evaluation Time (s)}}{\text{Size of Test Dataset}}
+    \]
+    
+    \item \textbf{Throughput}: The number of tokens processed per second, abbreviated as \textbf{T-put (t/s)}. It is calculated as:
+    \[
+    \text{Throughput} = \frac{\text{Total Input \& Output Tokens (t)}}{\text{Total Evaluation Time (s)}}
+    \]
+    For the \textbf{DeepSeek-R1} models (including both full and distilled variants), both the \emph{reasoning content} and the final JSON output are included in the output token count. The \emph{reasoning content} refers to the complete, step-by-step trace of the model's thought process generated during inference, prior to producing the final output. This includes all intermediate thoughts, evaluations, reconsiderations, and decision-making steps. For example, in Table~\ref{tab:sentiment-analysis-neutral}, DeepSeek-R1 generates approximately 730 tokens of reasoning (the text under \texttt{"Reasoning:"}), followed by a \(\sim\)90-token JSON output, resulting in a total of around 820 tokens used for throughput calculation. The detailed results will be discussed in the next section, Results and Discussion.
+\end{enumerate}
+
+\vspace{-15pt}
+\section{Results and Discussion}
+
+\subsection{Comparative Analysis of Model Performance}
+
+\subsubsection{\textbf{Five-Level Sentiment Classification}} 
+
+Table~\ref{tab:amazon} presents comprehensive results detailing the impact of different shot counts on model performance. 
+
+\begin{table*} 
+\centering
+\small
+\resizebox{.75\textwidth}{!}{
+\begin{tabular}{lcccccccc}
+\toprule
+Model & Metric & 0-shot & 5-shot & 10-shot & 20-shot & 30-shot & 40-shot & 50-shot \\
+\midrule
+\multirow{4}{*}{deepseek-r1:8b} 
+ & Acc (\%) & 54.45 & 51.00 & 60.44 & 63.16 & 64.07 & \textbf{66.79} & 62.07 \\
+ & F1 (\%) & 58.41 & 56.29 & 65.42 & 67.18 & 68.17 & \textbf{69.84} & 66.26 \\
+ & Time (s) & 2.56 & \textbf{2.48} & 2.64 & 2.64 & 2.83 & 2.97 & 3.04 \\
+ & T-put (t/s) & 82 & 319 & 407 & 643 & 795 & 966 & \textbf{1174} \\
+\midrule
+\multirow{4}{*}{deepseek-r1:14b} 
+ & Acc (\%) & 58.44 & 57.17 & 64.61 & 69.33 & \textbf{76.95} & 72.41 & 75.14 \\
+ & F1 (\%) & 62.20 & 61.57 & 68.12 & 72.10 & \textbf{79.06} & 75.28 & 77.24 \\
+ & Time (s) & 6.14 & \textbf{4.55} & 4.58 & 4.61 & 4.76 & 4.94 & 4.90 \\
+ & T-put (t/s) & 31 & 172 & 234 & 368 & 473 & 582 & \textbf{733} \\
+\midrule
+\multirow{4}{*}{deepseek-r1:32b} 
+ & Acc (\%) & 64.97 & 69.51 & 73.14 & 73.32 & 75.50 & 77.68 & \textbf{79.31} \\
+ & F1 (\%) & 69.03 & 72.63 & 75.90 & 75.75 & 77.68 & 79.27 & \textbf{80.89} \\
+ & Time (s) & 9.66 & 8.66 & \textbf{8.62} & 8.97 & 8.97 & 8.96 & 9.45 \\
+ & T-put (t/s) & 20 & 90 & 124 & 189 & 251 & 321 & \textbf{380} \\
+\midrule
+\multirow{4}{*}{deepseek-r1:70b} 
+ & Acc (\%) & 60.25 & 62.79 & 67.15 & 68.42 & \textbf{71.14} & 67.70 & 69.51 \\
+ & F1 (\%) & 64.34 & 66.75 & 70.50 & 71.70 & \textbf{74.23} & 70.63 & 72.59 \\
+ & Time (s) & 21.96 & 17.73 & 17.21 & \textbf{16.86} & 17.59 & 17.25 & 17.85 \\
+ & T-put (t/s) & 10 & 45 & 62 & 100 & 128 & 166 & \textbf{200} \\
+\midrule
+\multirow{4}{*}{DeepSeek-R1} 
+ & Acc (\%) & 76.77 & 81.13 & 79.67 & 84.39 & \textbf{91.29} & 86.57 & 82.58 \\
+ & F1 (\%) & 78.31 & 82.33 & 81.26 & 84.70 & \textbf{91.39} & 86.87 & 83.35 \\
+ & Time (s) & 7.83 & \textbf{7.53} & 7.95 & 10.51 & 10.10 & 8.59 & 26.77 \\
+ & T-put (t/s) & 27 & 105 & 135 & 161 & 223 & \textbf{334} & 134 \\
+\midrule
+\multirow{4}{*}{GPT-4o-mini} 
+ & Acc (\%) & 71.87 & 71.14 & 76.95 & 80.76 & 80.58 & 79.67 & \textbf{81.31} \\
+ & F1 (\%) & 74.75 & 74.15 & 79.25 & 82.50 & 82.37 & 81.57 & \textbf{83.02} \\
+ & Time (s) & 1.72 & \textbf{1.35} & 1.38 & 1.62 & 1.69 & 1.72 & 1.68 \\
+ & T-put (t/s) & 121 & 587 & 776 & 1046 & 1329 & 1666 & \textbf{2124} \\
+\midrule
+\multirow{4}{*}{GPT-4o} 
+ & Acc (\%) & 71.32 & 68.78 & 70.24 & 78.04 & 79.49 & \textbf{86.57} & 81.67 \\
+ & F1 (\%) & 74.32 & 72.39 & 73.73 & 80.43 & 81.76 & \textbf{87.99} & 83.11 \\
+ & Time (s) & 1.70 & \textbf{1.60} & 1.70 & 2.13 & 2.57 & 2.35 & 4.85 \\
+ & T-put (t/s) & 123 & 492 & 632 & 795 & 876 & \textbf{1220} & 737 \\
+\bottomrule
+\end{tabular}
+}
+\caption{Performance on Amazon Reviews Dataset (5-level classification) across different shot counts}
+\label{tab:amazon}
+\end{table*}
+
+% \paragraph*{Comparison of DeepSeek-R1 and OpenAI Models}
+%\noindent\textbf{DeepSeek-R1 vs. GPT-4o: Accuracy and Throughput Trade-offs}
+In the five-level sentiment classification task (see Table~\ref{tab:amazon}), the full DeepSeek-R1 model achieved the highest performance, reaching 91.29\% accuracy and a 91.39\% F1 score with 30-shot learning. This significantly outperformed GPT-4o, which achieved 86.57\% accuracy and 87.99\% F1 at 40-shot, and GPT-4o-mini, which attained 81.31\% accuracy and an 83.02\% F1 score at 50-shot.
+
+As shown in Table~\ref{tab:amazon}, DeepSeek-R1 consistently outperformed all other models from 0-shot to 30-shot, where it reached its peak performance. Notably, it exhibited strong baseline performance in the 0-shot setting (76.77\% accuracy, 78.31\% F1) and demonstrated superior few-shot learning efficiency, peaking at 30-shot—ten shots earlier than GPT-4o.
+
+Despite its strong performance, DeepSeek-R1 exhibited considerably lower efficiency compared to the OpenAI models, with a throughput of 334 tokens per second (t/s) at its peak (40-shot). In contrast, GPT-4o-mini achieved a throughput of 2,124 t/s, while GPT-4o reached 1,220 t/s. This disparity can primarily be attributed to the design of DeepSeek-R1 as a reasoning model, which leverages extensive test-time compute to enhance its reasoning capabilities.
+
+\subsubsection{\textbf{Fine-Grained Sentiment Analysis: DeepSeek-R1 vs. GPT-4o}} 
+We compare DeepSeek-R1 and GPT-4o on fine-grained sentiment distinctions—e.g., “Strongly Positive” vs.\ “Positive”—using Amazon Reviews confusion matrices. Figure~\ref{fig:confusion_comparison} reveals their contrasting adjacent-class confusion patterns:
+
+\textbf{DeepSeek-R1} shows balanced bidirectional confusion:
+\begin{itemize}[itemsep=1pt, topsep=1pt, leftmargin=*]
+    \item Strongly Positive $\rightarrow$ Positive: 18/339 (5.3\%)
+    \item Positive $\rightarrow$ Strongly Positive: 8/111 (7.2\%)
+    \item Strongly Negative $\rightarrow$ Negative: 1/60 (1.7\%)
+    \item Negative $\rightarrow$ Strongly Negative: 8/29 (27.6\%)
+\end{itemize}
+
+\textbf{GPT-4o} adopts a strictly conservative strategy:
+\begin{itemize}[itemsep=1pt, topsep=1pt, leftmargin=*]
+    \item Strongly Positive $\rightarrow$ Positive: 39/339 (11.5\%)
+    \item Positive $\rightarrow$ Strongly Positive: 0/111 (0\%)
+    \item Strongly Negative $\rightarrow$ Negative: 8/60 (13.3\%)
+    \item Negative $\rightarrow$ Strongly Negative: 0/29 (0\%)
+\end{itemize}
+
+DeepSeek-R1 demonstrates greater flexibility, with 2.2$\times$ fewer misclassifications on ``Strongly Positive'' (5.3\% vs. 11.5\%). Unlike GPT-4o, it also correctly upgrades sentiment when appropriate. For positive sentiment, DeepSeek-R1 shows symmetric confusion (5.3\% $\downarrow$, 7.2\% $\uparrow$), while GPT-4o never upgrades (11.5\% $\downarrow$, 0\% $\uparrow$). For negative sentiment, DeepSeek-R1 struggles more with intensity upgrades (27.6\%), whereas GPT-4o remains conservative (13.3\% $\downarrow$, 0\% $\uparrow$).
+
+This analysis suggests that DeepSeek-R1’s reasoning-oriented architecture enables finer-grained sentiment distinctions, particularly for intensity modifiers, while GPT-4o favors conservative and consistent assignment.
+
+\vspace{-15pt}
+\subsubsection{\textbf{DeepSeek Variant Performance Analysis}} 
+
+Our evaluation reveals substantial performance differences among DeepSeek-R1 variants that extend beyond parameter scaling, highlighting the interplay between architecture, size, and task-specific outcomes.
+
+The Qwen2.5-based 14B and 32B models consistently outperform their Llama-based counterparts: the 32B variant achieves 80.45\% F1, exceeding the 70B model’s 73.76\% by 6.69 percentage points, demonstrating that architectural design plays a central role in distillation effectiveness. Performance does not scale monotonically with model size; despite having over twice the parameters, the 70B model underperforms the 32B variant, indicating diminishing returns from the Llama3.3-70B base.
+
+Regarding throughput–accuracy trade-offs, the 8B variant processes 1,403 tokens/s with a 69.61\% F1, making it ideal for high-volume tasks; the 14B model balances efficiency and accuracy at 881 tokens/s and 78.50\% F1; the 32B variant offers the best trade-off at 457 tokens/s and 80.45\% F1; and the 70B model, despite its higher cost (239 tokens/s), yields only 73.76\% F1, reflecting limited performance gains.
+
+Deployment implications vary by use case: for high-throughput scenarios, the 8B variant offers practical accuracy with 3.1× the throughput of the 32B model; for balanced deployments, the 32B variant achieves 88.0\% of full-model accuracy with significantly greater efficiency; and for accuracy-critical tasks, the full DeepSeek-R1 justifies its computational overhead by delivering maximum performance. Overall, model selection should be guided by task complexity, accuracy requirements, and resource constraints—not parameter count alone.
+
+\vspace{-15pt}
+\subsubsection{\textbf{Binary Sentiment Classification}}
+To establish baseline performance on fundamental sentiment analysis, we evaluated all models on the IMDB Movie Reviews dataset for binary sentiment classification. This task serves as a foundational benchmark for understanding model capabilities on sentiment-related tasks before progressing to more complex emotion recognition.
+
+Table~\ref{tab:binary_sentiment_results} presents the performance of DeepSeek-R1 variants, GPT-4o-mini and GPT-4o on binary sentiment classification. The results demonstrate that this task represents a relatively solved problem for modern large language models, with most variants achieving excellent performance.
+
+\begin{table}[ht]
+\centering
+\small
+\resizebox{.48\textwidth}{!}{
+\begin{tabular}{lccccc}
+\toprule
+Model & Acc (\%) & F1 (\%) & Shots & Time (s) & T-put (t/s) \\
+\midrule
+deepseek-r1:8b & 95.17 & 95.71 & 10 & 3.21 & 1103 \\
+deepseek-r1:14b & 97.47 & 97.47 & 20 & 5.76 & 1133 \\
+deepseek-r1:32b & 96.55 & 97.11 & 40 & 12.83 & 918 \\
+deepseek-r1:70b & 97.93 & 98.04 & 20 & 89.66 & 73 \\
+DeepSeek-R1 & \textbf{99.31} & \textbf{99.31} & 5 & 20.14 & 143 \\
+GPT-4o-mini & 99.08 & 99.08 & 30 & 2.17 & 5574 \\
+GPT-4o & \textbf{99.31} & \textbf{99.31} & 40 & 2.64 & 5350 \\
+\bottomrule
+\end{tabular}
+}
+\caption{Performance on IMDB Movie Reviews dataset (binary sentiment classification) at optimal few-shot settings}
+\label{tab:binary_sentiment_results}
+\end{table}
+
+Both DeepSeek-R1 and GPT-4o achieve exceptional performance at 99.31\% accuracy and F1 score, demonstrating near-perfect sentiment classification capabilities. Remarkably, DeepSeek-R1 reaches this performance with only 5 shots, while GPT-4o requires 40 shots to achieve the same level. This 8× improvement in few-shot efficiency highlights DeepSeek-R1's superior reasoning capabilities for sentiment classification tasks.
+
+The performance scaling across DeepSeek-R1 model sizes shows consistent improvement, with accuracy increasing from 95.17\% for the 8B variant to 99.31\% for the full model. Even the smaller variants demonstrate strong performance, with the 14B model achieving 97.47\% accuracy while maintaining excellent throughput (1133 t/s). The efficiency advantage of GPT-4o is evident in the throughput metrics, with GPT-4o achieving 5350 t/s compared to DeepSeek-R1's 61 t/s, though both models deliver equivalent accuracy on this fundamental sentiment analysis task.
+
+\vspace{-15pt}
+\subsubsection{\textbf{Fine-Grained Emotion Recognition}}
+
+To assess model performance beyond coarse sentiment polarity, we evaluate on the GoEmotions dataset~\cite{demszky2020goemotions}, which comprises 27 emotion categories—a substantially more challenging task than binary or 5-class sentiment classification.
+Table~\ref{tab:emotion_results} presents results for DeepSeek-R1 variants, GPT-4o-mini and GPT-4o. While all models show performance drops relative to simpler sentiment tasks, DeepSeek-R1 remains competitive with GPT-4o on this fine-grained benchmark.
+
+\begin{table}[ht]
+\centering
+\small
+\resizebox{.48\textwidth}{!}{
+\begin{tabular}{lccccc}
+\toprule
+Model & Acc (\%) & F1 (\%) & Shots & Time (s) & T-put (t/s) \\
+\midrule
+deepseek-r1:8b & 32.17 & 32.24 & 50 & 4.61 & 519 \\
+deepseek-r1:14b & 36.83 & 38.69 & 40 & 4.45 & 414 \\
+deepseek-r1:32b & 39.83 & 41.14 & 50 & 8.43 & 254 \\
+deepseek-r1:70b & 44.00 & 44.57 & 10 & 17.25 & 52 \\
+DeepSeek-R1 & \textbf{45.33} & \textbf{46.02} & 10 & 28.79 & 48 \\
+GPT-4o-mini & 39.83 & 40.52 & 5 & 1.34 & 340 \\
+GPT-4o & 45.17 & 45.99 & 10 & 1.43 & 424 \\
+\bottomrule
+\end{tabular}
+}
+\caption{Performance on GoEmotions dataset (27-class emotion recognition) at optimal few-shot settings}
+\label{tab:emotion_results}
+\end{table}
+
+The full DeepSeek-R1 achieves the highest scores (45.33\% accuracy, 46.02\% F1), slightly surpassing GPT-4o. Both models reach peak performance with 10-shot prompts, indicating strong few-shot generalization in this complex task.
+
+Few-shot trends show variant-specific behavior: 8B and 32B achieve peak performance at 50 shots, while 70B requires only 10. GPT-4o-mini peaks at 5 shots with lower accuracy (39.83\%), underperforming compared to deepseek-r1:32b, indicating limited benefit from additional samples.
+
+Overall, performance on GoEmotions is notably lower than on sentiment tasks, reflecting the added challenge of classifying 27 nuanced emotion classes.
+
+\vspace{-10pt}
+\subsubsection{\textbf{Impact of Few-Shot Examples}}
+Our analysis shows that the optimal number of few-shot examples varies substantially across DeepSeek-R1 models, driven by task complexity, base architecture, and model learning capacity. Figure~\ref{fig:few_shot_analysis} summarizes performance trajectories across shot counts for each model and dataset.
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/few_shot_learning_analysis_v2.pdf}
+\caption{Performance of DeepSeek-R1 variants across different few-shot configurations. (a) IMDB Binary Sentiment: rapid convergence for most models. (b) Amazon 5-Level Sentiment: higher shot requirements for fine-grained classification. (c) GoEmotions 27-Class Emotion: large variance in optimal shot counts across models. Peak annotations show the best-performing shot count and corresponding F1 score.}
+\label{fig:few_shot_analysis}
+\end{figure*}
+
+
+\textbf{Task Complexity Effects}
+Optimal shot counts correlate strongly with task complexity. IMDB (Figure~\ref{fig:few_shot_analysis}a) requires the fewest examples (5--20 shots), while Amazon’s 5-level sentiment task (Figure~\ref{fig:few_shot_analysis}b) typically peaks at 30--50 shots. GoEmotions (Figure~\ref{fig:few_shot_analysis}c), the most complex task, shows high variance (10--50 shots), reflecting the challenges of fine-grained emotion recognition.
+
+\textbf{Architecture-Specific Learning Patterns}
+Model behavior varies by base architecture. Qwen2.5-based models (14B and 32B) show consistent patterns: 14B peaks at 20--40 shots, while 32B often needs 40--50. Llama3.x-based models (8B and 70B) are more variable. The 8B model scales predictably with task complexity—peaking at 10, 40, and 50 shots across the three tasks—suggesting smaller models rely more heavily on in-context examples.
+The full DeepSeek-R1 model achieves the highest overall performance with the lowest average shot count (15.0) and largest average F1 gain (12.56\%). This reflects the advantage of its full reasoning architecture over distilled variants.
+
+\textbf{Model Learning Efficiency Insights}
+Larger performance gains often require more examples. The 8B model shows the second-highest average improvement (10.62\%), needing more support for complex tasks. In contrast, the 14B and 32B models start strong but show diminishing returns (7.74\% and 6.63\% average improvements, respectively), indicating a ceiling effect tied to model capacity.
+
+\noindent These findings suggest that optimal shot counts reflect the interplay between model limitations and learning efficiency: smaller models benefit more from added context, while larger ones approach peak performance with fewer examples—especially in simpler tasks (e.g., binary sentiment classification tasks).
+
+\vspace{-15pt}
+\subsection{Explainability in Sentiment Classification}
+
+As discussed in the \textit{Few-Shot Prompting} section, we designed our system prompt to guide LLMs in providing explanations alongside sentiment classifications. Additionally, we capture the reasoning content from the DeepSeek-R1 models to further enhance interpretability. To illustrate this, we present three diverse cases in Table~\ref{tab:sentiment-analysis-neutral}, Table~\ref{tab:sentiment-analysis-strongly-positive}, and Table~\ref{tab:sentiment-analysis-strongly-negative}.
+
+These examples highlight key differences between GPT-4o and DeepSeek-R1 in their approaches to sentiment analysis and explainability.
+\vspace{-10pt}
+\subsubsection{\textbf{Resolution of Mixed Experiences}}
+In the first example (Table~\ref{tab:sentiment-analysis-neutral}), both models correctly identify the neutral sentiment but follow distinct reasoning paths. GPT-4o balances product failure against positive customer service, while DeepSeek-R1 traces the temporal progression from a negative experience to its resolution. This case demonstrates both models' ability to handle evolving sentiments and weigh competing factors.
+\vspace{-10pt}
+\subsubsection{\textbf{Emotional vs. Functional Analysis}}
+The second example (Table~\ref{tab:sentiment-analysis-strongly-positive}) highlights differences in processing emotional cues. GPT-4o weighs functional benefits against emotional disappointment over pricing, maintaining a \texttt{"Positive"} rating. In contrast, DeepSeek-R1 assigns greater weight to the emotional impact of feeling "duped," leading to a \texttt{"Negative"} sentiment despite acknowledging the product's positive attributes. This underscores DeepSeek-R1's heightened sensitivity to emotional language.
+\vspace{-10pt}
+\subsubsection{\textbf{Treatment of Indirect Experiences}}
+The third example (Table~\ref{tab:sentiment-analysis-strongly-negative}) showcases divergent approaches to reported issues. GPT-4o interprets widespread user complaints as indicative of negative sentiment, even without direct personal experience. DeepSeek-R1, however, classifies the review as \texttt{"Neutral"}, treating it as primarily informational since it focuses on reporting issues rather than expressing direct dissatisfaction.
+
+\vspace{-10pt}
+%\noindent\textbf{Explainability Approaches}  
+\subsubsection{\textbf{Explainability Approaches}}
+% Both models provide explanations, albeit with distinct styles. GPT-4o offers concise justifications that directly link evidence to conclusions, while DeepSeek-R1 generates a more extensive reasoning process that reveals its decision-making steps, including moments of uncertainty and reconsideration. This difference is particularly evident in the first case, where DeepSeek-R1's reasoning unfolds in multiple stages before reaching a final judgment, and in the third case, where it explicitly distinguishes between reported problems and personal experience.
+
+Both models produce explanations, but their stylistic differences stem from their architectural designs rather than prompt interpretation. As shown in Tables~\ref{tab:sentiment-analysis-neutral}--\ref{tab:sentiment-analysis-strongly-negative}, both GPT-4o and DeepSeek-R1 follow our prompt for ``a brief explanation,'' yielding concise summaries in their main outputs.
+
+
+The key stylistic differences between DeepSeek-R1 and and GPT-4o explanations are that DeepSeek-R1 generates an \emph{intrinsic reasoning trace}—not prompted, but inherent to its architecture. This reasoning trace represents a unique form of built-in explainability that emerges naturally from DeepSeek-R1’s reinforcement learning training for reasoning. Unlike GPT-4o’s single-layer explanations, DeepSeek-R1 provides dual-layer explanation transparency: it combines a brief, prompt-compliant explanation with an extensive step-by-step trace that reveals the full decision-making process, including moments of uncertainty (``Wait, but the output examples show...''), self-correction, and reconsideration.
+
+These traces offer practical benefits for sentiment analysis tasks. As shown Table~\ref{tab:sentiment-analysis-neutral}-\ref{tab:sentiment-analysis-strongly-negative}, DeepSeek-R1’s reasoning unfolds in multiple stages, allowing users to observe how it reconciles conflicting signals before reaching a final decision. The reasoning trace separates reported problems from personal experiences, indicating a nuanced interpretation that often remains hidden in single-layer explanations.
+
+In summary, DeepSeek-R1’s detailed reasoning process enhances transparency by explicitly addressing sentiment ambiguities (e.g., ``Great storage size'' and ``excellent'' vs. ``got duped'' as shown in Table~\ref{tab:sentiment-analysis-strongly-positive}) that simpler models may overlook. It systematically evaluates conflicting cues, making its decision-making process more interpretable.
+
+
+\begin{table*}[htbp]
+\centering
+\small
+\resizebox{0.9\textwidth}{!}{
+\begin{tabular}{p{0.1\textwidth}|p{0.9\textwidth}}
+\hline
+\textbf{Review Text \& Ground Truth} & \textbf{Text:} I join the long list of customers who have had their SanDisk die on them. Customer service from SanDisk has been helpful. They pay for UPS shipping for the return and promise a 7-10 day turn around once the defective disk has been returned. Still it's a pain to deal with and I lost some photographs. UPDATE: SanDisk sent me a replacement and it seems to be working. If the replacement goes bad, I'll be back to complain:) SECOND UPDATE: All is well with the replacement so I'm giving it three stars.
+
+\textbf{Sentiment:} Neutral \\
+\hline
+\textbf{GPT-4o Analysis} & \textbf{Sentiment:} Neutral
+
+\textbf{Explanation:} The text provides both negative and positive aspects: the original SanDisk product failed, causing inconvenience and loss of photos, which is a negative point. However, the customer service is noted as helpful, offering a replacement that currently works, leading to a neutral sentiment overall with a moderate satisfaction level. \\
+\hline
+\textbf{DeepSeek-R1 Analysis} & \textbf{Sentiment:} Neutral
+
+\textbf{Explanation:} The user experienced significant issues with the product failing and data loss, which is strongly negative. However, SanDisk's customer service was responsive, providing a replacement that worked, leading to a resolution. The mixed experience, with both negative and positive aspects, along with the final three-star rating, results in a Neutral sentiment overall.
+
+\textbf{Reasoning:} Okay, let's tackle this sentiment analysis. The input is a user's experience with a SanDisk product that failed. They mention joining others who had similar issues, which immediately sounds negative. The customer service was helpful, covering shipping and replacing the product, which is a positive point. However, the user still had to go through the hassle of returning it and lost some photos, which is frustrating. The first update mentions the replacement works, but there's a conditional statement about complaining again if it fails, indicating lingering doubt. The second update says all is well, but they only give three stars, which is average. 
+
+So, the overall sentiment here is mixed. There are both negative experiences (product failure, lost data) and positive aspects (good customer service, replacement working). However, the user's final rating is three stars, which is neutral. But considering the initial strong negative experience and the hassle involved, even with a resolution, the sentiment might lean more towards Neutral. Wait, but the output examples show that even with some positive elements, if the main issue is resolved but there's lingering dissatisfaction, it might be Neutral. Let me check the examples. 
+
+Looking at the example where the user had issues but then got a replacement and rated three stars, the output was Neutral. Here, the user mentions the replacement working but still only gives three stars. The main issues were resolved but the initial problem was significant. So the overall sentiment here is Neutral. But wait, in the output example where the user had a bad experience but then a refund and replacement, the sentiment was Strongly Negative. Hmm, maybe because the initial problem was severe.
+
+Wait, in the input provided, the user's final rating is three stars, which is in the middle. The explanation includes both negative and positive elements. In some cases, mixed experiences are Neutral. Let's compare with the example where the user had a first defective card, then a working replacement, and the output was Neutral. So in this case, the input here is similar. The user had a problem, got it resolved, but still had some hassle. The final outcome is okay, but the experience was mixed. Therefore, the sentiment should be Neutral. But wait, the initial problem was severe (lost photos, hassle) and even though resolved, the user might still have a negative sentiment. However, the three stars and the fact that they're giving an update that's positive but not overly so might balance it. Let me check the example again. 
+
+In one of the examples, the user had a defective card, got a refund, replaced with Samsung, and the sentiment was Strongly Negative. But in another example where the user had a problem but the replacement worked, the sentiment was Neutral. So the key difference is whether the problem was resolved satisfactorily. In this input, the user's final update is positive (all is well) but the overall experience was a hassle. The three stars indicate a neutral stance. Therefore, the sentiment here should be Neutral. So the output should be {"sentiment":"Neutral","explanation":""}\\
+\hline
+\end{tabular}
+}
+\caption{Analysis of Sentiment Classification from GPT-4o and DeepSeek-R1 - Neutral}
+\label{tab:sentiment-analysis-neutral}
+\end{table*}
+
+\begin{table*}[htbp]
+\centering
+\small
+\resizebox{0.9\textwidth}{!}{
+\begin{tabular}{p{0.1\textwidth}|p{0.9\textwidth}}
+\hline
+\textbf{Review Text \& Ground Truth} & \textbf{Text:} Great storage size. Being the first adopter when it came out. Thought the sale price \$119 is excellent. Got duped. It's been the same price since it was first introduced. Great for the action cam. Battery ran out before it ran out of memory.
+
+\textbf{Sentiment:} Strongly Positive \\
+\hline
+\textbf{GPT-4o Analysis} & \textbf{Sentiment:} Positive
+
+\textbf{Explanation:} The text expresses satisfaction with the storage size and its performance with the action cam, even though there is a disappointment about the price not being a sale deal. The positive aspects of the product overshadow the issue with the pricing. \\
+\hline
+\textbf{DeepSeek-R1 Analysis} & \textbf{Sentiment:} Negative
+
+\textbf{Explanation:} The user expresses positive aspects like 'Great storage size' and functionality with the action cam, but the strong negative feeling of being 'duped' due to the unchanging price and initial perceived value disappointment shifts the sentiment to Negative."
+
+\textbf{Reasoning:} Okay, let's analyze this input step by step. The user starts by mentioning "Great storage size," which is a positive point. They also refer to themselves as the first adopter and thought the sale price of \$119 was excellent. However, they then say "Got duped," indicating a negative feeling, because the price hasn't changed since introduction. They mention it's great for the action cam and that the battery died before the memory was full, which is a practical positive but maybe a minor point.
+
+The initial positive aspects are countered by the feeling of being misled about the price. The negative emotion from feeling duped seems strong, but the user still acknowledges the product's effectiveness. However, the overall sentiment is more on the negative side because the main issue is the price deception. But the user also has some positive remarks. However, the term "duped" is quite strong, leading towards a negative sentiment. Yet, they end with a positive note about the product's performance. But the primary issue here is the perceived deception, which might tip the sentiment to Negative rather than Neutral. The presence of both positive and negative aspects but with a stronger negative emotion due to feeling tricked. \\
+\hline
+\end{tabular}
+}
+\caption{Analysis of Sentiment Classification from GPT-4o and DeepSeek-R1 - Strongly Positive}
+\label{tab:sentiment-analysis-strongly-positive}
+\end{table*}
+
+\begin{table*}[htbp]
+\centering
+\small
+\resizebox{0.9\textwidth}{!}{
+\begin{tabular}{p{0.1\textwidth}|p{0.9\textwidth}}
+\hline
+\textbf{Review Text \& Ground Truth} & \textbf{Text:} I had wanted to get the most I can out of my hero3, At the time I got my hero3 this was the recommended card, but there were many problems with people having issues with it. Since then Gopro has endorsed other card and from what I understand changed the firmware to prevent problems.... The problems is only with the 64gb version, from what I read the 32gb and lower versions are ok...
+
+\textbf{Sentiment:} Strongly Negative \\
+\hline
+\textbf{GPT-4o Analysis} & \textbf{Sentiment:} Negative
+
+\textbf{Explanation:} The review discusses issues associated with using a specific memory card with the GoPro Hero3 camera. Although the reviewer highlights that the problems are mainly with the 64GB version and not the smaller capacities, the overall tone suggests dissatisfaction and problems with the recommended product. The reference to many people experiencing issues contributes to the negative sentiment. \\
+\hline
+\textbf{DeepSeek-R1 Analysis} & \textbf{Sentiment:} Neutral
+
+\textbf{Explanation:} The input mentions known issues with the 64GB version of the card but clarifies that smaller capacities are acceptable. The tone is informational rather than expressing personal dissatisfaction, as the user references firmware fixes and GoPro's updated endorsements without indicating direct negative experiences.
+
+\textbf{Reasoning:} Okay, let's tackle this sentiment analysis. The input here is a user talking about their experience with a 64GB memory card for a GoPro Hero3. They mention that it was the recommended card at the time but had issues. They note that GoPro has since endorsed other cards and updated firmware to prevent problems, specifically pointing out that the 64GB version had issues while 32GB and lower are okay.
+
+First, I need to determine the overall sentiment. The user starts by stating they wanted the best for their camera and initially got the recommended card. However, they then mention problems that others experienced. The key here is that the user isn't directly reporting a personal negative experience but is referring to known issues with the 64GB version. They also mention that GoPro addressed the problem with firmware and now endorses other cards, implying that the 64GB might still be problematic.
+
+The user isn't expressing personal dissatisfaction but is providing cautionary information. They highlight that lower capacity cards are okay, which could be a helpful note for others. There's no strong positive or negative emotion here; it's more of an informative statement. The mention of problems is balanced with the resolution (firmware update) and clarification about other sizes. So the sentiment is likely Neutral because there's no direct complaint or endorsement, just factual information about past issues and current status. \\
+\hline
+\end{tabular}
+}
+\caption{Analysis of Sentiment Classification from GPT-4o and DeepSeek-R1 - Strongly Negative}
+\label{tab:sentiment-analysis-strongly-negative}
+\end{table*}
+
+\vspace{-20pt}
+\section{Conclusion}
+
+We have presented the first end-to-end evaluation of DeepSeek-R1—its full 671B model and distilled 8B–70B variants—against GPT-4o and GPT-4o-mini on three sentiment benchmarks. Our key findings are:
+
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item DeepSeek-R1 matches or exceeds proprietary LLMs across Amazon (5-class), IMDB (binary), and GoEmotions (27-class) tasks.
+  \item DeepSeek-R1 delivers native, step-by-step reasoning traces with minimal accuracy loss (91.39\% F1 on five-class sentiment).
+  \item Distillation quality depends more on base architecture than size—the 32B Qwen2.5 variant outperforms the 70B Llama model by 6.69 pp.
+  \item Distilled variants offer distinct accuracy–throughput profiles, enabling tailored choices from high-volume (8B) to accuracy-critical (full) settings.
+\end{itemize}
+
+\vspace{-3pt}
+Our findings set new benchmarks for reasoning-based sentiment analysis, demonstrating that open-source LLMs can match proprietary systems in both accuracy and interpretability—albeit at higher computational cost. 
+
+Future work will focus on improving inference efficiency (e.g., via specialized hardware), extending to aspect-based sentiment analysis for richer explanations, and refining few-shot exemplar selection to maximize performance. Integration of quantitative explainability metrics into the model explainability analysis will also be of interest for future work.
+
+
+Overall, this study underscores the trade-offs between reasoning depth, efficiency, and accuracy, and positions DeepSeek-R1 as a transparent, cost-effective alternative for real-world sentiment analysis.
+
+\vspace{-20pt}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\vspace{-12pt}
+\begin{IEEEbiography}{DONGHAO HUANG}{\,}is Vice President of R\&D at Mastercard, 4250 Fairfax Drive, 22203, Arlington, VA 22203, USA, leading AI, Machine Learning, and Generative AI research, with a focus on large language models for enterprise applications. He is pursuing a Doctor of Engineering at Singapore Management University. Contact him at: \href{mailto:donghao.huang@mastercard.com}{donghao.huang@mastercard.com}.
+\end{IEEEbiography}
+
+\vspace{-10pt}
+\begin{IEEEbiography}{ZHAOXIA WANG}{\,}is an associate professor of computer science (practice) in the School of Computing and Information Systems Singapore Management University, 178902, Singapore. Her research interests include Natural Language Processing (NLP), machine learning, sentiment analysis, explainable AI, large language models (LLMs), and other AI-related research and applications. She is an IEEE Senior Member. Contact her at: \href{mailto:zxwang@smu.edu.sg}{zxwang@smu.edu.sg}.
+\end{IEEEbiography}
+
+\end{document}

@@ -1,0 +1,92 @@
+{
+    "model": [
+        "logistic_regression",
+        "svc",
+        "random_forest",
+        "xgboost"
+    ],
+    "f1_score": [
+        {
+            "training": 0.4642666349628354,
+            "testing": 0.4563869048994907,
+            "optimization_best": 0.49048422070316267
+        },
+        {
+            "training": 0.5523617555917044,
+            "testing": 0.4550701544773251,
+            "optimization_best": 0.4713051261886913
+        },
+        {
+            "training": 0.8607817997189362,
+            "testing": 0.45890458611078494,
+            "optimization_best": 0.5017082918240253
+        },
+        {
+            "training": 0.5115389162904097,
+            "testing": 0.4317738588175606,
+            "optimization_best": 0.504970196621316
+        }
+    ],
+    "accuracy": [
+        {
+            "training": 0.5379609544468547,
+            "testing": 0.5242424242424243
+        },
+        {
+            "training": 0.6026030368763557,
+            "testing": 0.5181818181818182
+        },
+        {
+            "training": 0.8629067245119306,
+            "testing": 0.5
+        },
+        {
+            "training": 0.5783080260303688,
+            "testing": 0.5
+        }
+    ],
+    "log_loss": [
+        {
+            "training": 0.9860170183063686,
+            "testing": 0.9956299805907578
+        },
+        {
+            "training": 0.9230135676657252,
+            "testing": 1.0213098605629638
+        },
+        {
+            "training": 0.5461127084781309,
+            "testing": 1.081198518330847
+        },
+        {
+            "training": 1.0035908707051888,
+            "testing": 1.043205403920376
+        }
+    ],
+    "best_hyperparameters": [
+        {
+            "penalty": "l1",
+            "C": 1.0087494090218492,
+            "solver": "liblinear"
+        },
+        {
+            "kernel": "rbf",
+            "C": 1.6722697006183682,
+            "gamma": "scale"
+        },
+        {
+            "n_estimators": "11",
+            "max_depth": "12",
+            "criterion": "entropy"
+        },
+        {
+            "n_estimators": "54",
+            "max_depth": "5",
+            "learning_rate": 0.01,
+            "subsample": 0.7990939623966784,
+            "gamma": 0.1,
+            "reg_lambda": 0.17187431724386654,
+            "reg_alpha": 0.9935228056779689
+        }
+    ]
+}

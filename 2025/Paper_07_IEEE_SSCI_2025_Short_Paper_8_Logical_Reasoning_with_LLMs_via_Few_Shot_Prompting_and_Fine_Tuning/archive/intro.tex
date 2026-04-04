@@ -1,0 +1,42 @@
+\section{Introduction}
+
+The Turtle Soup game, popularized by the book \textit{Challenging Lateral Thinking Puzzles} \cite{sloane1993challenging}, is a mystery puzzle that has captivated youths worldwide. The game gets its name from a classic problem in the genre: a man orders turtle soup and subsequently commits suicide. Players must deduce the rationale behind the suicide by asking questions that can only be answered with "yes" or "no." These puzzles encourage lateral thinking, pushing players to break free from conventional thought patterns and approach problems from new perspectives, especially when situations seem initially nonsensical or incomprehensible. A sample dialogue illustrates this concept:
+
+\small{
+\begin{dialogue}
+\speak{Game Master} On an express train, a man boarded halfway through the journey. After the doors closed, he suddenly regained consciousness and began observing the faces of the passengers around him. "With all due respect, are you 29 years old?" "Yes, but how do you know?" Ignoring him, the man continued speaking to others. "You are 45 years old, right?" "That's correct." "Are you 81 years old?" "How do you know?" After asking around, the man returned to his seat, sat down quietly, and began to cry in despair. Why is that?
+\speak{Player} Is he dreaming?
+\speak{Game Master} No.
+\speak{Player} Does he know these people?
+\speak{Game Master} No.
+\speak{Player} Does he have superpowers?
+\speak{Game Master} Yes.
+\speak{Player} He is an angel condemned to live as a human.
+\speak{Game Master} Congratulations! You guessed the answer. The original answer is that the man can see how long each person will live, but he cannot see his own lifespan. His life expectancy is about to end, meaning if the train is going to crash, he will die soon. The game is over.
+\end{dialogue}
+}
+
+The advent of Large Language Models (LLMs) has led to a surge in online Turtle Soup games, leveraging these models' language understanding and logical reasoning capabilities. However, the efficacy of LLMs in logical reasoning remains underexplored \cite{parmar2024logicbench}.
+
+This study presents a comprehensive evaluation of the latest generation of open-source LLMs, such as Qwen2.5 and Llama3.1, alongside OpenAI's most recent models, in tackling complex and abstract logical reasoning tasks like those found in the Turtle Soup Question Answering (TSQA) task. Our research not only highlights the strengths and limitations of different approaches—few-shot prompting and fine-tuning—but also challenges the notion that proprietary models are inherently superior. Our findings demonstrate that open-source models can match, and in some cases exceed, the performance of established models like GPT-4o.
+
+Our main contributions are:
+\begin{itemize}
+    \item Utilizing the Turtle Soup game as a benchmark for evaluating the logical reasoning capabilities of LLMs through deductive reasoning.
+    
+    \item Introducing the Valid Classification Ratio (VCR) as a new metric for assessing the reliability of model outputs, measuring the proportion of valid classifications among total outputs.
+
+    \item Demonstrating the superior efficacy of LoRA/QLoRA fine-tuning methods over few-shot prompting, establishing fine-tuning as a crucial factor in optimizing LLM performance.
+
+    \item Identifying the Qwen2.5-72B and Llama-3.1-70B models as the top performers in TSQA tasks, surpassing GPT-4o, thereby contributing valuable insights into the strengths of different LLM architectures.
+\end{itemize}
+
+
+% While logical reasoning with LLMs has advanced significantly, it remains a challenging and evolving area. Models like GPT-4 demonstrate impressive pattern recognition capabilities and can make inferences from large-scale text data. They handle basic formal logic tasks, such as propositional logic or syllogisms, and respond reasonably well to informal reasoning challenges like common-sense questions. LLMs have developed the ability to understand context and leverage nuanced relationships between sentences and concepts, leading to more accurate logical decisions.%%Please add references in this paragraph as well.
+
+% However, LLMs still struggle with deductive reasoning, where consistency is critical across multiple steps. While they can generate logical conclusions in isolation, maintaining a coherent chain of reasoning over several steps or sentences remains difficult. In multi-step complex reasoning tasks, LLMs may make errors that compound over long logical chains. They also face limitations in tasks requiring abstract thought or the manipulation of symbolic or formal rules. The widely anticipated release of OpenAI o1 with its chain-of-thought strategy seeks to break through in this aspect. %%Please add references in this paragraph as well.
+ 
+
+% The recent AI boom saw the rise of more LLMs competing with traditional powerhouses like GPT by OpenAI and Llama by MetaAI. Open-source LLMs such as Qwen and Mistral have proven themselves worthy adversaries to their paid, closed-source competitors. Alibaba Cloud's recently released Qwen2.5 series boasts outstanding performance in both large and small models. Additionally, they come equipped with features such as a large token count of  128K tokens context window and 8K tokens generation, multilingual support for over 29 languages, and Grouped Query Attention which greatly enhances the efficiency of the attention process. %%Please add references in this paragraph as well.
+
+% Qwen2.5, alongside InternLM2.5, also represent the subset of LLMs developed in China. Their capabilities are of high interest to academia, as the AI ecosystem stands to benefit from a more competitive and diverse global AI landscape, reducing the dominance of Western, particularly US-based, tech companies. Chinese LLMs are often optimized for tasks requiring fluency in both Chinese and English (and sometimes other languages), signifying exciting potential for cross-border trade, international diplomacy, and other areas where bilingual capabilities are valued. These models are more attuned to Chinese and Asian cultural, social, and historical contexts, helping to address biases that might exist in models developed in the West. %%Please add references in this paragraph as well.

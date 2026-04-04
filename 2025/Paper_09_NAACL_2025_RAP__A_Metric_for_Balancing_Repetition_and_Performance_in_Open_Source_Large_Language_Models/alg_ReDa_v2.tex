@@ -1,0 +1,32 @@
+\begin{algorithm}[ht]
+\small
+\caption{Repetition Detection (\alg)}
+% updated by Donghao on Oct 9
+\label{alg:detect_repetitions}
+\begin{algorithmic}[1]
+\State \textbf{Input:} $G_{text}$ \Comment{Input text}
+\State \textbf{Output:} RL$_{\nwc}$, RL$_{text}$, RL$_{total}$ \Comment{Repetition length of \nwc, text, and total, respectively}
+\State P$_{\nwc}$ = \texttt{re.compile(r"([\textbackslash s\textbackslash W]\{5,\})")}  \Comment{Regex pattern for detecting \nwc repetition}
+\State P$_{text}$ = \texttt{re.compile(r"(?P<r>.\{5\}.*?)\\\hspace{2.5cm}(?:[\textbackslash s\textbackslash W]*(?P=r)+")} \Comment{Regex pattern for detecting text repetition}\\
+\Comment{\textbf{STEP 1. Detecting \nwc repetition}}
+    \State $G_{text}'$ = P$_{\nwc}$.sub("\textbackslash t
+", $G_{text}$)  \Comment{Remove \nwc repetition}
+    \State RL$_{\nwc}$ = len($G_{text}$) - len($G'_{text}$) \Comment{Compute \nwc repetition} \\
+\Comment{\textbf{STEP 2. Detecting text repetition}}
+    \State RL$_{text}$ = 0
+    \State matches = P$_{text}$.finditer($G_{text}'$)
+    \For{each match in matches}
+        \State (start, end) = match.span()
+        \State RL$_{text}$ += end - start - len(match.group(1))  \Comment{Aggregate text repetition lengths}
+    \EndFor\\
+    RL$_{total}$ = RL$_{\nwc}$ + RL$_{text}$
+    \State \Return RL$_{\nwc}$, RL$_{text}$, RL$_{total}$
+
+% \Function{detect\_repetitions}{text}
+%     \State text, a $\gets$ del\_excessive\_nwcs(text)
+%     \State b $\gets$ detect\_text\_repetitions(text)
+%     \State 
+    % \Return (a, b, a + b)
+% \EndFunction
+\end{algorithmic}
+\end{algorithm}

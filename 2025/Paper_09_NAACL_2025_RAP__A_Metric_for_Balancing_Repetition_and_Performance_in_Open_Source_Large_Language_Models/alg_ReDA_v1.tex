@@ -1,0 +1,31 @@
+\begin{algorithm}
+\caption{Detect Repetitions}\label{alg:detect_repetitions}
+\begin{algorithmic}[1]
+\State \textbf{Pattern Definitions:}
+\State pattern\_1 $\gets$ \texttt{re.compile(r"\textbackslash s\{5,\}")}
+\State pattern\_2 $\gets$ \texttt{re.compile(r"(.{5}.*)\textbackslash s*((\textbackslash 1)\textbackslash s*)}
+
+\Function{del\_excessive\_whitespaces}{text}
+    \State length $\gets$ len(text)
+    \State text $\gets$ pattern\_1.sub("", text)
+    \State \Return text, length - len(text)
+\EndFunction
+
+\Function{detect\_text\_repetitions}{text}
+    \State count $\gets$ 0
+    \State matches $\gets$ pattern\_2.finditer(text)
+    \For{each match in matches}
+        \State (start, end) $\gets$ match.span()
+        \State count $\gets$ count + (end - start)
+    \EndFor
+
+    \State \Return count
+\EndFunction
+
+\Function{detect\_repetitions}{text}
+    \State text, a $\gets$ del\_excessive\_whitespaces(text)
+    \State b $\gets$ detect\_text\_repetitions(text)
+    \State \Return (a, b, a + b)
+\EndFunction
+\end{algorithmic}
+\end{algorithm}

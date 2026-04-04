@@ -1,0 +1,135 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{9}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{}, \showDOI{}, and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showDOI}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showDOI #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showDOI      \undefined \def \showDOI       #1{#1}\fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[\protect\citeauthoryear{Dennis, Fisher, and Slavkovik}{Dennis
+  et~al\mbox{.}}{2016}]%
+        {embodiedagents}
+\bibfield{author}{\bibinfo{person}{Louise Dennis}, \bibinfo{person}{Michael
+  Fisher}, {and} \bibinfo{person}{Marija Slavkovik}.}
+  \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Formal Verification of Autonomous Systems}.
+\newblock \bibinfo{journal}{\emph{AI Magazine}} (\bibinfo{year}{2016}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Gatti}{Gatti}{2025}]%
+        {gatti2025chatbdi}
+\bibfield{author}{\bibinfo{person}{Andrea Gatti}.}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{{ChatBDI}: Think {BDI}, Talk {LLM}}. In
+  \bibinfo{booktitle}{\emph{Proc.\ of the 24th International Conference on
+  Autonomous Agents and Multiagent Systems (AAMAS)}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Ichida, Meneguzzi, and Cardoso}{Ichida
+  et~al\mbox{.}}{2024}]%
+        {ichida2024bdi}
+\bibfield{author}{\bibinfo{person}{Alexandre~Yukio Ichida},
+  \bibinfo{person}{Felipe Meneguzzi}, {and} \bibinfo{person}{Rafael~C.
+  Cardoso}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{{BDI} Agents in Natural Language Environments}. In
+  \bibinfo{booktitle}{\emph{Proc.\ of the 23rd International Conference on
+  Autonomous Agents and Multiagent Systems (AAMAS)}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Lewis, Perez, Piktus, et~al\mbox{.}}{Lewis
+  et~al\mbox{.}}{2020}]%
+        {lewis2020rag}
+\bibfield{author}{\bibinfo{person}{Patrick Lewis}, \bibinfo{person}{Ethan
+  Perez}, \bibinfo{person}{Aleksandra Piktus}, {et~al\mbox{.}}}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Retrieval-Augmented Generation for
+  Knowledge-Intensive {NLP} Tasks}. In \bibinfo{booktitle}{\emph{Proceedings of
+  NeurIPS}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{{OpenAI}}{{OpenAI}}{2023}]%
+        {openai2023}
+\bibfield{author}{\bibinfo{person}{{OpenAI}}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{{GPT-4} Technical Report}}.
+\newblock \bibinfo{type}{{T}echnical {R}eport} arXiv:2303.08774.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Russell and Norvig}{Russell and
+  Norvig}{2021}]%
+        {russell2021}
+\bibfield{author}{\bibinfo{person}{Stuart Russell} {and} \bibinfo{person}{Peter
+  Norvig}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Artificial Intelligence: A Modern Approach}
+  (\bibinfo{edition}{4th} ed.)}.
+\newblock \bibinfo{publisher}{Pearson}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Winograd and Flores}{Winograd and
+  Flores}{1986}]%
+        {situatedinteraction}
+\bibfield{author}{\bibinfo{person}{Terry Winograd} {and}
+  \bibinfo{person}{Fernando Flores}.} \bibinfo{year}{1986}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Understanding Computers and Cognition}}.
+\newblock \bibinfo{publisher}{Addison-Wesley}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Wooldridge}{Wooldridge}{2009}]%
+        {wooldridge2009}
+\bibfield{author}{\bibinfo{person}{Michael Wooldridge}.}
+  \bibinfo{year}{2009}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{An Introduction to MultiAgent Systems}
+  (\bibinfo{edition}{2nd} ed.)}.
+\newblock \bibinfo{publisher}{Wiley}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Yu and Hansen}{Yu and Hansen}{2019}]%
+        {speechsurvey}
+\bibfield{author}{\bibinfo{person}{Xiaoxia Yu} {and} \bibinfo{person}{John
+  Hansen}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Speech Recognition in Human--Machine Interaction: A
+  Survey}.
+\newblock \bibinfo{journal}{\emph{IEEE Signal Processing Magazine}}
+  (\bibinfo{year}{2019}).
+\newblock
+
+
+\end{thebibliography}

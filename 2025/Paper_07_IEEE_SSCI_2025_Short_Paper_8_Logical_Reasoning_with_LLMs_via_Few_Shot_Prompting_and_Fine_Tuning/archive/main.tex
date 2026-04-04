@@ -1,0 +1,90 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{graphicx} % Required for \resizebox
+\usepackage{array} % Required for column width adjustments
+\usepackage{tabularx}
+\usepackage{balance}
+\usepackage{colortbl} 
+\usepackage{booktabs}
+\usepackage{dialogue}
+\usepackage{multirow} 
+% \usepackage{CJK}
+\usepackage{CJKutf8}
+\usepackage[utf8]{inputenc}
+\usepackage{minted}
+\usepackage{caption}
+\usepackage{CJK}
+\usepackage{longtable}
+\usepackage{array}
+
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Enhancing Logical Reasoning in LLMs through Few-Shot Prompting and Fine-Tuning: A Case Study with Turtle Soup Puzzles}
+%\title{Enhancing Logical Reasoning in LLMs through Few-Shot Prompting and Fine-Tuning
+%%: A Case Study with Turtle Soup Puzzles
+%}
+% https://challenge.ai.mgtv.com/#/track/25
+
+\author{Anonymous Submission}
+
+\iffalse
+\author{\IEEEauthorblockN{Donghao HUANG\textsuperscript{1,2}, Zhaoxia WANG\textsuperscript{1}
+}
+
+\IEEEauthorblockA{School of Computing and Information Systems, Singapore Management University, Singapore\textsuperscript{1}}
+\IEEEauthorblockA{Research and Development, Mastercard, Singapore\textsuperscript{2}}
+\IEEEauthorblockA{dh.huang.2023@smu.edu.sg; zxwang@smu.edu.sg}
+%\thanks{\IEEEauthorrefmark{1}
+% Corresponding Authors: Zhaoxia WANG (e-mail: zxwang@smu.edu.sg)
+}
+\fi
+
+\maketitle
+
+\begin{abstract}
+
+Recent advancements in Large Language Models (LLMs) have greatly improved their ability to tackle complex reasoning tasks. This study evaluates the performance of several leading LLMs, including OpenAI’s GPT-4o, Meta’s Llama3.1, Mistral AI's Mistral-7B, Alibaba’s Qwen2 and Qwen2.5, and Shanghai AI Laboratory’s InternLM2.5, on logical reasoning challenges presented by the Turtle Soup game—a lateral thinking puzzle that demands deductive reasoning. We conducted extensive experiments using both few-shot prompting and fine-tuning, and introduced the Valid Classification Ratio (VCR) as a novel metric to assess the reliability of model outputs. Our findings reveal that while few-shot learning can be effective, fine-tuning generally yields superior results. Qwen2.5-72B achieved the highest F1 score of 80.88\% through few-shot learning, surpassing GPT-4o's best score of 80.36\%. Llama3.1-70B also outperformed GPT-4o, with an F1 score of 80.77\% after fine-tuning. Additionally, InternLM2.5-7B-1M, featuring an extended context length of 1 million tokens, demonstrated significant improvement, achieving 77.01\% in few-shot and 80.28\% after fine-tuning, ranking third overall among fine-tuned models. These results underscore the substantial potential of latest open-source models in complex reasoning tasks, showing that they can not only match but also surpass proprietary alternatives.
+
+% Recent advancements in Large Language Models (LLMs) have significantly enhanced their ability to tackle complex reasoning tasks. This study evaluates the performance of leading LLMs, including OpenAI's GPT-4o and Alibaba's Qwen2.5-72B, on intricate logical reasoning challenges, focusing on the Turtle Soup game—a lateral thinking puzzle that requires deductive reasoning through yes/no questions. We conducted comprehensive experiments using various few-shot prompting scenarios and fine-tuning techniques across multiple LLMs. 
+% It is discovered that LLMs exhibit inconsistencies in producing valid classifications. To measure their capability in this regard, we propose a novel evaluation metric: the Valid Classification Ratio (VCR), which quantifies the proportion of valid classifications among the total outputs of the LLMs.
+% Our results demonstrate the superior efficacy of LoRA/QLoRA fine-tuning compared to few-shot prompting. Fine-tuned models not only achieved higher peak performance but also reached a perfect VCR of 1.0 after just 0.2 epochs, while exhibiting faster inference times. 
+% The experimental results also indicate that VCR is a valuable metric for assessing model reliability in precise logical reasoning tasks. Notably, the Qwen2.5-72B model emerged as the top performer, surpassing fine-tuning methods in maximizing LLMs' logical reasoning capabilities. Our findings have significant implications for enhancing LLM performance in complex problem-solving scenarios and real-world applications.
+
+
+
+\end{abstract}
+
+\begin{IEEEkeywords}
+Logical Reasoning, Large Language Models (LLMs), Valid Classification Ratio (VCR), Few-Shot Prompting, Fine-Tuning, Turtle Soup Game, LoRA and QLoRA
+\end{IEEEkeywords}
+
+\input{intro}
+
+\input{related_work}
+
+\input{dataset}
+
+\input{method}
+
+\input{results}
+
+\input{conclusion}
+
+% \section*{Acknowledgment}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

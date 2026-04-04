@@ -1,0 +1,207 @@
+\section{Methodology}
+
+\subsection{Selection of Large Language Models (LLMs)}
+
+Our study incorporates a diverse array of state-of-the-art large language models (LLMs), ranging from open-source models with 3 billion to 72 billion parameters to the latest offerings from OpenAI, such as GPT-4o and o1-preview. For open-source models lacking native Chinese language support, we utilized their fine-tuned Chinese versions. Table \ref{tab:ai_models} provides a comprehensive overview of all models used in our study, detailing their names, sizes, context lengths, and corresponding HuggingFace model identifiers where applicable.
+
+\begin{table*}[htbp]
+
+
+\caption{Overview of Large Language Models and Their Specifications. \small{This table provides a detailed summary of the LLMs used in the study, including models from OpenAI, Meta, Mistral AI, Alibaba, and Shanghai AI Laboratory. The table lists each model's name, size (ranging from 3 billion to 72 billion parameters), context length, and corresponding HuggingFace model identifier where applicable. Notably, open-source models that lacked native Chinese language support were fine-tuned on Chinese datasets to enhance their performance in this study's logical reasoning tasks.}}
+
+\label{tab:ai_models}
+\centering
+\resizebox{0.8\textwidth}{!}{
+\begin{tabular}{|l|l|r|r|l|}
+\hline
+\textbf{Company} & \textbf{Model Name} & \textbf{Size} & \textbf{Context Length} & \textbf{HuggingFace Model ID} \\
+\hline
+\multirow{4}{*}{OpenAI} 
+& GPT-4o & N/A & 128K & N/A \\
+& GPT-4o-mini & N/A & 128K & N/A \\
+& o1-preview & N/A & 128K & N/A \\
+& o1-mini & N/A & 128K & N/A \\
+\hline
+\multirow{2}{*}{Meta} 
+& Llama3.1-8B & 8B & 128K & shenzhi-wang/Llama3.1-8B-Chinese-Chat \\
+& Llama3.1-70B & 70B & 128K & shenzhi-wang/Llama3.1-70B-Chinese-Chat \\
+\hline
+Mistral AI & Mistral-7B & 7B & 32K & shenzhi-wang/Mistral-7B-v0.3-Chinese-Chat \\
+\hline
+\multirow{5}{*}{Alibaba} 
+& Qwen2-7B & 7B & 128K & Qwen/Qwen2-7B-Instruct \\
+& Qwen2-72B & 72B & 128K & Qwen/Qwen2-72B-Instruct \\
+& Qwen2.5-3B & 3B & 32K & Qwen/Qwen2.5-3B-Instruct \\
+& Qwen2.5-7B & 7B & 128K & Qwen/Qwen2.5-7B-Instruct \\
+& Qwen2.5-72B & 72B & 128K & Qwen/Qwen2.5-72B-Instruct \\
+\hline
+\multirow{3}{*}{Shanghai AI Laboratory} 
+& InternLM2.5-7B & 7B & 16K & internlm/internlm2\_5-7b-chat \\
+& InternLM2.5-7B-1M & 7B & 1024K & internlm/internlm2\_5-7b-chat-1m \\
+& InternLM2.5-20B & 20B & 16K & internlm/internlm2\_5-20b-chat \\
+\hline
+\end{tabular}
+}
+\end{table*}
+
+\subsection{Few-shot Learning and Parameter-Efficient Fine-tuning}
+
+To enable effective performance on Turtle Soup Question Answering (TSQA) tasks, we employed few-shot prompting techniques. The system prompt used for this task is concise:
+
+\begin{minted}[fontsize=\footnotesize, breaklines]{text}
+You are an expert in logical reasoning.
+\end{minted}
+
+It's worth noting that the OpenAI's o1-preview and o1-mini models do not support system prompts.
+
+The user prompt template, originally in Chinese, outlines the rules of a Turtle Soup game. We provide both the original Chinese version (Listing \ref{lst:user-prompt-chinese}) and its English translation (Listing \ref{lst:user-prompt-english}) for clarity.
+
+
+\begin{CJK*}{UTF8}{gbsn}
+\begin{listing}[htbp]
+\begin{minted}[fontsize=\footnotesize, breaklines]{text}
+\small{
+你是一个情景猜谜游戏的主持人。游戏规则如下：
+
+1. 参与者会得到一个谜面，谜面会描述一个简单又难以理解的事件。
+2. 主持人知道谜底，谜底是谜面的答案。
+3. 参与者可以询问任何封闭式问题来找寻事件的真相。
+4. 对于每个问题，主持人将根据实际情况回答以下五个选项之一：是、不是、不重要、回答正确、问法错误。各回答的判断标准如下：
+   - 若谜面和谜底能找到问题的答案，回答：是或者不是
+   - 若谜面和谜底不能直接或者间接推断出问题的答案，回答：不重要
+   - 若参与者提问不是一个封闭式问题或者问题难以理解，回答：问法错误
+   - 若参与者提问基本还原了谜底真相，回答：回答正确
+5. 回答中不能添加任何其它信息，也不能省略选项中的任何一个字。例如，不可以把"不是"省略成"不"。
+
+请严格按照这些规则回答参与者提出的问题。
+
+谜面: {puzzle}
+谜底: {truth}
+参与者提出的问题: {text}
+回答: 
+}
+\end{minted}
+\caption{User Prompt Template for TSQA (Chinese)}
+\label{lst:user-prompt-chinese}
+\end{listing}
+\end{CJK*}
+
+\begin{listing}[htbp]
+\begin{minted}[fontsize=\footnotesize, breaklines]{text}
+\small{
+You are the host of a situational guessing game. The rules of the game are as follows:
+
+1. Participants will receive a puzzle that describes a simple yet difficult to understand event.
+2. The host knows the truth, which is the solution to the puzzle.
+3. Participants can ask any closed-ended questions to uncover the truth of the event.
+4. For each question, the host will respond with one of the following five options based on the actual situation: Yes, No, Unimportant, Correct Answer, or Wrong Question. The criteria for each response are as follows:
+   - If the puzzle and truth can provide an answer to the question, respond with: Yes or No
+   - If the puzzle and truth cannot directly or indirectly infer an answer to the question, respond with: Unimportant
+   - If the participant's question is not a closed-ended question or is difficult to understand, respond with: Wrong Question
+   - If the participant's question essentially reveals the truth of the answer, respond with: Correct Answer
+5. The response must not include any additional information, nor should any word be omitted from the options. For example, "Correct answer" cannot be abbreviated to "Correct".
+
+Please strictly follow these rules when answering the participant's questions.
+
+Puzzle: {puzzle}
+Truth: {truth}
+Participant's question: {text}
+Answer: 
+}
+\end{minted}
+\caption{User Prompt Template for TSQA (English)}
+\label{lst:user-prompt-english}
+\end{listing}
+
+
+In the prompt template, we populated the placeholders with specific data:
+
+\begin{itemize}
+    \item \texttt{\{exemplars\}}: For zero-shot tasks, this field is left empty. For few-shot tasks, we retrieved exemplars from the TSQA training set, formatted as shown below (translated to English):
+\small{
+\begin{minted}[fontsize=\footnotesize, 
+               breaklines=true, 
+               breakanywhere=true]{text}
+Example Inputs and Outputs:
+Puzzle: In the village of Zhen, there is a legend that every year, when the harvest season for pumpkins arrives, one of the largest pumpkins in the field disappears without a trace. The villagers are puzzled by this phenomenon.
+Truth: The truth turned out to be related to an old farmer. When he was young, he had fallen in love with a beautiful girl. They had agreed to marry when the season for harvesting pumpkins arrived. But fate had a way of playing tricks on people. The girl died in a car accident on the wedding day. Heartbroken, the farmer decided to remember his beloved by stealing the largest pumpkins every year and putting them in front of her grave. This act of kindness continued for many years, becoming a mysterious legend in the village.
+Participant's question: Were they stolen from the village?
+Answer: Yes
+... (additional examples omitted for brevity)
+\end{minted}
+
+To teach the LLM all valid classification labels—Yes, No, Unimportant, Wrong Question, and Correct Answer—in a few-shot learning setup, we need to provide at least one example for each label. This requires a minimum of five examples, one for each label, making it a 5-shot scenario. For larger setups, the number of examples would follow this pattern, increasing in multiples of five.
+}
+    \item \texttt{\{puzzle\}}, \texttt{\{truth\}}, and \texttt{\{text\}}: These were retrieved from the TSQA validation set.
+\end{itemize}
+
+To enhance the performance of the open-source models, we fine-tuned them on the training set for two epochs using zero-shot prompting. The fine-tuning process was adjusted based on the size of each model:
+
+\begin{itemize}
+    \item For InternLM2.5-20B, Llama-3.1-70B and Qwen2.5-72B variants: We employed 4-bit quantization using LoRA (QLoRA) with the open-source library Llama Factory \cite{zheng2024llamafactory} on an Nvidia H100 GPU.
+    \item For other open-source models: We used LoRA with the Llama Factory library on an Nvidia L40 GPU.
+\end{itemize}
+
+To assess performance, we ran inference on the LLMs to obtain their outputs, which were then evaluated against the ground truths. We evaluated the performance of OpenAI models using the OpenAI API.
+% \footnote{\url{https://platform.openai.com/docs/overview}}
+In contrast, the performance of open-source models, both with and without LoRA/QLoRA adapters, was assessed using the HuggingFace Transformers library\cite{wolf2020transformers}.
+
+\subsection{Evaluation Metrics}
+
+To evaluate the performance of each model, we calculated predictive accuracy on the held-out test data using the weighted F1 score. This metric provides a comprehensive assessment of the model’s performance by considering both precision and recall, offering a balanced view of the model's ability to correctly classify data.
+
+During the evaluation process, we observed that the Large Language Models (LLMs) occasionally generated outputs that did not correspond to any valid classification labels: Yes, No, Unimportant, Wrong Question, or Correct Answer. Table \ref{tab:classification_results} presents a sample of classification results produced by the GPT-4o model across various shot counts (0, 5, 10, 20, 30, 40, and 50) for the example question/puzzle shown in Table \ref{tab:tsqa_dataset}.
+
+\begin{table*}[h!]
+
+\caption{Sample Classification Results from GPT-4o Model Across Different Shot Counts. \small{This table presents the classification results generated by the GPT-4o model for the sample values provided in Table~\ref{tab:tsqa_dataset} across various shot counts (0, 5, 10, 20, 30, 40, and 50). It highlights the variability in the model's output, especially at the 20-shot level, where the model correctly classified the question but included additional extraneous text that would require post-processing.}}
+
+\label{tab:classification_results}
+\centering
+\begin{CJK*}{UTF8}{gbsn}
+\resizebox{0.8\textwidth}{!}{
+\begin{tabular}{|l|p{6.5cm}|p{10cm}|}
+\hline
+\textbf{Shot} & \textbf{GPT-4o Result} & \textbf{GPT-4o Result (English Translation)} \\ \hline
+\textbf{0} & 问法错误 & Wrong question \\ \hline
+\textbf{5} & 不重要 & Not important \\ \hline
+\textbf{10} & 不重要 & Not important \\ \hline
+\textbf{20} & 是
+
+谜面: 在一个安静的夜晚，小村庄的湖边突然传来...%了阵阵哭泣声。第二天早晨，村长甄锐发现湖边的石头上放着一顶破旧的帽子，但没有人知道这顶帽子是从哪里来的，哭泣声又是为何。请还原故事真相。
+
+谜底: 原来，这顶破旧的帽子属于一个小男孩，他...%小时候与爷爷在湖边生活。爷爷教他钓鱼、游泳，还告诉他湖中的海龟是他们的朋友。后来，小男孩随父母去了城市生活，但每年夏天都会回到村子探望爷爷。然而，去年夏天，爷爷因病去世，小男孩伤心欲绝。今年夏天，他回到村子，来到湖边，想起和爷爷的美好回忆，忍不住哭泣。他将爷爷的帽子放在湖边的石头上，希望能让爷爷的在天之灵得到安慰。那晚的哭泣声正是小男孩在祭莫他亲爱的爷爷。
+
+参与者提出的问题: 哭泣声是人发出来的吗
+
+回答: 是 & Yes
+
+Puzzle:
+On a quiet night, a series of cries suddenly came from the lakeside in the small...% village. The next morning, the village head Zhen Rui found an old hat on a stone by the lake, but no one knew where the hat came from or why the crying occurred. Please restore the truth of the story.
+
+Truth:
+The old hat belonged to a little boy who lived by the lake with his grandfather...% when he was young. His grandfather taught him how to fish and swim and told him that the turtles in the lake were their friends. Later, the boy moved to the city with his parents, but he returned to the village every summer to visit his grandfather. However, last summer, his grandfather passed away due to illness, leaving the boy heartbroken. This summer, the boy returned to the village, went to the lake, remembered the beautiful times with his grandfather, and couldn’t help but cry. He placed his grandfather’s hat on the stone by the lake, hoping to bring some comfort to his grandfather’s spirit in heaven. The crying that night was the boy mourning his beloved grandfather.
+
+Participant’s Question: Was the crying sound made by a person?
+
+Answer: Yes \\ \hline
+\textbf{30} & 问法错误 & Wrong question \\ \hline
+\textbf{40} & 问法错误 & Wrong question \\ \hline
+\textbf{50} & 问法错误 & Wrong question \\ \hline
+\end{tabular}
+}
+\end{CJK*}
+\end{table*}
+
+
+\begin{CJK*}{UTF8}{gbsn}
+Upon closer examination, the results at the 20-shot level reveal a significant observation. While the model correctly provided the classification (“是” / “Yes”), it also included a substantial amount of additional text, essentially combining the prompt with the answer. This extraneous text would need to be removed through post-processing before calculating the F1 score. This behavior suggests that the model sometimes fails to adhere to the instruction defined in Listing~\ref{lst:user-prompt-english}, which clearly states, “The response must not include any additional information, nor should any word be omitted from the options.”
+\end{CJK*}
+
+To address this issue, we propose the introduction of a new metric: the Valid Classification Ratio (VCR). The VCR is defined as the ratio of outputs that correspond to valid classification labels to the total number of outputs generated.
+
+\begin{equation}
+\text{VCR} = \frac{\text{Valid Classifications}}{\text{Total Classifications}}
+\end{equation}
+
+This metric provides a quantitative measure of the model's reliability in producing valid classifications across different contexts and shot counts.

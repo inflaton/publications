@@ -1,0 +1,104 @@
+\label{sub:data-col-pre}
+% \todo{@donghao: double check appendix}
+\subsection{Data Collection and Preprocessing}
+\label{sec:data}
+% \todo{remove rapget}
+We evaluate our proposed metric, \rap, using two tasks of question answering and machine translation. For question answering, we use \webqsp and \ms. The \textbf{\webqsp} dataset \cite{yih2016value} is a widely used benchmark for KBQA task. We selected a subset of 1008 questions from test data, mainly following the criteria as for WebQSP-WD \cite{C18-1280} that to keep questions with at least one acceptable answer in Wikidata. 
+% , a subset of WebQSP containing only questions with at least one acceptable answer in Wikidata. We retrieved up to 10 documents per query from Wikipedia for the RAG-based question answering task.
+\textbf{\ms} (Microsoft Machine Reading Comprehension) is a comprehensive dataset for reading comprehension and question answering, released by Microsoft\footnote{\url{https://microsoft.github.io/msmarco/}}. For our experiments, we used the dataset created by \cite{huang2024performance}. This dataset includes 100 queries, each with well-formed answers across five categories: LOCATION, NUMERIC, PERSON, DESCRIPTION, and ENTITY, totaling 500 queries. Each query is accompanied by 10 passages that provide context for the RAG-based question answering task.
+For machine translation task, we use the \textbf{\mac} (Manually Aligned Chinese-English) dataset curated by \cite{huang2025optimizing}. This dataset comprises sentences from six Chinese novels and their corresponding English translations, spanning a diverse range of genres, including humor, martial arts, classics, war, romance, and science fiction. It contains a total of 5,661 entries, with 4,528 used for training and 1,133 reserved for testing.
+
+\noindent
+\textbf{Preparing Context-Data for \webqsp} 
+\label{sub:webqsp}
+To evaluate open-source LLMs using various prompting strategies, including Retrieval-Augmented Generation (RAG), we crawled Wikipedia for relevant documents to address \webqsp questions. We developed a Python script to prepare the context data by retrieving up to 10 documents per query, which were then processed through text extraction, segmentation, and embedding. These document chunk embeddings were stored locally for vector search. For each question, we retrieved the 8 most relevant document chunks through similarity search to form the context for RAG prompting.
+
+% \begin{enumerate}
+% \textbf{WebQSP}: Introduced by \cite{yih2016value}, the WebQuestionsSP (WebQSP) dataset is a widely used benchmark for knowledge-based question answering (KBQA) over structured data. For our experiments, we selected 1008 queries from the WebQSP-WD dataset \cite{C18-1280}, a subset of WebQSP containing only questions with at least one acceptable answer in Wikidata. We retrieved up to 10 documents per query from Wikipedia for the RAG-based question answering task.
+% \textbf{MS MARCO}: MS MARCO (Microsoft Machine Reading Comprehension) is a comprehensive dataset for reading comprehension and question answering, released by Microsoft\footnote{\url{https://github.com/microsoft/MSMARCO-Question-Answering\#qa}}. For our experiments, we selected 100 queries with well-formed answers across five categories: LOCATION, NUMERIC, PERSON, DESCRIPTION, and ENTITY, resulting in a test dataset of 500 queries. Each query in the dataset is accompanied by 10 passages used as context for the RAG-based question answering task.
+% \end{enumerate}
+% The resulting datasets, WebQSP-RAPGeT and MS MARCO-RAPGeT, have very similar structures, each containing the following elements:
+% \begin{enumerate}
+%     \item \textbf{id}: retrieved from the source dataset
+%     \item \textbf{question}: retrieved from the source dataset
+%     \item \textbf{answers}: retrieved from the source dataset
+%     \item \textbf{context}: for MS MARCO, the context is created by merging the passages from the source dataset. The method for creating contexts for WebQSP is detailed in Section \ref{sub:webqsp}.
+% \end{enumerate}
+% Regarding ground-truth answers, \ms includes an element called \textbf{wellFormedAnswers} retrieved from the source dataset, which serves as ground truth for performance evaluation using BLEU and Rouge-L scores. Whereas, \webqsp ground-truth answers contain lists of entities
+
+% Additionally, MS MARCO-RAPGeT includes an element called \textbf{wellFormedAnswers} retrieved from the source dataset, which serves as ground truth for performance evaluation using BLEU and RougeL scores.
+% 
+% Unlike MS MARCO-RAPGeT, the WebQSP-RAPGeT dataset contains only gold entities in the answers element, which are used as ground truths. We developed a novel evaluation method, detailed in Section \ref{sec:gemini}, to assess the generated texts against these entity ground truths.
+
+\noindent
+
+
+% \subsection{Creation of Context for \webqsp}
+% Since we want to evaluate open-source LLMs for different prompting strategies including RAG which requires providing relevant data to the question, we crawl documents from Wikipedia containing relevant information for answering questions in \webqsp. To create the context data element for the \webqsp dataset, we developed a Python script using LangChain\footnote{\url{https://github.com/langchain-ai/langchain}}, a framework designed to simplify the creation of applications using LLMs. The script first retrieved up to 10 documents per query from Wikipedia. These documents were then processed through text extraction, segmentation, and embedding procedures utilizing the LangChain framework and the HuggingFace Instructor text embedding model\footnote{\url{https://huggingface.co/hkunlp/instructor-large}}, resulting in the generation of embeddings. These embeddings, along with the source document chunks, were efficiently stored locally using FAISS\footnote{\url{https://ai.meta.com/tools/faiss}}, an open-source library for vector search created by Meta, which facilitates streamlined document retrieval. The script ran for more than 7 hours to complete processing all 1008 questions. Finally, for each question in the dataset, we used another script to retrieve the 8 most relevant document chunks through similarity search and combined them to form the context while performing RAG prompting.
+
+% We aim to evaluate open-source LLMs for various prompting strategies, including RAG, which requires providing relevant data to the question. To conduct the experiments, we crawled documents from Wikipedia containing pertinent information for answering questions in the \webqsp. We developed a Python script using LangChain\footnote{\url{https://github.com/langchain-ai/langchain}}, a framework designed to simplify the creation of applications using LLMs, to prepare context data for \webqsp questions. 
+% The script first retrieved up to 10 documents per query from Wikipedia. These documents were then processed through text extraction, segmentation, and embedding procedures using the LangChain framework and the HuggingFace Instructor text embedding model\footnote{\url{https://huggingface.co/hkunlp/instructor-large}}, resulting in the generation of embeddings. These embeddings, along with the source document chunks, were efficiently stored locally using FAISS\footnote{\url{https://ai.meta.com/tools/faiss}}, an open-source library for vector search created by Meta, which facilitates streamlined document retrieval. The script ran for over 7 hours to complete processing all 1008 questions. Finally, for each question in the dataset, we used another script to retrieve the 8 most relevant document chunks through similarity search and combined them to form the context while performing RAG prompting.
+
+%Processing all 1008 questions took over 7 hours.
+
+\subsection{LLM-based KBQA Evaluation} 
+\label{sec:gemini}
+\input{sec_gemini}
+
+\subsection{Tuning RPP for All Models and Datasets}
+\label{sec:gain_all}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{image/chart_00_selected_wd.png}
+    \caption{Top-5 model with highest RR reduction for \webqsp dataset}
+    \label{fig:chart_00_selected_wd}
+\end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{image/chart_00_selected_mm.png}
+    \caption{Top-5 model with highest RR reduction for \ms dataset}
+    \label{fig:chart_00_selected_mm}
+\end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{image/chart_00_selected_mac.png}
+    \caption{Tuning RPP of all models for \mac dataset}
+    \label{fig:chart_00_selected_mac}
+\end{figure}
+
+We visualize the best performance when tuning RPP using original evaluation metrics (Original) and our proposed repetition-aware performance metric (RAP). RAP helps find RPP values that minimally reduce performance while significantly lowering repetition ratio (RR). Results for all models across three datasets are shown in Figure \ref{fig:chart_00_specific} (\webqsp, \ms) and \ref{fig:chart_00_selected_mac} (\mac). Figure \ref{fig:chart_00_selected_wd} and \ref{fig:chart_00_selected_mm} show the top-5 highest RR reduction after tuning for \webqsp and \ms dataset respectively. Green color bar indicates performance and blue color bar indicates RR. The hatched bar visualize the magnitude of reduction after tuning. 
+
+\subsection{How Severe can Repetition be for Other Models and Datasets?}
+\label{sec:how_severe}
+Figure \ref{fig:webqsp_top3} visualize the top-3 highest and lowest RR for WebQSP, while Figure \ref{fig:chart_02_wd_all}, \ref{fig:chart_02_mm_all}, and \ref{fig:chart_02_mac_all} visualize all models for \webqsp, \ms, \mac respectively. The leftmost three models show the Top-3 highest RR, while the rightmost three display the lowest. The ratio of repeated text length to text length is also visualized. Colored squares above each point indicate the percentage of repeated questions, with blue, yellow, and red squares marking values below 10\%, between 10-20\%, and above 20\% respectively. The x-label indicates the model, the prompting method, and the RP of the RR. 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1\linewidth]{image/chart_02_wd.png}
+    \caption{Top-3 highest and lowest RR for \webqsp dataset}
+    \label{fig:webqsp_top3}
+\end{figure}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1\linewidth]{image/chart_02_mac_all.png}
+    \caption{Percentage of repeated responses, repeated text length, and RR for \mac dataset}
+    \label{fig:chart_02_mac_all}
+\end{figure}
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{image/chart_02_wd_all.png}
+    \caption{Percentage of repeated responses, repeated text length, and RR for \webqsp dataset}
+    \label{fig:chart_02_wd_all}
+\end{figure*}
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{image/chart_02_mm_all.png}
+    \caption{Percentage of repeated responses, repeated text length, and RR for \ms dataset}
+    \label{fig:chart_02_mm_all}
+\end{figure*}
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{image/chart_00_specific.png}
+    \caption{Tuning RPP of all models for \webqsp and \ms dataset}
+    \label{fig:chart_00_specific}
+\end{figure*}
+

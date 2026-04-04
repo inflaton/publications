@@ -1,0 +1,21 @@
+\section{Conclusion}
+
+This study presents a comprehensive evaluation of large language models (LLMs) in tackling the Turtle Soup Question Answering (TSQA) task, highlighting both the strengths and limitations of different approaches, including few-shot prompting and fine-tuning. Our findings challenge the notion that proprietary models are inherently superior, demonstrating that fine-tuned open-source models can achieve, and in some cases, exceed the performance of established models like GPT-4o.
+
+Key insights from our research include:
+
+\begin{itemize}
+    \item \textbf{Advantages of Fine-tuning:} Fine-tuning significantly enhances model performance, particularly in terms of Valid Classification Ratio (VCR), thereby increasing the reliability of models in producing valid outputs. Most open-source models exhibited substantial improvements after fine-tuning, often surpassing their few-shot performance.
+    
+    \item \textbf{Potential of Few-shot Learning:} Although fine-tuning generally led to better results, few-shot learning also proved highly effective. For example, Qwen2.5-72B achieved the highest F1 score of 80.88\%, outperforming GPT-4o. This demonstrates that few-shot learning remains a viable approach, especially when fine-tuning is not feasible.
+    
+    \item \textbf{Impact of Extended Context Windows:} The strong performance of InternLM2.5-7B-1M, equipped with an extended context length of 1 million tokens, underscores the potential of this feature. The model showed significant improvement from a modest baseline, highlighting the importance of extended context windows in enhancing logical reasoning capabilities.
+    
+    \item \textbf{Balancing Optimization and Generalization:} The study emphasizes the need to optimize fine-tuning strategies to balance performance gains with generalization, as overfitting was observed when models were trained beyond 1 epoch.
+\end{itemize}
+
+These findings underscore the potential of fine-tuned open-source LLMs to perform complex reasoning tasks at levels comparable to, or even surpassing, proprietary models.
+
+Future research should focus on refining fine-tuning techniques to maximize performance while mitigating overfitting. Additionally, exploring the impact of extended context windows across a broader range of models and tasks could offer further insights into leveraging this feature to enhance reasoning capabilities. Developing more efficient and scalable evaluation methods will be crucial as models continue to grow in size and complexity. The integration of few-shot learning with fine-tuning might also provide a hybrid approach that captures the benefits of both strategies, especially in resource-constrained environments.
+
+In conclusion, while substantial progress has been made in enhancing the reasoning capabilities of LLMs, there remains significant potential for further development. Future efforts should focus on refining training methodologies to improve efficiency, optimizing model architectures specifically for complex reasoning tasks, and establishing robust evaluation frameworks that comprehensively assess model performance. By addressing these challenges, we can continue to advance the field of AI, moving closer to developing models that not only rival but potentially exceed human-level reasoning capabilities across a diverse range of problem-solving scenarios.

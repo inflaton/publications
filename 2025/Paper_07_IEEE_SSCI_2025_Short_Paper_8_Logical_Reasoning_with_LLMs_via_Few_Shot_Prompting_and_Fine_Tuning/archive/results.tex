@@ -1,0 +1,230 @@
+\section{Results}
+Our experiments on the Turtle Soup QA task involve two main approaches: few-shot prompting and fine-tuning. We evaluated both open-source Large Language Models (LLMs) and proprietary models from OpenAI. The results reveal interesting patterns in model performance and the effects of different training strategies.
+
+\subsection{Few-shot Prompting Performance}
+Few-shot prompting was applied to both open-source LLMs and OpenAI models. The results, as shown in Table~\ref{tab:performance}, reveal several key insights:
+
+\subsubsection{Competitive Performance of Open-Source Models}
+Contrary to initial expectations, open-source models demonstrated performance levels competitive with those of OpenAI models. Notably, Qwen2.5-72B achieved an F1 score of 80.88\% with 10-shot prompting, surpassing GPT-4o's performance of 80.36\% with 10-shot prompting. This suggests that the gap between proprietary and open-source models is narrowing in complex reasoning tasks.
+
+\subsubsection{Unexpected Performance of o1-preview}
+Interestingly, the o1-preview model, which is purported to have superior reasoning capabilities, exhibited lower F1 scores compared to GPT-4o. The highest F1 score for o1-preview was 77.08\% at 50-shot, while GPT-4o achieved 80.36\% at 10-shot. This unexpected result calls for further investigation into the specific strengths and weaknesses of these models, particularly in lateral thinking tasks.
+
+% \subsubsection{Model Size and Performance Correlation}
+% Generally, larger models exhibited superior performance. For example, Llama3.1-70B outperformed its 8B counterpart in most shot settings, with a peak F1 score of 75.67\% at 10-shot compared to the 8B model's peak of 76.97\% at 30-shot. This trend is consistent with the common observation that increased model size often correlates with enhanced performance in complex tasks.
+
+\subsubsection{Missing Data Points}
+It is important to note that our results include some missing data points, particularly for larger models and higher shot settings. These gaps are primarily due to two key factors:
+
+\begin{enumerate}
+    \item \textbf{GPU Memory Limitations:} We encountered CUDA out-of-memory errors with some of the larger models at higher shot settings. For instance, we were unable to obtain data for Llama3.1-70B beyond the 30-shot setting. These limitations restricted our ability to evaluate these models at higher shot counts.
+
+    \item \textbf{Time Constraints:} The evaluation process for some models at higher shot counts was extremely time-consuming. In certain cases, the allocated job time expired before the evaluation could be completed. This issue is evident with models like InternLM2.5-20B, for which we only have data for the 0-shot setting. Similarly, we lack data for Qwen2-72B and Qwen2.5-72B beyond the 20-shot setting, and for Mistral-7B at the 50-shot setting, due to the same reason.
+\end{enumerate}
+
+These findings underscore the significant computational resources and time required for a comprehensive assessment of the largest language models, particularly in few-shot scenarios.
+
+\subsubsection{Performance Trends Across Shot Counts}
+Despite some missing data points, several trends in model performance across different shot counts can be observed:
+
+\begin{itemize}
+    \item \textbf{Variability in Optimal Shot Count:} Different models appear to reach their peak performance at varying shot counts. For instance, GPT-4o achieved its highest F1 score of 80.36\% at 10-shot, whereas o1-preview peaked at 77.08\% at 50-shot. This suggests that the optimal number of examples may vary depending on the model's architecture and size.
+    
+    \item \textbf{Inconsistent VCR:} The Valid Classification Ratio (VCR) demonstrates significant variability across models and shot counts, particularly among open-source models. For instance, Mistral-7B-v0.3 shows extremely low VCR values (ranging from 1.17\% to 14.20\%) compared to other models. This inconsistency in VCR highlights a critical challenge in few-shot learning scenarios and underscores the need for exploring fine-tuning approaches to improve model performance and stability.
+\end{itemize}
+
+\begin{table*}[htbp]
+\centering
+\small
+\caption{Performance of Language Models on the Turtle Soup QA Task Across Different Shot Counts (F1 Score and Valid Classification Ratio in \%). \small{The top metrics for each model across different shot counts are highlighted in bold. Key observations include Qwen2.5-72B surpassing GPT-4o in few-shot settings with an F1 score of 80.88\% at 10-shot, and the variability in optimal shot counts across models. Additionally, some models exhibit diminishing returns or inconsistent VCR at higher shot counts.}}
+\resizebox{.7\textwidth}{!}{
+\begin{tabular}{l|l|ccccccc}
+\hline
+Model & Metric & 0-shot & 5-shot & 10-shot & 20-shot & 30-shot & 40-shot & 50-shot \\
+\hline
+\multirow{2}{*}{GPT-4o-mini} & F1 & \textbf{72.96} & 71.81 & 69.17 & 67.98 & 69.13 & 69.25 & 71.05 \\
+                             & VCR & 99.17 & \textbf{99.97} & 99.83 & 99.80 & 99.90 & 99.87 & 99.93 \\
+\hline
+\multirow{2}{*}{GPT-4o} & F1 & 79.53 & 80.00 & \textbf{80.36} & 79.67 & 80.31 & 79.93 & 80.14 \\
+                        & VCR & 6.60 & 99.80 & \textbf{99.97} & 99.93 & 99.90 & 99.73 & 99.93 \\
+\hline
+\multirow{2}{*}{o1-mini} & F1 & 73.77 & 74.83 & 74.86 & 75.35 & 75.48 & 75.73 & \textbf{75.90} \\
+                         & VCR & \textbf{99.90} & 99.67 & 99.43 & 99.47 & 99.77 & 99.77 & 99.77 \\
+\hline
+\multirow{2}{*}{o1-preview} & F1 & 74.51 & 75.35 & 76.77 & 76.25 & 76.44 & 76.74 & \textbf{77.08} \\
+                            & VCR & \textbf{99.80} & 97.90 & 98.73 & 98.53 & 98.40 & 98.40 & 98.17 \\
+\hline
+\multirow{2}{*}{Llama3.1-8B} & F1 & 73.71 & 72.69 & 70.83 & 76.62 & \textbf{76.97} & 70.67 & 72.31 \\
+                             & VCR & 80.33 & \textbf{98.87} & 96.23 & 97.90 & 73.27 & 75.90 & 66.23 \\
+\hline
+\multirow{2}{*}{Llama3.1-70B} & F1 & 75.26 & 75.45 & \textbf{75.67} & 73.49 & 75.65 & - & - \\
+                              & VCR & 0.97 & 79.00 & \textbf{83.27} & 81.90 & 54.80 & - & - \\
+\hline
+\multirow{2}{*}{Mistral-7B} & F1 & 66.34 & \textbf{68.10} & 64.93 & 66.91 & 68.63 & 66.44 & - \\
+                            & VCR & 1.17 & \textbf{14.20} & 10.63 & 8.27 & 7.00 & 6.33 & - \\
+\hline
+\multirow{2}{*}{InternLM2.5-7B} & F1 & 69.06 & \textbf{72.71} & 62.51 & 67.70 & 65.35 & 61.62 & 55.68 \\
+                                & VCR & \textbf{100.00} & 99.90 & 98.83 & 94.73 & 94.03 & 98.13 & 98.03 \\
+\hline
+\multirow{2}{*}{InternLM2.5-7B-1M} & F1 & 52.45 & \textbf{77.01} & 66.58 & 67.64 & 68.10 & 71.25 & 70.31 \\
+                                   & VCR & \textbf{99.87} & 94.53 & 88.67 & 82.13 & 82.37 & 83.37 & 88.47 \\
+\hline
+\multirow{2}{*}{InternLM2.5-20B} & F1 & \textbf{63.52} & - & - & - & - & - & - \\
+                                 & VCR & \textbf{67.27} & - & - & - & - & - & - \\
+\hline
+\multirow{2}{*}{Qwen2-7B} & F1 & \textbf{71.01} & 43.65 & 59.91 & 60.67 & 67.83 & 69.25 & 65.34 \\
+                              & VCR & \textbf{99.97} & 99.70 & 99.00 & 99.77 & 98.87 & 99.10 & 98.30 \\
+\hline
+\multirow{2}{*}{Qwen2-72B} & F1 & 75.72 & 77.22 & \textbf{77.40} & - & - & - & - \\
+                               & VCR & 97.73 & 98.77 & \textbf{99.47} & - & - & - & - \\
+\hline
+\multirow{2}{*}{Qwen2.5-3B} & F1 & 55.06 & \textbf{64.16} & 64.03 & 52.65 & 53.11 & 62.15 & 64.52 \\
+                            & VCR & \textbf{100.00} & 99.73 & 99.50 & 93.17 & 90.40 & 71.73 & 57.40 \\
+\hline
+\multirow{2}{*}{Qwen2.5-7B} & F1 & 61.01 & 62.19 & 67.91 & 72.78 & \textbf{75.28} & 74.72 & 74.14 \\
+                            & VCR & \textbf{100.00} & 99.80 & 97.97 & 80.70 & 80.50 & 85.47 & 75.63 \\
+\hline
+\multirow{2}{*}{Qwen2.5-72B} & F1 & 76.99 & 80.40 & \textbf{80.88} & - & - & - & - \\
+                             & VCR & \textbf{99.40} & 94.17 & 91.23 & - & - & - & - \\
+\hline
+\end{tabular}
+}
+\label{tab:performance}
+\end{table*}
+
+\subsection{Fine-tuning Open-source LLMs}
+We fine-tuned open-source LLMs using LoRA for smaller models (3B, 7B, and 8B) and QLoRA for larger models (20B, 70B, and 72B). The results, presented in Table~\ref{tab:finetuning_performance}, reveal several important findings:
+
+\subsubsection{Dramatic Enhancement in Valid Classification Ratio}
+Fine-tuning significantly improved the Valid Classification Ratio (VCR) across all models. Remarkably, after just 0.2 epochs, nearly all models achieved and maintained a perfect VCR score of 100\%. This rapid improvement demonstrates that fine-tuning swiftly enhances the models' ability to produce valid classifications, effectively addressing a key limitation observed in few-shot prompting approaches.
+
+\subsubsection{F1 Score Progression and Mitigating Overfitting}
+Our initial experiments involved fine-tuning the LLMs for 6 epochs, with checkpoints saved at the conclusion of each epoch. We observed a common pattern: F1 scores for most models initially increased and reached a peak, but tended to decline after 1 epoch. This trend suggested potential overfitting, where models began to memorize training data at the expense of generalization.
+
+To address this challenge, we refined our approach in subsequent experiments by implementing a more granular checkpoint strategy, saving model states every 0.2 epochs. This adjustment allowed us to:
+
+\begin{itemize}
+    \item Capture more detailed performance data throughout the training process.
+    \item Identify and select the optimal results with greater precision.
+    \item Effectively mitigate the overfitting observed in the later stages of training.
+\end{itemize}
+
+This refined approach yielded improved results. For instance, Qwen2-72B achieved its peak F1 score of 80.33\% at 0.8 epochs, demonstrating the benefits of our adjusted fine-tuning strategy in optimizing model performance while minimizing overfitting.
+
+\subsubsection{Superior Performance of Fine-tuned Open-source LLMs}
+
+Fine-tuning has enabled several open-source LLMs to achieve F1 scores that not only match but also surpass the best few-shot performance of GPT-4o, which previously stood at 80.36\%. Among the most notable results:
+
+\begin{itemize}
+    \item \textbf{Llama3.1-70B} surpassed GPT-4o with a robust F1 score of 80.77\% after 1.0 epoch.
+    \item \textbf{Qwen2-72B} delivered an outstanding F1 score of 80.33\% after 0.8 epochs.
+    \item \textbf{InternLM2.5-20B} and \textbf{InternLM2.5-7B-1M} both attained impressive F1 scores of 80.28\% after 0.8 epochs.
+\end{itemize}
+
+% These results highlight that fine-tuned open-source models can not only compete with but also outperform proprietary models in complex reasoning tasks.
+
+% \subsubsection{Efficiency of Fine-tuning}
+% The rapid improvement in both VCR and F1 scores within the first epoch highlights the efficiency of fine-tuning for enhancing model performance on specific tasks. This efficiency is particularly valuable given the computational constraints observed in few-shot evaluations of larger models.
+
+% \subsubsection{Balancing Performance and Generalization}
+% The observed pattern of increasing then decreasing F1 scores during fine-tuning emphasizes the importance of careful monitoring and potential early stopping to prevent overfitting. This underscores the need for robust fine-tuning strategies that can balance performance improvements with generalization capabilities.
+
+These findings collectively demonstrate the power of fine-tuning in unlocking the full potential of open-source LLMs, enabling them to compete with and even surpass proprietary models in challenging reasoning tasks. 
+
+\begin{table*}[htbp]
+\centering
+\small
+\caption{Fine-tuning Performance of Open-Source Language Models Over Training Epochs (F1 Score and Valid Classification Ratio in \%). \small{The top metrics for each model across different epochs are highlighted in bold. Fine-tuning led to significant improvements, with most models achieving a perfect VCR of 100\% within the first 0.2 epochs. Llama3.1-70B outperformed GPT-4o with an F1 score of 80.77\%, followed closely by Qwen2-72B, InternLM2.5-7B-1M, and InternLM2.5-20B, all of which closely matched GPT-4o's performance.}}
+
+\resizebox{0.9\textwidth}{!}{
+\begin{tabular}{l|l|ccccccccccc}
+\hline
+Model & Metric & 0.0 & 0.2 & 0.4 & 0.6 & 0.8 & 1.0 & 1.2 & 1.4 & 1.6 & 1.8 & 2.0 \\
+\hline
+\multirow{2}{*}{Llama3.1-8B} & F1 & 73.71 & 74.28 & 74.89 & 73.71 & 78.64 & \textbf{79.25} & 76.29 & 77.45 & 76.62 & 75.80 & 76.17 \\
+                             & VCR & 80.33 & \textbf{100.00} & 99.93 & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} \\
+\hline
+\multirow{2}{*}{Llama3.1-70B} & F1 & 75.26 & 79.11 & 76.25 & 75.61 & 78.15 & \textbf{80.77} & 76.44 & 78.20 & 78.34 & 78.24 & 77.92 \\
+                              & VCR & 0.97 & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} \\
+\hline
+\multirow{2}{*}{Mistral-7B} & F1 & 66.34 & 73.43 & \textbf{75.37} & 70.68 & 74.05 & 74.72 & 73.49 & 76.48 & 74.10 & 72.57 & 73.08 \\
+                            & VCR & 1.17 & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} \\
+\hline
+\multirow{2}{*}{InternLM2.5-7B} & F1 & 69.06 & 73.30 & 73.97 & 71.04 & 76.60 & 75.14 & 74.89 & \textbf{76.53} & 74.32 & 73.47 & 74.08 \\
+                                & VCR & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} \\
+\hline
+\multirow{2}{*}{InternLM2.5-7B-1M} & F1 & 52.45 & 78.65 & 78.87 & 75.66 & \textbf{80.28} & 78.43 & 78.77 & 77.77 & 77.56 & 77.40 & 77.78 \\
+                                   & VCR & 99.87 & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} \\
+\hline
+\multirow{2}{*}{InternLM2.5-20B} & F1 & 63.52 & 76.93 & 78.49 & 74.22 & \textbf{80.28} & 79.38 & 77.87 & 79.65 & 79.00 & 77.95 & 78.27 \\
+                                 & VCR & 67.27 & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} \\
+\hline
+\multirow{2}{*}{Qwen2-7B} & F1 & 71.01 & 74.90 & 77.49 & 73.32 & 74.76 & \textbf{78.89} & 73.63 & 75.54 & 72.92 & 71.64 & 72.60 \\
+                            & VCR & \textbf{100.00} & 99.97 & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & 99.93 & \textbf{100.00} & 99.97 & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} \\
+\hline
+\multirow{2}{*}{Qwen2-72B} & F1 & 75.72 & 78.28 & 77.01 & 78.40 & \textbf{80.33} & 77.00 & 79.01 & 79.06 & 79.30 & 80.42 & 79.74 \\
+                             & VCR & 97.73 & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} \\
+\hline
+\multirow{2}{*}{Qwen2.5-3B} & F1 & 53.43 & 69.74 & 69.97 & 71.77 & 72.64 & 72.33 & 71.73 & \textbf{74.10} & 73.56 & 72.63 & 72.90 \\
+                            & VCR & \textbf{100.00} & 99.90 & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} \\
+\hline
+\multirow{2}{*}{Qwen2.5-7B} & F1 & 61.01 & 74.83 & 75.77 & 76.94 & 76.66 & \textbf{78.15} & 76.61 & 76.55 & 76.89 & 76.81 & 77.04 \\
+                            & VCR & \textbf{100.00} & 99.80 & 99.97 & 99.97 & \textbf{100.00} & 99.93 & \textbf{100.00} & 99.93 & 99.97 & 99.93 & 99.97 \\
+\hline
+\multirow{2}{*}{Qwen2.5-72B} & F1 & 76.99 & 78.74 & 77.19 & 77.83 & \textbf{79.84} & 76.82 & 79.01 & 78.26 & 78.24 & 78.94 & 78.50 \\
+                             & VCR & 99.40 & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} & \textbf{100.00} \\
+\hline
+\end{tabular}
+}
+\label{tab:finetuning_performance}
+\end{table*}
+
+\subsection{Comparative Analysis of Proprietary and Open-source LLMs}
+
+Table \ref{tab:comparing_performance} presents a comprehensive comparison of large language models (LLMs) across various evaluation settings: baseline (zero-shot), best few-shot, and best fine-tuned configurations. The "best" refers to the highest F1 score achieved in each category. The table is structured in two sections: the first lists OpenAI models without fine-tuned results, while the second features open-source models with fine-tuning data. This organization facilitates a clear comparison between proprietary and open-source models across different evaluation strategies.
+
+\subsubsection{Fine-tuning vs. Few-shot Learning}
+
+The results indicate that task-specific fine-tuning generally enhances model performance, especially for open-source models. Most open-source models demonstrated better performance after fine-tuning compared to their few-shot results. However, the Qwen2.5-72B model stands out as an exception, achieving the highest overall performance with an F1 score of 80.88\% via few-shot learning, surpassing GPT-4o's best few-shot score of 80.36\%. Llama3.1-70B secured the second-highest overall performance with an F1 score of 80.77\% through fine-tuning, also surpassing GPT-4o.
+
+These findings suggest that while fine-tuning is generally advantageous, few-shot learning can sometimes lead to superior outcomes. Researchers and practitioners should carefully evaluate both strategies when optimizing model performance for specialized tasks.
+
+\subsubsection{Extended Context Windows}
+
+The performance of the InternLM2.5-7B-1M model underscores the significant potential of extended context windows, especially in models with relatively fewer parameters. Despite its modest baseline performance (F1 score of 52.45\%), the model showed remarkable improvement in advanced settings. In the few-shot configuration, InternLM2.5-7B-1M achieved an F1 score of 77.01\%, ranking third among all evaluated open-source LLMs. After fine-tuning, the model further improved to an F1 score of 80.28\%, making it the third-highest performer overall in the fine-tuned category.
+
+These results suggest that extended context windows can significantly enhance model performance, particularly when combined with fine-tuning. This finding points to a promising direction for future model development, where leveraging extended context windows might lead to improved reasoning capabilities without necessitating a large increase in parameter count. Future research should explore how to best utilize extended context windows in model architectures to further advance LLMs' capacity for complex reasoning.
+
+
+\begin{table*}[htbp]
+\centering
+\caption{Comparative Analysis of Large Language Models (LLMs) across Baseline (Zero-shot), Best Few-shot, and Best Fine-tuned Configurations (F1 Score and Valid Classification Ratio in \%). \small{"Best" refers to the highest F1 score achieved in each evaluation setting. The table is divided into two sections: OpenAI models (top) and open-source models (bottom). For each section, the highest metrics in each category are highlighted in bold. Notable observations include Qwen2.5-72B's superior few-shot performance with an F1 score of 80.88\%, surpassing GPT-4o's best score of 80.36\%. Among fine-tuned models, Llama3.1-70B achieves the highest F1 score of 80.77\%. The InternLM2.5-7B-1M model demonstrates significant improvement from a baseline F1 of 52.45\% to 77.01\% in few-shot and 80.28\% after fine-tuning, highlighting the potential of extended context windows.}}
+\label{tab:comparing_performance}
+\resizebox{0.6\textwidth}{!}{
+\begin{tabular}{lcccccccccc}
+\hline
+\multirow{2}{*}{Model} & \multicolumn{2}{c}{Baseline (\%)} & \multicolumn{4}{c}{Best Few-shot (\%)} & \multicolumn{4}{c}{Best Fine-tuned (\%)} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-7} \cmidrule(lr){8-11}
+& F1 & VCR & F1 & VCR & Shots & & F1 & VCR & Epoch & \\
+\hline
+GPT-4o-mini & 72.96 & 99.17 & 72.96 & 99.17 & 0 & & - & - & - & \\
+GPT-4o & \textbf{79.53} & 6.60 & \textbf{80.36} & \textbf{99.97} & 10 & & - & - & - & \\
+o1-mini & 73.77 & \textbf{99.90} & 75.90 & 99.77 & 50 & & - & - & - & \\
+o1-preview & 74.51 & 99.80 & 77.08 & 98.17 & 50 & & - & - & - & \\
+\hline
+Llama3.1-8B & 73.71 & 80.33 & 76.97 & 73.27 & 30 & & 79.25 & \textbf{100.00} & 1.0 & \\
+Llama3.1-70B & 75.26 & 0.97 & 75.67 & 83.27 & 10 & & \textbf{80.77} & \textbf{100.00} & 1.0 & \\
+Mistral-7B & 66.34 & 1.17 & 68.63 & 7.00 & 30 & & 76.48 & \textbf{100.00} & 1.4 & \\
+InternLM2.5-7B & 69.06 & \textbf{100.00} & 72.71 & 99.90 & 5 & & 76.60 & \textbf{100.00} & 0.8 & \\
+InternLM2.5-7B-1M & 52.45 & 99.87 & 77.01 & 94.53 & 5 & & 80.28 & \textbf{100.00} & 0.8 & \\
+InternLM2.5-20B & 63.52 & 67.27 & - & - & - & & 80.28 & \textbf{100.00} & 0.8 & \\
+Qwen2-7B & 71.01 & 99.97 & 71.01 & 99.97 & 0 & & 77.49 & \textbf{100.00} & 0.4 & \\
+Qwen2-72B & 75.72 & 97.73 & 77.40 & 99.47 & 10 & & 80.33 & \textbf{100.00} & 0.8 & \\
+Qwen2.5-3B & 55.06 & \textbf{100.00} & 64.16 & 99.73 & 5 & & 74.10 & \textbf{100.00} & 1.4 & \\
+Qwen2.5-7B & 61.01 & \textbf{100.00} & 75.28 & 80.50 & 30 & & 78.15 & 99.93 & 1.0 & \\
+Qwen2.5-72B & \textbf{76.99} & 99.40 & \textbf{80.88} & 91.23 & 10 & & 79.84 & \textbf{100.00} & 0.8 & \\
+\hline
+\end{tabular}
+}
+\end{table*}
+

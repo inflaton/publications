@@ -1,0 +1,38 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[ht]
+\centering
+\caption{Comparison of model performance across different datasets, LLMs and prompting strategies. 
+% Bold values highlight the top-performing models for each dataset and prompt type.
+}
+\label{tab:model-performance}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{l|l|ccc}
+\toprule
+\multicolumn{1}{l|}{Dataset} & LLM             & \multicolumn{1}{l}{RAG-GP} & \multicolumn{1}{l}{RAG-CT} & \multicolumn{1}{l}{Non-RAG} \\ \midrule
+\multirow{9}{*}{WebQSP}     & Gemma-1.1-2B    & 0.397                      & 0.361                      & 0.175                       \\
+                            & Phi-3-mini      & 0.527                      & 0.575                      & 0.595                       \\
+                            & Gemma-1.1-7B    & 0.109                      & 0.302                      & 0.291                       \\
+                            & Mistral-7B-v0.2 & \textbf{0.609}                      & \textbf{0.604}                      & 0.648                       \\
+                            & Llama-2-7B      & 0.589                      & 0.590                      & 0.548                       \\
+                            & Llama-3-8B      & 0.572                      & 0.558                      & 0.668                       \\
+                            & Llama-2-13B     & 0.595                      & 0.588                      & 0.627                       \\
+                            & Llama-2-70B     & 0.577                      & 0.596                      & 0.657                       \\
+                            & Llama-3-70B     & 0.517                      & 0.537                      & \textbf{0.710}                       \\ \midrule
+\multirow{9}{*}{MS MARCO}   & Gemma-1.1-2B    & 0.272                      & \textbf{0.277}                      & \textbf{0.250}                       \\
+                            & Phi-3-mini      & 0.263                      & 0.261                      & 0.246                       \\
+                            & Gemma-1.1-7B    & 0.149                      & 0.276                      & 0.249                       \\
+                            & Mistral-7B-v0.2 & 0.256                      & 0.256                      & 0.239                       \\
+                            & Llama-2-7B      & 0.266                      & 0.257                      & 0.243                       \\
+                            & Llama-3-8B      & 0.252                      & 0.265                      & 0.239                       \\
+                            & Llama-2-13B     & 0.265                      & 0.258                      & 0.246                       \\
+                            & Llama-2-70B     & 0.270                      & 0.258                      & 0.248                       \\
+                            & Llama-3-70B     & \textbf{0.275}                      & 0.264                      & 0.238                       \\ \midrule
+\multirow{4}{*}{MAC}        &     & \mtgen                      & \mttem                      &                            \\ \cmidrule{3-5}
+& Phi-3.5-mini    & 0.707                      & 0.702                      &                            \\
+                            & Mistral-7B-v0.3 & 0.726                      & 0.728                      &                            \\
+                            & Llama3.1-70B    & \textbf{0.743}                      & \textbf{0.750}                      &        \\ \bottomrule                   
+\end{tabular}
+}
+% \vspace{-2.5em}
+\end{table}

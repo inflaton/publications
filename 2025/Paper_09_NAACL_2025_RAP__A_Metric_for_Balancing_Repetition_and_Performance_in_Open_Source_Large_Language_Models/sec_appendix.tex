@@ -1,0 +1,183 @@
+\clearpage
+\section{Appendix}
+\label{sec:appendix}
+% \begin{itemize}
+%     \item show RAG templates for all models 
+% \end{itemize}
+
+\input{sec_data}
+
+\subsection{Evaluating the Quality of Gemini's Evaluation} 
+\label{sec:eval_gemini}
+
+To assess the effectiveness of our LLM-based KBQA evaluation method, we randomly selected 100 samples from the experiment results of the Llama-3-70B Non-RAG model, as this configuration achieved the best performance on WebQSP. A human evaluator was then asked to review and provide feedback on Gemini’s evaluation of these samples (following the process described earlier). The agreement rate between the human evaluator and Gemini was 89.0\%. While this indicates that the method is not flawless, it demonstrates a high level of reliability, making our LLM-based KBQA evaluation suitable for automatically assessing LLM responses in KBQA tasks.
+
+\begin{table*}[]
+\centering
+\small
+\resizebox{\textwidth}{!}{
+\begin{tabular}{c|p{.1\textwidth}|p{.1\textwidth}|p{.4\textwidth}|p{.4\textwidth}}
+\toprule
+No. & Question                                     & Ground-truth               & LLM Response (Llama 3-70B)                                                                                                                                                                                                         & Gemini's Evaluation                                                                                                                                                                                                                                            \\ \midrule
+1   & who is robin roberts father            & {[}lawrence e. roberts{]}                  & Robin Roberts father is Lawrence   E. Roberts, a pilot in the United States Air Force and a colonel. He passed   away in 2004.                                                                                       & \{\textbf{predicted\_answer}: {[}Lawrence E.   Roberts{]}, \textbf{mappings}: \{Lawrence E. Roberts: {[}lawrence e. roberts{]}\}\}                                                                                                                                           \\\midrule
+2   & who does michael oher play for in 2010 & {[}baltimore ravens{]}                     & In 2010, Michael Oher played for   the Baltimore Ravens.                                                                                                                                                             & \{\textbf{predicted\_answer}: {[}Baltimore   Ravens{]}, \textbf{mappings}: \{Baltimore Ravens: {[}baltimore ravens{]}\}\}                                                                                                                                                    \\\midrule
+3   & who was queen   elizabeth ii mom       & {[}'queen elizabeth the queen   mother'{]} & Queen Elizabeth II's mother was   Queen Elizabeth The Queen Mother, also known as Elizabeth Bowes-Lyon. She was   the wife of King George VI and the mother of Queen Elizabeth II and Princess   Margaret.           & \{"\textbf{predicted\_answer}":   {[}"Queen Elizabeth The Queen Mother", "Elizabeth   Bowes-Lyon"{]}, "\textbf{mappings}": \{"Queen Elizabeth The Queen   Mother": {[}'queen elizabeth the queen mother'{]}, "Elizabeth   Bowes-Lyon": {[}{]}\}\}                            \\\midrule
+4   & where was rihanna born and raised      & {[}saint michael parish{]}                 & Rihanna was born in Saint   Michael, Barbados, and raised in Bridgetown, Barbados.                                                                                                                                   & \{\textbf{predicted\_answer}: {[}Saint   Michael, Bridgetown{]}, \textbf{mappings}: \{Saint Michael: {[}saint michael parish{]},   Bridgetown: {[}{]}\}\}                                                                                                                    \\\midrule
+5   & what country was king tut s tomb found & {[}egypt{]}                                & King Tuts tomb, also known as   KV62, was discovered in Egypt. Specifically, it was found in the Valley of   the Kings, a necropolis in Luxor, Egypt, on November 4, 1922, by British   archaeologist Howard Carter. & \{\textbf{predicted\_answer}: {[}Egypt,   Valley of the Kings, Luxor, Egypt, November 4, 1922, Howard Carter{]},   \textbf{mappings}: \{Egypt: {[}egypt{]}, Valley of the Kings: {[}{]}, Luxor: {[}{]}, Egypt: {[}{]},   November 4, 1922: {[}{]}, Howard Carter: {[}{]}\}\} \\\bottomrule
+\end{tabular}}
+% \caption{Using \gemini for KBQA evaluation: It correctly maps answer-items in most cases, though occasional inaccuracies occur. Human-Gemini agreement is high (89.0\%) in Llama 3-70B, Non-RAG setting.}
+\caption{Showing example of using \gemini for evaluating KBQA task. In many cases, Gemini can extract predicted answer-items and generate the mappings correctly, but sometimes it failed to extract the correct prediction, making the evaluation inaccurate. Nevertheless, a human evaluation of 100 samples showed a high agreement between human and Gemini of 89.0\%. LLM Response is taken from Llama 3-70B, Non-RAG setting.}
+\label{tab:gemini-eval}
+\end{table*}
+
+We conducted a qualitative analysis of the proposed LLM-based KBQA evaluation using \gemini (Section \ref{sec:gemini}). Table \ref{tab:gemini-eval} presents examples of outputs from Llama-3-70B for five WebQSP questions, along with the corresponding evaluations from Gemini. 
+
+In the first example, Gemini correctly extracts the answer item "Lawrence E. Roberts" and accurately maps the predicted answer to the ground-truth answer, resulting in a precise evaluation. A similar correct evaluation occurs in the second example.
+
+However, Gemini occasionally fails to extract the correct information from the generated text. In the third question, for example, Gemini mistakenly identifies "Elizabeth Bowes-Lyon" as part of the predicted answer, despite the LLM response not implying this. This error leads to a precision score of only 0.5 for this answer, negatively affecting the LLM's overall performance evaluation. A similar issue occurs in the fifth question, where Gemini extracts too many keywords from the LLM response, yielding a very low final score, despite the fact that the predicted answer is correct when reading the response in context.
+
+In summary, to further evaluate the quality of our LLM-based KBQA evaluation method, we randomly selected 100 samples from the Llama-3-70B Non-RAG model’s results, as this configuration performed the best on WebQSP. A human evaluator reviewed Gemini's assessments, and the agreement rate was 89.0\%. While not perfect, this indicates that our LLM-based KBQA evaluation method demonstrates a strong level of reliability and can be effectively utilized for automatically evaluating LLM responses in KBQA tasks.
+
+\iffalse
+\subsection{Overview of Large Language Models}
+\label{subsec:overview_llms}
+
+This study evaluates a diverse set of open-source large language models (LLMs) across question answering (QA) and machine translation (MT) tasks. For QA tasks, we assess nine models:
+
+\begin{itemize}
+    \item Llama-2 series (7B, 13B, 70B parameters)
+    \item Llama-3 series (8B, 70B parameters)
+    \item Gemma-1.1 series (2B, 7B parameters)
+    \item Phi-3-mini (3.8B parameters)
+    \item Mistral-7B
+\end{itemize}
+
+For the MT task, we evaluate three models:
+
+\begin{itemize}
+    \item Phi-3.5-mini (3.8B parameters)
+    \item Mistral-7B
+    \item Llama-3.1-70B
+\end{itemize}
+
+Table~\ref{tab:ai_models} provides a comprehensive overview of these models, detailing their respective companies, model names, HuggingFace model identifiers, and the tasks for which they were evaluated. This selection encompasses a wide range of parameter sizes and architectures, representing the current state-of-the-art in open-source LLM development.
+
+This diverse selection allows for a robust comparison across different model families and sizes, providing insights into the relative strengths of various open-source LLMs in both QA and MT tasks.
+
+\begin{table}[htbp]
+\caption{Overview of Large Language Models and Their Specifications by Task}
+\label{tab:ai_models}
+\centering
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{l|l|l|l}
+\toprule
+\textbf{Company} & \textbf{Model Name} & \textbf{HuggingFace Model ID} & \textbf{Task} \\
+\midrule
+\multirow{6}{*}{Meta} & Llama-2-7B & meta-llama/Llama-2-7b-chat & QA \\
+& Llama-2-13B & meta-llama/Llama-2-13b-chat & QA \\
+& Llama-2-70B & meta-llama/Llama-2-70b-chat & QA \\
+& Llama-3-8B & meta-llama/Meta-Llama-3-8B-Instruct & QA \\
+& Llama-3-70B & meta-llama/Meta-Llama-3-70B-Instruct & QA \\
+& Llama-3.1-70B & shenzhi-wang/Llama3.1-70B-Chinese-Chat & MT \\
+\midrule
+\multirow{2}{*}{Microsoft} & Phi-3-mini & microsoft/Phi-3-mini-128k-instruct & QA \\
+& Phi-3.5-mini & microsoft/Phi-3.5-mini-instruct & MT \\
+\midrule
+\multirow{2}{*}{Google} & Gemma-1.1-2B & google/gemma-1.1-2b-it & QA \\
+& Gemma-1.1-7B & google/gemma-1.1-7b-it & QA \\
+\midrule
+\multirow{2}{*}{Mistral AI} & Mistral-7B-v0.2 & mistralai/Mistral-7B-Instruct-v0.2 & QA \\
+& Mistral-7B-v0.3 & shenzhi-wang/Mistral-7B-v0.3-Chinese-Chat & MT \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+\fi
+
+
+\subsection{Prompt Templates}
+\label{sec:prompt}
+In this section, we present the various prompt templates used for different tasks and configurations in our experiments. These templates guide the interaction between the models and the provided input, ensuring consistency across models and tasks. The templates cover both question answering (QA) and machine translation (MT) tasks, with specialized designs for models with and without retrieval-augmented generation (RAG) capabilities. Each template is structured with placeholders that dynamically incorporate the question, context, or input data. The following listings describe the prompt templates in detail.
+
+\begin{listing}[H]
+\begin{minted}[breaklines=true,fontsize=\small]{text}
+Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+{context}
+Question: {question}
+Helpful Answer:
+\end{minted}
+\caption{RAG - Generic Prompt template for question answering. The placeholders \textit{\{question\}} and \textit{\{context\}} will be filled with the question and the retrieved data, respectively.}
+\label{list:rag-generic}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[breaklines=true,fontsize=\small]{text}
+<|begin_of_text|>
+<|start_header_id|>
+system
+<|end_header_id|>
+You are a chatbot having a conversation with a human.
+<|eot_id|>
+<|start_header_id|>user
+<|end_header_id|>
+{question}
+<|eot_id|>
+<|start_header_id|>
+Assistant
+<|end_header_id|>
+\end{minted}
+\caption{Non-RAG prompt template for question answering with Llama-3 models. The placeholder \textit{\{question\}} will be filled with the question.}
+\label{list:non-rag}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[breaklines=true,fontsize=\small]{text}
+<|begin_of_text|>
+<|start_header_id|>
+system
+<|end_header_id|>
+You are a chatbot having a conversation with a human.
+<|eot_id|>
+<|start_header_id|>user
+<|end_header_id|>
+Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+{context}
+Question: {question}
+<|eot_id|>
+<|start_header_id|>
+Assistant
+<|end_header_id|>
+\end{minted}
+\caption{RAG - Chat Template for Llama-3 models. The placeholders \textit{\{question\}} and \textit{\{context\}} will be filled with the question and retrieved data, respectively.}
+\label{list:rag-chat}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[breaklines=true,fontsize=\small]{text}
+You will be given a Chinese sentence to translate. If it is an incomplete sentence, or if you are unsure about the meaning, simply copy the input text as your output. Do not output any additional sentences, such as explanations or reasoning.
+Chinese: {input}
+\end{minted}
+\caption{Machine Translation - Generic Prompt (\mtgen) for all models. The placeholder \textit{\{input\}} will be filled with the Chinese sentence retrieved from the \mac testing set.}
+\label{list:mt-generic}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[breaklines=true,fontsize=\small]{text}
+<|begin_of_text|>
+<|start_header_id|>
+system
+<|end_header_id|>
+You are a helpful assistant that translates Chinese to English.
+<|eot_id|>
+<|start_header_id|>user
+<|end_header_id|>
+You will be given a Chinese sentence to translate. If it is an incomplete sentence, or if you are unsure about the meaning, simply copy the input text as your output. Do not output any additional sentences, such as explanations or reasoning.
+Chinese: {input}
+<|eot_id|>
+<|start_header_id|>
+Assistant
+<|end_header_id|>
+\end{minted}
+\caption{Machine Translation - Chat Template (\mttem) for Llama-3 models. The placeholder \textit{\{input\}} will be filled with the Chinese sentence retrieved from the \mac testing set.}
+\label{list:mt-chat}
+\end{listing}

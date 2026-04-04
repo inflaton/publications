@@ -1,0 +1,20 @@
+\section{Dataset}
+    We finetuned the LLMs using dataset from Malashan Cup, a LLM logical reasoning competition. The dataset consists of the training set, validation set and test set. The training set consists of 25000 user questions and labels (including puzzles and truth). The verification set consists of 3000 user questions and labels (including puzzles and truth), and the file name is dev.csv. The test set consists of 30000 user questions (including puzzles and truth) but do not include labels.
+   
+    \begin{table}
+        \centering
+        \begin{tabular}{|c|>{\centering\arraybackslash}p{0.75\linewidth}|} \hline 
+             Field& Remark\\ \hline 
+             text& Player question\\ \hline 
+             label& Human labelled. 5 possible values: Yes, No, Unimportant, Incorrect questioning, and Correct answer\\ \hline 
+             answer& LLM submitted answer. 5 possible values: Yes, No, Unimportant, Incorrect questioning, and Correct answer\\ \hline 
+             title& Title\\ \hline 
+             puzzle& Puzzle\\ \hline 
+             truth& Truth\\ \hline
+        \end{tabular}
+\caption{Dataset Format}
+\label{tab:my_table}
+
+\end{table}
+
+    A dataset consists of multiple turtle soup problems identified by the their title. Each problem has a puzzle which the player has to investigate to deduce the truth. Player questions are represented as the text data field and answered by the LLM. The LLM returns the answer, which is checked against label, the ground truth defined by humans.

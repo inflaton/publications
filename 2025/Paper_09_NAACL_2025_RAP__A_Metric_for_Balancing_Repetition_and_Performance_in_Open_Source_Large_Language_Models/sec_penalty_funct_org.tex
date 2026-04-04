@@ -1,0 +1,43 @@
+In this section, we present an ablation study to evaluate the impact of various penalty functions on the Repetition-Aware Performance (RAP). The RAP metric integrates the repetition ratio (RR) into the overall model performance by applying a penalty function to repetition in the generated content, as defined in Equation~\ref{eq:rap_generic}.
+
+\begin{equation}
+    \text{RAP} = P \times f(x)
+    \label{eq:rap_generic}
+\end{equation}
+
+Where $P$ is the performance metric (e.g., F1 score), $f(x)$ is a penalty function, and $x = 1 - \text{RR}$.
+
+We evaluated the following penalty functions:
+
+\begin{align}
+    f_{\text{linear, quadratic, cubic}}(x) &= x^n \quad \text{where} \, n \in \{1, 2, 3\} \\
+    f_{\text{logarithmic}}(x) &= \log_2(1 + x) \\
+    f_{\text{exponential}}(x) &= e^{x - 1}
+\end{align}
+
+We define the \textit{gain} as:
+
+\begin{equation}
+    \text{Gain} = \frac{\text{RR}_{\text{original}} - \text{RR}_{\text{RAP}}}{\text{RR}_{\text{original}}} - \frac{P_{\text{original}} - P_{\text{RAP}}}{P_{\text{original}}}
+\end{equation}
+
+Where $\text{RR}_{\text{original}}$ and $P_{\text{original}}$ are the repetition ratio and performance at the best performance-tuned RPP, while $\text{RR}_{\text{RAP}}$ and $P_{\text{RAP}}$ are the corresponding values at the best RAP-tuned RPP.
+
+Figure~\ref{fig:ablation_study} presents the results of this ablation study, showing the gains achieved across three datasets—WebQSP, MS MARCO, and MAC—for each penalty function. The goal was to maximize the gain, i.e., to achieve the highest reduction in repetition with minimal performance degradation.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{image/ablation_study.png}
+    \caption{Gains across different penalty functions on three datasets (WebQSP, MS MARCO, and MAC). The evaluated penalty functions include \textit{linear}, \textit{quadratic}, \textit{cubic}, \textit{logarithmic}, and \textit{exponential}.}
+    \label{fig:ablation_study}
+\end{figure}
+
+The results highlight several key findings:
+
+\noindent \textbf{Superiority of Cubic Penalty:} The \textit{cubic} penalty function consistently achieves the highest gain across all three datasets (32.74\% for WebQSP, 28.03\% for MS MARCO, and 48.54\% for MAC). This indicates that the cubic function provides the most optimal balance between reducing repetition and preserving model performance.
+
+\noindent \textbf{Consistency Across MAC Dataset:} Interestingly, all penalty functions perform similarly well on the MAC dataset, with gains hovering around 48\%. This suggests that the choice of penalty function may be less critical for tasks or datasets where performance is less sensitive to repetition, such as in the MAC dataset.
+
+\noindent \textbf{Variation Across Datasets:} The \textit{logarithmic} and \textit{exponential} penalty functions exhibit varied performance across datasets. While they perform relatively well on the MAC dataset, they lag behind the polynomial functions (linear, quadratic, and cubic) on both WebQSP and MS MARCO, indicating that the effectiveness of these functions may be task- or dataset-dependent.
+
+These findings support our choice of the \textit{cubic} penalty function for the RAP metric, as it provides a robust balance between repetition reduction and performance preservation across diverse datasets and tasks.
