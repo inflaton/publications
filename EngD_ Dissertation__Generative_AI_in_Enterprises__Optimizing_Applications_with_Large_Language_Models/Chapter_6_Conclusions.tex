@@ -1,0 +1,353 @@
+\chapter{Conclusions and Future Work}
+\label{ch:conclusions}
+
+\section{Summary of Contributions}
+\label{sec:contributions_summary}
+
+Having previewed the key contributions organized by type in Chapter~\ref{ch:introduction} (Section~\ref{sec:contributions}), we now provide a detailed synthesis organized by research pillar, reflecting on what was achieved across the research portfolio spanning sixteen publications at premier AI/NLP venues.
+
+This dissertation has systematically investigated optimization strategies for deploying Large Language Models in enterprise applications. The research contributions span three interconnected pillars---Retrieval-Augmented Generation optimization, agentic AI for business automation, and enterprise deployment strategies---supported by cross-domain validation across diverse enterprise applications.
+
+\subsection{RAG Optimization Contributions (Chapter~\ref{ch:rag})}
+
+The first pillar addressed RQ1: \textit{How can RAG systems be optimized to improve response quality while addressing critical issues such as content repetition in open-source LLMs?}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Repetition-Aware Performance (RAP) Metric:} We introduced a novel evaluation metric that addresses a critical gap in assessing open-source LLM outputs. RAP quantifies and penalizes repetition through the formula $\text{RAP} = P \times (1-\text{RR})^3$, enabling effective tuning of the repetition penalty parameter (RPP). Comprehensive experiments across twelve models and three datasets demonstrated that RAP enables up to 93.1\% reduction in repetition with minimal performance degradation (typically under 4\%). The cubic penalty function was validated through ablation studies as optimal across diverse tasks.
+    
+    \item \textbf{Repetition Detection Algorithm (ReDA):} Complementing the RAP metric, we developed ReDA for systematic identification and quantification of repetitive content in LLM outputs, enabling automated quality assessment in production systems.
+    
+    \item \textbf{Comparative Evaluation Framework:} Systematic benchmarking on the PCI DSS compliance domain established that smaller, efficient models like Orca-2-13b can achieve competitive---and sometimes superior---performance to proprietary alternatives in RAG applications. Orca-2-13b achieved 99.3\% overall RAGAS score with perfect faithfulness, challenging assumptions that larger models are necessary for high-quality enterprise deployments.
+    
+    \item \textbf{Evaluation-Guided Hyperparameter Search:} We formalized an optimization procedure using RAP as the target metric, enabling systematic identification of configurations that balance factual accuracy, relevance, and output conciseness.
+\end{enumerate}
+
+\subsection{Agentic AI Contributions (Chapter~\ref{ch:agentic})}
+
+The second pillar addressed RQ2: \textit{How can multi-agent LLM architectures be designed to reliably automate complex enterprise workflows while providing measurable reliability guarantees?}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Multi-Agent Invoice Reconciliation System:} We designed and validated a three-agent architecture (Data Engineering, Email, Reconciliation) achieving 99.90\% success rate with the Qwen2.5-32B model---outperforming all proprietary cloud APIs while consuming only 523 Joules per task on consumer hardware (RTX 4090).
+    
+    \item \textbf{12-Category Error Taxonomy:} We developed a comprehensive diagnostic framework for tool invocation reliability, distinguishing tool initialization, parameter handling, execution, and result interpretation errors. This taxonomy enables systematic failure characterization and targeted improvement strategies for multi-agent systems.
+    
+    \item \textbf{Agentic Success Rate (ASR):} We introduced a fine-grained metric quantifying tool-calling precision throughout multi-step workflows. ASR decomposes tasks into atomic steps, revealing that smaller models fail primarily at tool orchestration rather than downstream processing---qwen3:32b achieves 98\% ASR matching GPT-4.1 quality.
+    
+    \item \textbf{Evaluation Completion Rate (ECR@1):} We introduced an operational reliability metric measuring first-attempt evaluation success rates. ECR@1 reveals reliability variations from 85.4\% to 100\% across models, with direct cost implications via retry overhead invisible to accuracy-only evaluation.
+    
+    \item \textbf{LLM-as-a-Judge (LAJ) Framework:} We developed a production-ready, rubric-driven framework for evaluating Gherkin acceptance tests with structured JSON outputs, revealing 175$\times$ cost variation (\$0.45--\$78.96 per 1K evaluations) and demonstrating that GPT-4o Mini achieves best-in-class accuracy at 78$\times$ cost reduction versus premium models.
+    
+    \item \textbf{Hierarchical Multi-Agent System for Payments (HMASP):} We designed the first LLM-based multi-agent system for end-to-end agentic payment workflows, featuring a four-level hierarchy with architectural patterns including shared state variables, decoupled message states, and structured handoff protocols, achieving 97.0\% task success rate.
+    
+    \item \textbf{EdgeAgent Annotation Pipeline:} We developed a semi-automatic interactive annotation system demonstrating that edge-deployed LLMs can achieve annotation quality matching cloud-based proprietary alternatives while preserving data privacy.
+\end{enumerate}
+
+\subsection{Enterprise Deployment and Application Contributions (Chapter~\ref{ch:strategies})}
+
+The third pillar addressed RQ3: \textit{What strategies enable effective LLM deployment across diverse enterprise applications, hardware configurations, and domain requirements?}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Comprehensive Edge Deployment Benchmarking:} Systematic evaluation across six hardware platforms (from NVIDIA H100 to consumer laptops and edge devices) established that medium-sized models (7B--32B) achieve optimal performance-efficiency trade-offs. WSL provides up to 21$\times$ speedup over native Windows for smaller models, while Ollama's Q4\_K\_M quantization enables efficient deployment with up to 3.37 percentage point F1 improvement over bitsandbytes implementations.
+    
+    \item \textbf{Reasoning Intensity (RI) Metric:} We introduced a metric quantifying the proportion of computational effort devoted to reasoning, computed as $\text{RI} = \frac{\text{MRT}}{\text{MRT} + \text{MOT}}$. Three operational regimes were identified: Minimal (RI $<$ 0.5), Balanced (0.5--0.85), and Intensive ($>$ 0.85), with balanced regime yielding optimal accuracy-efficiency trade-offs.
+    
+    \item \textbf{Valid Classification Ratio (VCR):} We introduced a reliability metric measuring the proportion of valid classifications among total outputs. Fine-tuning dramatically improves VCR from as low as 1.17\% to 100\% within 0.2 epochs, providing practitioners with a concrete measure of deployment readiness for structured classification tasks.
+    
+    \item \textbf{Task-Complexity-Dependent Reasoning Effectiveness:} Through comprehensive evaluation of 504 configurations across seven model families (DeepSeek-R1, Qwen3, Granite, Magistral, and their base variants), we established that reasoning effectiveness is systematically task-dependent. Base/non-thinking models outperform reasoning variants by $4.8 \pm 6.3$ percentage points on binary classification (100\% failure rate for reasoning) and $3.6 \pm 2.2$ pp on 5-class sentiment (80\% failure rate), while reasoning models achieve $2.0 \pm 1.0$ pp advantage on 27-class emotion recognition (only 14\% failure rate for thinking modes). This task-complexity hypothesis provides principled guidance for model selection.
+    
+    \item \textbf{Pareto Frontier Analysis:} We conducted the first Pareto frontier analysis of performance versus computational cost for reasoning models in sentiment analysis, demonstrating that base models dominate efficiency-performance trade-offs for most sentiment tasks, with reasoning justified only for complex emotion recognition where 2--4 pp improvements justify 2.1$\times$--54$\times$ computational overhead.
+    
+    \item \textbf{Translation Completeness Ratio (TCR) and Characters per Second (CPS):} We introduced domain-specific metrics for machine translation reliability and efficiency, addressing the observation that LLMs sometimes produce outputs with untranslated segments.
+    
+    \item \textbf{Cross-Domain Validation:} Applications across financial prediction, sentiment analysis, machine translation, logical reasoning, and sports predictive analytics validated the generalizability of optimization techniques. F1-tuned models for sports betting achieved 279.48\% returns (Random Forest + GPT-4.1), demonstrating that metric selection must align with downstream objectives.
+\end{enumerate}
+
+\subsection{Unifying the Evaluation Metrics for Practice}
+\label{sec:metric-synthesis}
+This dissertation introduces multiple complementary metrics because enterprise readiness is multi-dimensional: a model can be accurate yet operationally unreliable, cost-prohibitive, or unsuitable under latency and privacy constraints. To reduce practitioner burden, we group the metrics into three layers and recommend a minimal decision workflow:
+
+\begin{itemize}
+    \item \textbf{Task quality metrics} (e.g., F1, COMET) quantify whether the system produces correct outputs for the target task.
+    \item \textbf{Reliability metrics} (e.g., RAP, VCR, ECR@1, ASR, TCR) quantify whether outputs are usable, complete, and robust under operational conditions (including tool use and constrained formats).
+    \item \textbf{Efficiency metrics} (e.g., energy per task, throughput such as CPS) quantify whether the system meets latency, cost, and resource constraints.
+\end{itemize}
+
+In practice, we recommend first screening candidate systems by \emph{reliability} (to eliminate configurations that frequently fail, repeat, or violate output constraints), then optimizing \emph{quality} subject to the reliability floor, and finally selecting a configuration that satisfies \emph{efficiency} requirements for the intended deployment tier (cloud, on-prem, or edge).
+
+\section{Key Findings}
+\label{sec:key_findings}
+
+Several cross-cutting themes emerge from this research:
+
+\subsection{Finding 1: Open-Source Viability}
+
+\textbf{Open-source LLMs, when properly optimized, achieve performance competitive with---or exceeding---proprietary alternatives across diverse enterprise tasks.}
+
+This finding has significant implications for enterprise AI adoption:
+\begin{itemize}[leftmargin=*]
+    \item Orca-2-13b achieves 99.3\% RAGAS score in RAG applications (Chapter~\ref{ch:rag}), matching GPT-4
+    \item Qwen2.5-72B surpasses GPT-4o on logical reasoning (80.88\% vs. 80.36\% F1) with only 10-shot prompting (Chapter~\ref{ch:strategies})
+    \item qwen2.5:32b achieves 99.90\% success rate on invoice reconciliation (Chapter~\ref{ch:agentic}), outperforming all proprietary cloud APIs
+    \item qwen3:32b matches GPT-4.1 quality (98\% ASR, 83\% F1) on annotation tasks while enabling edge deployment (Chapter~\ref{ch:agentic})
+\end{itemize}
+
+Organizations can leverage open-source models to reduce costs, maintain data privacy through edge deployment, and avoid vendor lock-in while achieving comparable or superior performance.
+
+\subsection{Finding 2: Architecture Over Scale}
+
+\textbf{Larger models do not always outperform smaller counterparts; architectural design and optimization strategies often matter more than parameter count.}
+
+Counter-intuitive findings across multiple studies demonstrate this principle:
+\begin{itemize}[leftmargin=*]
+    \item DeepSeek-R1:32b (81.7\% F1) substantially outperforms DeepSeek-R1:70b (74.2\% F1) on sentiment analysis (Chapter~\ref{ch:strategies})
+    \item 32B Qwen2.5-based distillation outperforms 70B Llama-based variant by 6.69 percentage points (Chapter~\ref{ch:strategies})
+    \item qwen3:8b achieves highest performance (84.8\% F1) in its family, surpassing 14B, 30B, and 32B variants (Chapter~\ref{ch:strategies})
+    \item Medium-sized models (7B--32B) provide optimal accuracy-efficiency trade-offs for edge deployment (Chapter~\ref{ch:strategies})
+    \item Orca-2-13b matches or exceeds GPT-4 performance in RAG applications despite being significantly smaller (Chapter~\ref{ch:rag})
+\end{itemize}
+
+Strategic model selection based on task requirements and deployment constraints is essential, as the largest models may not justify additional resource costs.
+
+\subsection{Finding 3: Task Complexity Determines Reasoning Effectiveness}
+
+\textbf{Reasoning capabilities improve performance only for sufficiently complex tasks; simpler tasks often suffer degradation when reasoning is applied.}
+
+Our comprehensive evaluation across 504 configurations reveals systematic task-complexity patterns:
+\begin{itemize}[leftmargin=*]
+    \item Binary classification (IMDB): 100\% failure rate for reasoning models, $-4.8 \pm 6.3$ pp average degradation
+    \item 5-class sentiment (Amazon): 80\% failure rate, $-3.6 \pm 2.2$ pp average degradation
+    \item 27-class emotion (GoEmotions): Only 14\% failure rate for thinking modes, $+2.0 \pm 1.0$ pp average improvement
+\end{itemize}
+
+This task-complexity hypothesis provides principled deployment guidance: reserve reasoning for complex multi-class problems where accuracy gains justify 2.1$\times$--54$\times$ computational overhead, and leverage base models for simpler classification tasks.
+
+\subsection{Finding 4: Few-Shot Learning Superiority}
+
+\textbf{Few-shot learning yields more robust and consistent improvements than reasoning activation across all task complexities.}
+
+Regardless of whether models are reasoning/thinking-based or base/non-thinking:
+\begin{itemize}[leftmargin=*]
+    \item Few-shot learning improves over zero-shot in the vast majority of configurations
+    \item DeepSeek-R1 achieves 99.31\% accuracy on binary sentiment with just 5 shots, an 8$\times$ improvement in few-shot efficiency over GPT-4o
+    \item Performance gains vary by model architecture and task complexity, but the direction is consistently positive
+    \item Few-shot prompting enables rapid adaptation without fine-tuning overhead
+\end{itemize}
+
+Few-shot prompting provides a more reliable enhancement strategy than reasoning mode activation for sentiment analysis and related classification tasks.
+
+\subsection{Finding 5: Novel Metrics Address Evaluation Gaps}
+
+\textbf{Traditional accuracy metrics are insufficient for enterprise deployment; operational reliability, output quality, and efficiency require dedicated measurement frameworks.}
+
+This dissertation introduces seven complementary metrics addressing distinct evaluation dimensions:
+
+\begin{table}[htbp]
+\centering
+\caption{Summary of Novel Evaluation Metrics Introduced}
+\label{tab:metrics_summary}
+\begin{tabular}{@{}llc@{}}
+\toprule
+\textbf{Metric} & \textbf{Purpose} & \textbf{Chapter} \\
+\midrule
+RAP & Repetition-aware model evaluation & \ref{ch:rag} \\
+VCR & Valid structured output proportion & \ref{ch:strategies} \\
+ECR@1 & First-attempt operational reliability & \ref{ch:agentic} \\
+ASR & Tool-calling precision in workflows & \ref{ch:agentic} \\
+RI & Reasoning-explainability trade-offs & \ref{ch:strategies} \\
+TCR & Translation reliability & \ref{ch:strategies} \\
+CPS & Translation efficiency & \ref{ch:strategies} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These metrics capture operational dimensions essential for enterprise deployment: output quality (RAP), classification reliability (VCR), agentic workflow success (ASR, ECR@1), reasoning efficiency (RI), and translation completeness (TCR, CPS).
+
+\subsection{Finding 6: Modular Multi-Agent Architectures Enable Reliable Automation}
+
+\textbf{Well-designed agent systems with clear specialization, sequential coordination, and appropriate human oversight achieve high reliability even with complex multi-step processes.}
+
+Key architectural principles validated across six multi-agent systems:
+\begin{itemize}[leftmargin=*]
+    \item Modular agent specialization with clearly defined responsibilities
+    \item Hierarchical coordination enabling modular task execution
+    \item Information determinism: storing critical data in state variables, not LLM outputs
+    \item Structured handoff protocols for inter-agent communication
+    \item Human oversight mechanisms for high-impact decisions
+\end{itemize}
+
+The 12-category error taxonomy and ASR metric enable systematic diagnosis and improvement of multi-agent system reliability.
+
+\section{Practical Implications}
+\label{sec:practical_implications}
+
+For enterprise practitioners, this research provides actionable guidance across the LLM deployment lifecycle:
+
+\subsection{Model Selection}
+
+\begin{enumerate}[leftmargin=*]
+    \item Consider mid-tier open-source models (7B--32B) for cost-effective deployments with production-ready reliability
+    \item Evaluate task-specific performance rather than relying on general benchmarks
+    \item Match reasoning capabilities to task complexity: use base models for simple classification, reserve reasoning for complex multi-class problems
+    \item Use proprietary APIs as comparison baselines rather than default choices
+    \item For agentic workflows: large models ($\geq$32B) provide production-ready reliability (ASR $>$93\%); small models ($<$4B) are unsuitable for multi-step pipelines
+\end{enumerate}
+
+\subsection{Optimization Strategy}
+
+\begin{enumerate}[leftmargin=*]
+    \item Invest in systematic hyperparameter tuning using metrics like RAP for RAG systems
+    \item Apply targeted fine-tuning for complex reasoning tasks---it consistently outperforms few-shot prompting for deployment reliability (VCR improvements from 1.17\% to 100\%)
+    \item Employ chat templates rather than generic prompts for RAG applications to reduce repetition
+    \item Align optimization metrics with downstream objectives (e.g., F1 tuning for betting produces 2--3$\times$ higher returns than accuracy tuning)
+    \item Leverage few-shot learning as a robust baseline enhancement across all task complexities
+\end{enumerate}
+
+\subsection{Evaluation Framework}
+
+\begin{enumerate}[leftmargin=*]
+    \item Incorporate RAP alongside traditional accuracy measures for RAG systems
+    \item Use VCR to assess output reliability for structured classification tasks
+    \item Measure ECR@1 for agentic systems to capture operational reliability and retry costs
+    \item Adopt ASR or similar stepwise metrics to diagnose failure modes beyond binary success/failure
+    \item Consider Pareto frontier analysis for cost-performance trade-off decisions
+    \item Use LLM-as-Judge approaches for scalable evaluation with appropriate cost-reliability trade-offs (175$\times$ cost variation observed)
+\end{enumerate}
+
+\subsection{Architecture Design}
+
+\begin{enumerate}[leftmargin=*]
+    \item Adopt modular multi-agent designs with clearly defined agent responsibilities for complex workflows
+    \item Implement hierarchical coordination for payment and financial processing systems
+    \item Store critical information in deterministic state variables, not LLM outputs, to prevent hallucination of sensitive data
+    \item Define structured handoff protocols for inter-agent communication
+    \item Incorporate human oversight mechanisms for high-impact decisions
+    \item Budget 5--15\% overhead for reliability failures and implement appropriate retry logic
+\end{enumerate}
+
+\subsection{Infrastructure Planning}
+
+\begin{enumerate}[leftmargin=*]
+    \item Consumer-grade GPUs (RTX 4090, 24GB) support models up to 14B parameters for reasoning tasks
+    \item Professional workstations (48GB+ VRAM) enable 32B--70B model deployment
+    \item Consider Ollama's Q4\_K\_M quantization to extend hardware capabilities with minimal performance loss
+    \item WSL provides up to 21$\times$ throughput improvements over native Windows for smaller models
+    \item Apple Silicon (M3/M4 Max) provides competitive performance for edge scenarios
+    \item Small models (1.5B--3B) achieve highest performance-to-power ratios (0.161--0.163 \%/J) for energy-constrained deployments
+\end{enumerate}
+
+% =========================
+% Drop-in replacement text (ready to paste)
+% Suggested placement: Chapter 6 (Limitations) + a short synthesis in Conclusions
+% =========================
+
+\subsection{Limitations and Threats to Validity}
+\label{sec:limitations}
+
+While the proposed metrics, architectures, and deployment guidelines are empirically validated across multiple tasks, models, and hardware configurations, several limitations should be noted.
+
+\subsubsection{Scope and Generalizability}
+\label{sec:limitations-scope}
+The experiments cover a broad range of enterprise-relevant tasks (e.g., retrieval-augmented generation, agentic workflows, sentiment classification, machine translation, and domain-specific analytics). However, the conclusions may not fully generalize to domains with substantially different constraints or data characteristics (e.g., highly specialized biomedical text, low-resource languages, or long-context legal discovery pipelines). In particular, domain shift can affect both retrieval quality (for RAG) and downstream decision reliability (for agentic systems), and thus deployment recommendations should be revalidated when the target domain differs materially from the evaluation settings.
+
+\subsubsection{Dataset and Benchmark Bias}
+\label{sec:limitations-benchmark-bias}
+Several evaluations rely on established public benchmarks that are primarily English-centric and may not represent the distribution of enterprise documents encountered in production (e.g., internal memos, proprietary templates, multilingual mixed-format documents). This creates potential bias in reported performance and reliability. Future work should extend evaluation to multilingual, format-diverse, and organization-specific corpora to better quantify robustness under real enterprise data distributions.
+
+\subsubsection{Model and Version Volatility}
+\label{sec:limitations-volatility}
+The LLM landscape evolves rapidly, with frequent model releases, parameter updates, and changes in inference stacks. As a result, absolute performance numbers may drift over time, and direct replication can be challenging when (i) model checkpoints are updated, (ii) system prompts or safety layers change, or (iii) inference frameworks alter kernel-level optimizations. To mitigate this, we report configurations and settings where possible and emphasize \emph{comparative} and \emph{principled} findings (e.g., task-dependent reasoning effectiveness, reliability failure modes, and trade-offs between accuracy, cost, and energy) that are expected to remain more stable than any single point estimate.
+
+\subsubsection{Reproducibility Constraints for Proprietary Models}
+\label{sec:limitations-proprietary}
+Some baselines involve proprietary models accessed via hosted APIs. These systems may change without notice, and full transparency into training data, decoding strategies, and infrastructure-level optimizations is unavailable. Consequently, comparisons between open-weight and proprietary models may be affected by unobserved factors beyond the researcher’s control. Where feasible, we triangulate findings using multiple model families and focus on reproducible open-weight configurations to strengthen external validity.
+
+\subsubsection{Operational Assumptions in Agentic Systems}
+\label{sec:limitations-agentic}
+Agentic evaluations necessarily assume specific tool interfaces, orchestration frameworks, and workflow definitions. Real deployments can introduce additional failure modes---for example, authentication issues, rate limits, upstream service outages, tool schema changes, or human-in-the-loop delays. Although the proposed error taxonomy and reliability metrics capture core failure patterns, deployment teams should treat them as a foundation and extend them to include infrastructure- and organization-specific operational risks.
+
+
+\section{Future Research Directions}
+\label{sec:future_directions}
+
+Based on the findings and limitations of this research, several promising directions for future work emerge:
+
+\subsection{Advanced RAG Architectures}
+
+Future research should explore RAG systems that dynamically adjust retrieval strategies:
+\begin{itemize}[leftmargin=*]
+    \item Query-dependent chunk selection and filtering
+    \item Iterative retrieval with progressive refinement
+    \item Multi-stage retrieval combining sparse and dense methods
+    \item Self-evaluating RAG with automatic quality assessment using RAP-like metrics
+    \item Integration of repetition penalty optimization into the retrieval pipeline
+\end{itemize}
+
+\subsection{Adaptive Reasoning Architectures}
+
+Our task-complexity findings motivate research into systems that dynamically adjust reasoning intensity:
+\begin{itemize}[leftmargin=*]
+    \item Hybrid architectures that trigger costly reasoning only when ambiguity warrants it
+    \item Query-complexity detection to route requests to appropriate reasoning modes
+    \item Adaptive thinking budgets that balance accuracy gains against computational overhead
+    \item Task-specific distillation objectives tailored to affective reasoning rather than generic logical skills
+    \item Empirical investigation of the task-complexity threshold where reasoning transitions from harmful to beneficial, potentially enabling automated routing decisions
+\end{itemize}
+
+\subsection{Enhanced Multi-Agent Coordination}
+
+Building on our multi-agent foundations, future work should investigate:
+\begin{itemize}[leftmargin=*]
+    \item Dynamic agent allocation based on task complexity and ASR predictions
+    \item Learning-based coordination protocols optimized via the 12-category error taxonomy
+    \item Fault-tolerant architectures with graceful degradation informed by ECR@1 patterns
+    \item Hybrid human-agent workflows with adaptive automation levels
+    \item Cross-domain transfer of agentic patterns from payments to other financial processes
+\end{itemize}
+
+\subsection{Multimodal Enterprise Applications}
+
+The intersection of agentic AI with emerging modalities presents opportunities:
+\begin{itemize}[leftmargin=*]
+    \item Vision-language agents for document understanding extending invoice reconciliation
+    \item Speech-enabled enterprise assistants with reasoning capabilities
+    \item Video analysis for quality control and monitoring
+    \item Multimodal sentiment analysis combining text and visual signals
+\end{itemize}
+
+\subsection{Continual Learning and Adaptation}
+
+Our temporal robustness findings (10--17 pp degradation on contemporary data) motivate research into models that adapt over time:
+\begin{itemize}[leftmargin=*]
+    \item Techniques for updating models with new domain knowledge
+    \item Methods for detecting and handling distribution shift
+    \item Efficient fine-tuning for rapid customization
+    \item Knowledge retention strategies to prevent catastrophic forgetting
+    \item Periodic RAP recalibration as language patterns evolve
+\end{itemize}
+
+\subsection{Sustainable AI Deployment}
+
+Our energy efficiency findings (performance-to-power ratios varying from 0.05 to 0.163 \%/J) motivate research into:
+\begin{itemize}[leftmargin=*]
+    \item Energy-efficient inference techniques optimized for edge deployment
+    \item Carbon-aware model selection and scheduling
+    \item Lifecycle assessment of AI system deployment
+    \item Trade-offs between accuracy, reasoning intensity, and environmental impact
+\end{itemize}
+
+\section{Concluding Remarks}
+\label{sec:concluding_remarks}
+
+The rapid advancement of Large Language Models presents both opportunities and challenges for enterprise adoption. This dissertation has demonstrated that systematic optimization---spanning model selection, hyperparameter tuning, prompting strategies, fine-tuning, architectural design, and evaluation methodology---enables effective deployment of LLMs for diverse business applications.
+
+The research establishes that open-source models, when properly optimized, can achieve performance competitive with proprietary alternatives while offering advantages in customization, privacy, and cost. Across sixteen publications at premier venues, we demonstrated this principle in RAG systems (Orca-2-13b matching GPT-4), logical reasoning (Qwen2.5-72B surpassing GPT-4o), multi-agent automation (qwen2.5:32b outperforming cloud APIs), and annotation pipelines (qwen3:32b matching GPT-4.1).
+
+A central contribution is the recognition that reasoning effectiveness is task-dependent. The comprehensive evaluation across 504 configurations challenges the prevailing narrative that enhanced reasoning universally improves LLM performance. For simple binary classification, reasoning introduces noise rather than clarity; for complex 27-class emotion recognition, reasoning provides measurable benefits. This task-complexity hypothesis offers principled guidance for practitioners navigating the expanding landscape of reasoning-capable models.
+
+A distinguishing methodological contribution is the development of seven novel evaluation metrics that capture operational dimensions invisible to traditional accuracy-focused assessment. These metrics---RAP, VCR, ECR@1, ASR, RI, TCR, and CPS---provide practitioners with concrete, measurable targets for deployment readiness across the three research pillars. Table~\ref{tab:metrics_summary} summarizes these contributions, demonstrating how the dissertation addresses evaluation gaps across RAG systems, agentic workflows, and enterprise deployment scenarios.
+
+Multi-agent architectures represent a promising paradigm for automating complex workflows that traditionally require human coordination. Our invoice reconciliation system demonstrates that edge-deployed open-source models can outperform cloud APIs while maintaining privacy and reducing operational costs. The 12-category error taxonomy and ASR metric provide systematic tools for diagnosing and improving multi-agent reliability.
+
+Perhaps most importantly, this research emphasizes that thoughtful engineering of the entire deployment pipeline---not merely model selection---determines success in enterprise AI applications. The contributions, guidelines, and insights presented here provide a foundation for responsible and effective integration of generative AI into enterprise operations.
+
+As LLM capabilities continue to advance, the optimization principles established in this dissertation will require ongoing refinement. However, the fundamental insight remains: bridging the gap between AI potential and practical deployment requires systematic attention to evaluation, optimization, and architecture across the entire system lifecycle. The demonstrated success of open-source models on consumer hardware significantly reduces barriers to enterprise AI adoption, enabling organizations of all sizes to deploy sophisticated AI systems while maintaining control over their data, costs, and operational requirements.

@@ -1,0 +1,240 @@
+\documentclass[a4paper,12pt,singleside]{report}
+
+\usepackage[top=1.1in, bottom=1.1in, left=1.5in, right=1.25in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{array}
+\usepackage{algpseudocode}
+\usepackage{anyfontsize}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{courier}
+\usepackage{color}
+\usepackage{dsfont}
+\usepackage{enumitem}
+\usepackage{fleqn}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{helvet}
+\usepackage{latexsym}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{lscape}
+\usepackage{multirow}
+\usepackage{makeidx}
+\usepackage{mathtools}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{pdfpages}
+\usepackage{setspace}
+\usepackage{scrextend}
+\usepackage{subcaption}
+\usepackage{times}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{xurl}
+\usepackage{tabularx}
+\usepackage{microtype}
+\usepackage{footnote}\makesavenoteenv{tabular}
+\usepackage{rotating,booktabs,multirow}
+\usepackage{adjustbox}
+\usepackage{wasysym}
+\usepackage{scalerel,amssymb}
+\usepackage{soul}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage{minted}
+\setminted{breaklines=true, fontsize=\small, frame=lines}
+\usepackage{threeparttable}  % Add to preamble
+
+
+
+% Custom commands
+\newcommand{\ms}{MS MARCO\xspace}
+\newcommand{\rp}{RPP\xspace}
+\newcommand{\rpp}{RPP\xspace}
+\newcommand{\mrs}{MRS\xspace}
+\newcommand{\nwc}{NWC\xspace}
+\newcommand{\webqsp}{WebQSP\xspace}
+\newcommand{\rr}{RR\xspace}
+\newcommand{\rap}{RAP\xspace}
+\newcommand{\alg}{ReDA\xspace}
+\newcommand{\vcr}{VCR\xspace}
+
+\usepackage[UKenglish]{isodate}
+\usepackage[english]{babel}
+\usepackage[square,numbers]{natbib}
+\bibliographystyle{abbrvnat}
+
+\usepackage[pdftex,
+bookmarksnumbered=true, bookmarksopen=true, colorlinks=true,
+citecolor=black, linkcolor=black, anchorcolor=black, urlcolor=black
+]{hyperref}
+
+\doublespacing
+
+\newcommand{\urlwofont}[1]{\urlstyle{same}\url{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}{>{\arraybackslash}m{\linewidth}}
+
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
+\def\ignore#1{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+
+% Author and title
+\def\authorname{Donghao HUANG}
+\def\titletext{Generative AI in Enterprises: Optimizing Applications with Large Language Models}
+
+\begin{document}
+    
+% ============ COVER PAGE ============
+\vspace*{2cm}
+\thispagestyle{empty}
+
+\newcommand{\gradyear}{2026}
+\date{\gradyear}
+
+\begin{center}
+{\Large \MakeUppercase{\titletext}}
+\end{center}
+\vfill
+\begin{center}
+    {\Large \MakeUppercase{\authorname}}
+\end{center}
+\vfill
+\begin{center}
+    {\Large SINGAPORE MANAGEMENT UNIVERSITY}\\
+    {\Large \gradyear}
+\end{center}
+
+\vspace*{2cm}
+
+% ============ TITLE PAGE ============
+\begin{titlepage}
+\begin{center}
+    
+\vspace*{2cm}
+
+{\Large \bfseries \titletext}\\[1cm]
+
+{\large by}
+\vspace{-3pt}
+
+{\large\bf \authorname}\\[1cm]
+
+\begin{singlespace}
+Submitted to School of Computing and Information Systems in partial fulfillment of the requirements for the Degree of Doctor of Engineering (EngD) in Computer Science\\[1.5cm]
+\end{singlespace}
+
+\vspace*{-0.5cm}
+{\bf \underline{Dissertation Committee:}}\\[0.5cm]
+
+\end{center}
+
+\begin{addmargin}[2.5cm]{0cm}
+    \begin{singlespace}
+        Zhaoxia \textsc{WANG} (Supervisor / Chair)\\
+        Associate Professor of Computer Science (Practice), School of Computing and Information Systems\\
+        Singapore Management University
+        \\[0.5cm]
+        Chong Wah \textsc{NGO} (Co-Supervisor / Chair)\\
+        Lee Kong Chian Professor of Computer Science, School of Computing and Information Systems\\
+        Singapore Management University 
+        \\[0.5cm]
+        Qianru \textsc{SUN} \\
+        Associate Professor of Computer Science, School of Computing and Information Systems\\
+        Singapore Management University
+    \end{singlespace}
+\end{addmargin}
+
+\begin{center}
+\vfill {\large Singapore Management University\\\vspace{-3pt}\gradyear}\\
+\vspace*{0.2cm}
+{Copyright (\gradyear) \authorname}
+\end{center}
+\end{titlepage}
+
+% ============ DECLARATION PAGE ============
+\cleanlookdateon
+\hspace{0pt}
+\vfill
+\thispagestyle{empty}
+\begin{center}
+    {\Large \bfseries}\par
+    {\large 
+    I hereby declare that this EngD dissertation is my original work and it has
+     been written by me in its entirety. I have duly\par 
+    acknowledged all the sources of information which have\par
+    been used in this dissertation.\par
+    \vspace{1.5em}
+    This EngD dissertation has also not been submitted for any\par
+    degree in any university previously.\par
+    
+      \vspace{1.2in}
+      % PLACEHOLDER: Add signature image
+      \begin{figure}[!h]
+        \centering\includegraphics[height=0.6in]{images/signature.png}
+      \end{figure}
+      \vspace{-0.4in}
+      % \vspace{0.6in}
+
+    $\rule{15em}{0.15mm}$ \par
+    \vspace{.5em}
+    {\normalsize \authorname}\par
+    {\normalsize\today}\par
+    }
+\end{center}
+\vfill
+\hspace{0pt}
+
+% ============ ABSTRACT ============
+\newpage
+\thispagestyle{empty}
+\input{abstract}
+% ============ ACKNOWLEDGMENTS ============
+% \newpage
+% \input{Acknowledgments}
+
+% ============ TABLE OF CONTENTS ============
+\newpage
+\pagenumbering{roman}
+
+\renewcommand{\contentsname}{Table of Contents}
+\tableofcontents
+
+\newpage
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
+
+\newpage
+\listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
+
+% ============ MAIN CONTENT ============
+\newpage
+\pagenumbering{arabic}
+\sloppy
+
+\input{Chapter_1_Introduction}
+\input{Chapter_2_Literature_Review}
+\input{Chapter_3_RAG_Optimization}
+\input{Chapter_4_Agentic_AI}
+\input{Chapter_5_Strategies}
+\input{Chapter_6_Conclusions}
+
+% ============ BIBLIOGRAPHY ============
+\singlespacing\small
+\bibliography{references}
+
+% ============ APPENDICES ============
+\appendix
+\input{Appendix_A}
+
+\end{document}

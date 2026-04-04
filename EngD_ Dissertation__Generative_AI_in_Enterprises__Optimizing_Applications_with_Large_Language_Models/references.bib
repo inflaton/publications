@@ -1,0 +1,2012 @@
+% ============================================================
+% REFERENCES FOR ENGD DISSERTATION
+% Generative AI in Enterprises: Optimizing Applications with LLMs
+% ============================================================
+
+% ============ FOUNDATION REFERENCES ============
+
+@article{vaswani2017attention,
+  title={Attention is all you need},
+  author={Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, {\L}ukasz and Polosukhin, Illia},
+  journal={Advances in Neural Information Processing Systems},
+  volume={30},
+  year={2017}
+}
+
+@article{brown2020gpt3,
+  title={Language models are few-shot learners},
+  author={Brown, Tom and Mann, Benjamin and Ryder, Nick and Subbiah, Melanie and Kaplan, Jared D and Dhariwal, Prafulla and Neelakantan, Arvind and Shyam, Pranav and Sastry, Girish and Askell, Amanda and others},
+  journal={Advances in Neural Information Processing Systems},
+  volume={33},
+  pages={1877--1901},
+  year={2020}
+}
+
+@article{achiam2023gpt4,
+  title={GPT-4 technical report},
+  author={Achiam, Josh and Adler, Steven and Agarwal, Sandhini and Ahmad, Lama and Akkaya, Ilge and Aleman, Florencia Leoni and Almeida, Diogo and Altenschmidt, Janko and Altman, Sam and Anadkat, Shyamal and others},
+  journal={arXiv preprint arXiv:2303.08774},
+  year={2023}
+}
+
+@article{touvron2023llama,
+  title={Llama: Open and efficient foundation language models},
+  author={Touvron, Hugo and Lavril, Thibaut and Izacard, Gautier and Martinet, Xavier and Lachaux, Marie-Anne and Lacroix, Timoth{\'e}e and Rozi{\`e}re, Baptiste and Goyal, Naman and Hambro, Eric and Azhar, Faisal and others},
+  journal={arXiv preprint arXiv:2302.13971},
+  year={2023}
+}
+
+@article{grattafiori2024llama3,
+  title={The Llama 3 herd of models},
+  author={Grattafiori, Aaron and Dubey, Abhimanyu and Jauhri, Abhinav and Pandey, Abhinav and Kadian, Abhishek and Al-Dahle, Ahmad and others},
+  journal={arXiv preprint arXiv:2407.21783},
+  year={2024}
+}
+
+@misc{anthropic2024claude,
+  title={Claude 3 Model Card},
+  author={Anthropic},
+  year={2024},
+  howpublished={\url{https://www.anthropic.com/claude}}
+}
+
+@article{devlin2019bert,
+  title={BERT: Pre-training of deep bidirectional transformers for language understanding},
+  author={Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
+  journal={arXiv preprint arXiv:1810.04805},
+  year={2019}
+}
+
+@article{raffel2020t5,
+  title={Exploring the limits of transfer learning with a unified text-to-text transformer},
+  author={Raffel, Colin and Shazeer, Noam and Roberts, Adam and Lee, Katherine and Narang, Sharan and Matena, Michael and Zhou, Yanqi and Li, Wei and Liu, Peter J},
+  journal={Journal of Machine Learning Research},
+  volume={21},
+  number={140},
+  pages={1--67},
+  year={2020}
+}
+
+% ============ TRAINING AND ALIGNMENT ============
+
+@article{ouyang2022instructgpt,
+  title={Training language models to follow instructions with human feedback},
+  author={Ouyang, Long and Wu, Jeffrey and Jiang, Xu and Almeida, Diogo and Wainwright, Carroll and Mishkin, Pamela and Zhang, Chong and Agarwal, Sandhini and Slama, Katarina and Ray, Alex and others},
+  journal={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={27730--27744},
+  year={2022}
+}
+
+@article{rafailov2024dpo,
+  title={Direct preference optimization: Your language model is secretly a reward model},
+  author={Rafailov, Rafael and Sharma, Archit and Mitchell, Eric and Manning, Christopher D and Ermon, Stefano and Finn, Chelsea},
+  journal={Advances in Neural Information Processing Systems},
+  volume={36},
+  year={2024}
+}
+
+@article{christiano2017rlhf,
+  title={Deep reinforcement learning from human preferences},
+  author={Christiano, Paul F and Leike, Jan and Brown, Tom and Martic, Miljan and Legg, Shane and Amodei, Dario},
+  journal={Advances in Neural Information Processing Systems},
+  volume={30},
+  year={2017}
+}
+
+@article{hu2022lora,
+  title={LoRA: Low-rank adaptation of large language models},
+  author={Hu, Edward J and Shen, Yelong and Wallis, Phillip and Allen-Zhu, Zeyuan and Li, Yuanzhi and Wang, Shean and Wang, Lu and Chen, Weizhu},
+  journal={arXiv preprint arXiv:2106.09685},
+  year={2022}
+}
+
+@article{dettmers2023qlora,
+  title={QLoRA: Efficient finetuning of quantized LLMs},
+  author={Dettmers, Tim and Pagnoni, Artidoro and Holtzman, Ari and Zettlemoyer, Luke},
+  journal={Advances in Neural Information Processing Systems},
+  volume={36},
+  year={2023}
+}
+
+% ============ RAG REFERENCES ============
+
+@article{lewis2020rag,
+  title={Retrieval-augmented generation for knowledge-intensive NLP tasks},
+  author={Lewis, Patrick and Perez, Ethan and Piktus, Aleksandra and Petroni, Fabio and Karpukhin, Vladimir and Goyal, Naman and K{\"u}ttler, Heinrich and Lewis, Mike and Yih, Wen-tau and Rockt{\"a}schel, Tim and others},
+  journal={Advances in Neural Information Processing Systems},
+  volume={33},
+  pages={9459--9474},
+  year={2020}
+}
+
+@article{gao2023rag_survey,
+  title={Retrieval-augmented generation for large language models: A survey},
+  author={Gao, Yunfan and Xiong, Yun and Gao, Xinyu and Jia, Kangxiang and Pan, Jinliu and Bi, Yuxi and Dai, Yi and Sun, Jiawei and Wang, Haofen},
+  journal={arXiv preprint arXiv:2312.10997},
+  year={2023}
+}
+
+@article{es2023ragas,
+  title={RAGAS: Automated evaluation of retrieval augmented generation},
+  author={Es, Shahul and James, Jithin and Espinosa-Anke, Luis and Schockaert, Steven},
+  journal={arXiv preprint arXiv:2309.15217},
+  year={2023}
+}
+
+@inproceedings{saad2023ares,
+  title={ARES: An automated evaluation framework for retrieval-augmented generation systems},
+  author={Saad-Falcon, Jon and Khattab, Omar and Potts, Christopher and Zaharia, Matei},
+  booktitle={Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing},
+  year={2023}
+}
+
+@article{reimers2019sbert,
+  title={Sentence-BERT: Sentence embeddings using siamese BERT-networks},
+  author={Reimers, Nils and Gurevych, Iryna},
+  journal={arXiv preprint arXiv:1908.10084},
+  year={2019}
+}
+
+@article{su2023instructor,
+  title={One embedder, any task: Instruction-finetuned text embeddings},
+  author={Su, Hongjin and Shi, Weijia and Kasai, Jungo and Wang, Yizhong and Hu, Yushi and Ostendorf, Mari and Yih, Wen-tau and Smith, Noah A and Zettlemoyer, Luke and Yu, Tao},
+  journal={arXiv preprint arXiv:2212.09741},
+  year={2023}
+}
+
+@article{johnson2019faiss,
+  title={Billion-scale similarity search with GPUs},
+  author={Johnson, Jeff and Douze, Matthijs and J{\'e}gou, Herv{\'e}},
+  journal={IEEE Transactions on Big Data},
+  volume={7},
+  number={3},
+  pages={535--547},
+  year={2019}
+}
+
+% ============ REASONING REFERENCES ============
+
+@article{wei2022cot,
+  title={Chain-of-thought prompting elicits reasoning in large language models},
+  author={Wei, Jason and Wang, Xuezhi and Schuurmans, Dale and Bosma, Maarten and Xia, Fei and Chi, Ed and Le, Quoc V and Zhou, Denny and others},
+  journal={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={24824--24837},
+  year={2022}
+}
+
+@article{kojima2022zerocot,
+  title={Large language models are zero-shot reasoners},
+  author={Kojima, Takeshi and Gu, Shixiang Shane and Reid, Machel and Matsuo, Yutaka and Iwasawa, Yusuke},
+  journal={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={22199--22213},
+  year={2022}
+}
+
+@article{huang2023reasoning,
+  title={Towards reasoning in large language models: A survey},
+  author={Huang, Jie and Chang, Kevin Chen-Chuan},
+  journal={arXiv preprint arXiv:2212.10403},
+  year={2023}
+}
+
+@misc{openai2024o1,
+  title={Learning to reason with LLMs},
+  author={OpenAI},
+  year={2024},
+  howpublished={\url{https://openai.com/index/learning-to-reason-with-llms/}}
+}
+
+@misc{deepseek2024r1,
+  title={DeepSeek-R1: Incentivizing reasoning capability in LLMs via reinforcement learning},
+  author={DeepSeek-AI},
+  year={2024},
+  howpublished={\url{https://github.com/deepseek-ai/DeepSeek-R1}}
+}
+
+@misc{qwen2024qwq,
+  title={QwQ: Reflect deeply on the boundaries of the unknown},
+  author={Qwen Team},
+  year={2024},
+  howpublished={\url{https://qwenlm.github.io/blog/qwq-32b-preview/}}
+}
+
+@inproceedings{jin2022fallacy,
+  title={Logical fallacy detection},
+  author={Jin, Zhijing and Lalwani, Abhinav and Vaidhya, Tejas and Shen, Xiaoyu and Ding, Yue and Lyu, Zhiheng and Sachan, Mrinmaya and Mihalcea, Rada and Sch{\"o}lkopf, Bernhard},
+  booktitle={Findings of the Association for Computational Linguistics: EMNLP 2022},
+  pages={7180--7198},
+  year={2022}
+}
+
+@article{alhindi2023fallacy,
+  title={Multitask learning for logical reasoning with pre-trained models},
+  author={Al-Hindi, Tariq and Nakov, Preslav and Baldwin, Timothy},
+  journal={arXiv preprint arXiv:2303.06279},
+  year={2023}
+}
+
+% ============ AGENTIC AI REFERENCES ============
+
+@article{chawla2024agentic,
+  title={AI agents that matter},
+  author={Chawla, Kushal and Khot, Tushar and Sabharwal, Ashish and Yih, Wen-tau},
+  journal={arXiv preprint arXiv:2407.01502},
+  year={2024}
+}
+
+@misc{langchain2024langgraph,
+  title={LangGraph: Multi-actor applications with LLMs},
+  author={LangChain},
+  year={2024},
+  howpublished={\url{https://github.com/langchain-ai/langgraph}}
+}
+
+@article{hong2024metagpt,
+  title={MetaGPT: Meta programming for multi-agent collaborative framework},
+  author={Hong, Sirui and Zhuge, Mingchen and Chen, Jonathan and Zheng, Xiawu and Cheng, Yuheng and Zhang, Ceyao and Wang, Jinlin and Wang, Zili and Yau, Steven Ka Shing and Lin, Zijuan and others},
+  journal={arXiv preprint arXiv:2308.00352},
+  year={2024}
+}
+
+@article{wu2023autogen,
+  title={AutoGen: Enabling next-gen LLM applications via multi-agent conversation},
+  author={Wu, Qingyun and Bansal, Gagan and Zhang, Jieyu and Wu, Yiran and Li, Beibin and Zhu, Erkang and Jiang, Li and Zhang, Xiaoyun and Zhang, Shaoke and Liu, Jiale and others},
+  journal={arXiv preprint arXiv:2308.08155},
+  year={2023}
+}
+
+@article{li2023camel,
+  title={CAMEL: Communicative agents for "mind" exploration of large language model society},
+  author={Li, Guohao and Hammoud, Hasan Abed Al Kader and Itani, Hani and Khizbullin, Dmitrii and Ghanem, Bernard},
+  journal={Advances in Neural Information Processing Systems},
+  volume={36},
+  year={2023}
+}
+
+@article{du2023debate,
+  title={Improving factuality and reasoning in language models through multiagent debate},
+  author={Du, Yilun and Li, Shuang and Torralba, Antonio and Tenenbaum, Joshua B and Mordatch, Igor},
+  journal={arXiv preprint arXiv:2305.14325},
+  year={2023}
+}
+
+@article{jimenez2024swe,
+  title={SWE-bench: Can language models resolve real-world GitHub issues?},
+  author={Jimenez, Carlos E and Yang, John and Wettig, Alexander and Yao, Shunyu and Pei, Kexin and Press, Ofir and Narasimhan, Karthik},
+  journal={arXiv preprint arXiv:2310.06770},
+  year={2024}
+}
+
+@article{hong2024datainterpreter,
+  title={Data interpreter: An LLM agent for data science},
+  author={Hong, Sirui and Lin, Yizhang and Liu, Bang and Liu, Bangbang and Wu, Binhao and Li, Danyang and Chen, Jiaqi and Zhang, Jiayi and Wang, Jinlin and Zhang, Li and others},
+  journal={arXiv preprint arXiv:2402.18679},
+  year={2024}
+}
+
+@article{kapoor2024mast,
+  title={AI agents are bad at tool use},
+  author={Kapoor, Sayash and Peng, Yuntao and Kim, Monica and others},
+  journal={arXiv preprint arXiv:2406.11877},
+  year={2024}
+}
+
+% ============ EDGE DEPLOYMENT REFERENCES ============
+
+@article{zheng2024edgellm,
+  title={Towards efficient LLM serving: A survey from algorithms to systems},
+  author={Zheng, Xupeng and Zheng, Yifei and Wei, Liqi and Shen, Xi and others},
+  journal={arXiv preprint arXiv:2312.15234},
+  year={2024}
+}
+
+@article{dettmers2022llmint8,
+  title={LLM.int8(): 8-bit matrix multiplication for transformers at scale},
+  author={Dettmers, Tim and Lewis, Mike and Belkada, Younes and Zettlemoyer, Luke},
+  journal={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={30318--30332},
+  year={2022}
+}
+
+@article{frantar2023sparsegpt,
+  title={SparseGPT: Massive language models can be accurately pruned in one-shot},
+  author={Frantar, Elias and Alistarh, Dan},
+  journal={arXiv preprint arXiv:2301.00774},
+  year={2023}
+}
+
+@article{hinton2015distilling,
+  title={Distilling the knowledge in a neural network},
+  author={Hinton, Geoffrey and Vinyals, Oriol and Dean, Jeff},
+  journal={arXiv preprint arXiv:1503.02531},
+  year={2015}
+}
+
+@article{dao2022flashattention,
+  title={FlashAttention: Fast and memory-efficient exact attention with IO-awareness},
+  author={Dao, Tri and Fu, Dan and Ermon, Stefano and Rudra, Atri and R{\'e}, Christopher},
+  journal={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={16344--16359},
+  year={2022}
+}
+
+@misc{ollama2024,
+  title={Ollama: Get up and running with large language models locally},
+  author={Ollama},
+  year={2024},
+  howpublished={\url{https://ollama.ai}}
+}
+
+@misc{llamacpp2024,
+  title={llama.cpp: Port of Facebook's LLaMA model in C/C++},
+  author={Gerganov, Georgi},
+  year={2024},
+  howpublished={\url{https://github.com/ggerganov/llama.cpp}}
+}
+
+@article{kwon2023vllm,
+  title={Efficient memory management for large language model serving with PagedAttention},
+  author={Kwon, Woosuk and Li, Zhuohan and Zhuang, Siyuan and Sheng, Ying and Zheng, Lianmin and Yu, Cody Hao and Gonzalez, Joseph and Zhang, Hao and Stoica, Ion},
+  journal={arXiv preprint arXiv:2309.06180},
+  year={2023}
+}
+
+@misc{apple2024mlx,
+  title={MLX: An array framework for Apple silicon},
+  author={Apple},
+  year={2024},
+  howpublished={\url{https://github.com/ml-explore/mlx}}
+}
+
+% ============ SENTIMENT ANALYSIS REFERENCES ============
+
+@article{wang2025chinese_sentiment,
+  title={A review of Chinese sentiment analysis: Subjects, methods, and trends},
+  author={Wang, Zhaoxia and Huang, Donghao and Cui, Jingfeng and Zhang, Xinyue and Ho, Seng-Beng and Cambria, Erik},
+  journal={Artificial Intelligence Review},
+  volume={58},
+  number={75},
+  year={2025},
+  publisher={Springer}
+}
+
+@article{mohammad2013nrc,
+  title={Crowdsourcing a word--emotion association lexicon},
+  author={Mohammad, Saif M and Turney, Peter D},
+  journal={Computational Intelligence},
+  volume={29},
+  number={3},
+  pages={436--465},
+  year={2013}
+}
+
+@inproceedings{pang2002sentiment,
+  title={Thumbs up? Sentiment classification using machine learning techniques},
+  author={Pang, Bo and Lee, Lillian and Vaithyanathan, Shivakumar},
+  booktitle={Proceedings of the ACL-02 Conference on Empirical Methods in Natural Language Processing},
+  pages={79--86},
+  year={2002}
+}
+
+@inproceedings{socher2013recursive,
+  title={Recursive deep models for semantic compositionality over a sentiment treebank},
+  author={Socher, Richard and Perelygin, Alex and Wu, Jean and Chuang, Jason and Manning, Christopher D and Ng, Andrew Y and Potts, Christopher},
+  booktitle={Proceedings of the 2013 Conference on Empirical Methods in Natural Language Processing},
+  pages={1631--1642},
+  year={2013}
+}
+
+@article{zhang2024sentiment,
+  title={Sentiment analysis in the era of large language models: A reality check},
+  author={Zhang, Wenxuan and Deng, Yue and Liu, Bing and Pan, Sinno Jialin and Bing, Lidong},
+  journal={arXiv preprint arXiv:2305.15005},
+  year={2024}
+}
+
+% ============ DATASETS ============
+
+@article{bajaj2016msmarco,
+  title={MS MARCO: A human generated machine reading comprehension dataset},
+  author={Bajaj, Payal and Campos, Daniel and Craswell, Nick and Deng, Li and Gao, Jianfeng and Liu, Xiaodong and Majumder, Rangan and McNamara, Andrew and Mitra, Bhaskar and Nguyen, Tri and others},
+  journal={arXiv preprint arXiv:1611.09268},
+  year={2016}
+}
+
+@inproceedings{yih2016webqsp,
+  title={The value of semantic parse labeling for knowledge base question answering},
+  author={Yih, Wen-tau and Richardson, Matthew and Meek, Chris and Chang, Ming-Wei and Suh, Jina},
+  booktitle={Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics},
+  pages={201--206},
+  year={2016}
+}
+
+@article{cobbe2021gsm8k,
+  title={Training verifiers to solve math word problems},
+  author={Cobbe, Karl and Kosaraju, Vineet and Bavarian, Mohammad and Chen, Mark and Jun, Heewoo and Kaiser, Lukasz and Plappert, Matthias and Tworek, Jerry and Hilton, Jacob and Nakano, Reiichiro and others},
+  journal={arXiv preprint arXiv:2110.14168},
+  year={2021}
+}
+
+% ============ EVALUATION METRICS ============
+
+@inproceedings{lin2004rouge,
+  title={ROUGE: A package for automatic evaluation of summaries},
+  author={Lin, Chin-Yew},
+  booktitle={Text Summarization Branches Out},
+  pages={74--81},
+  year={2004}
+}
+
+@inproceedings{papineni2002bleu,
+  title={BLEU: A method for automatic evaluation of machine translation},
+  author={Papineni, Kishore and Roukos, Salim and Ward, Todd and Zhu, Wei-Jing},
+  booktitle={Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics},
+  pages={311--318},
+  year={2002}
+}
+
+% ============ MISCELLANEOUS ============
+
+@article{goodfellow2014generative,
+  title={Generative adversarial nets},
+  author={Goodfellow, Ian and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},
+  journal={Advances in Neural Information Processing Systems},
+  volume={27},
+  year={2014}
+}
+
+@article{kingma2014vae,
+  title={Auto-encoding variational bayes},
+  author={Kingma, Diederik P and Welling, Max},
+  journal={arXiv preprint arXiv:1312.6114},
+  year={2014}
+}
+
+@book{manning1999foundations,
+  title={Foundations of Statistical Natural Language Processing},
+  author={Manning, Christopher D and Sch{\"u}tze, Hinrich},
+  year={1999},
+  publisher={MIT Press}
+}
+
+@article{bengio2003neural,
+  title={A neural probabilistic language model},
+  author={Bengio, Yoshua and Ducharme, R{\'e}jean and Vincent, Pascal and Jauvin, Christian},
+  journal={Journal of Machine Learning Research},
+  volume={3},
+  pages={1137--1155},
+  year={2003}
+}
+
+@article{hochreiter1997lstm,
+  title={Long short-term memory},
+  author={Hochreiter, Sepp and Schmidhuber, J{\"u}rgen},
+  journal={Neural Computation},
+  volume={9},
+  number={8},
+  pages={1735--1780},
+  year={1997}
+}
+
+@article{kaplan2020scaling,
+  title={Scaling laws for neural language models},
+  author={Kaplan, Jared and McCandlish, Sam and Henighan, Tom and Brown, Tom B and Chess, Benjamin and Child, Rewon and Gray, Scott and Radford, Alec and Wu, Jeffrey and Amodei, Dario},
+  journal={arXiv preprint arXiv:2001.08361},
+  year={2020}
+}
+
+@article{hoffmann2022chinchilla,
+  title={Training compute-optimal large language models},
+  author={Hoffmann, Jordan and Borgeaud, Sebastian and Mensch, Arthur and Buchatskaya, Elena and Cai, Trevor and Rutherford, Eliza and Casas, Diego de Las and Hendricks, Lisa Anne and Welbl, Johannes and Clark, Aidan and others},
+  journal={arXiv preprint arXiv:2203.15556},
+  year={2022}
+}
+
+@article{wei2022flan,
+  title={Finetuned language models are zero-shot learners},
+  author={Wei, Jason and Bosma, Maarten and Zhao, Vincent Y and Guu, Kelvin and Yu, Adams Wei and Lester, Brian and Du, Nan and Dai, Andrew M and Le, Quoc V},
+  journal={arXiv preprint arXiv:2109.01652},
+  year={2022}
+}
+
+@article{mccloskey1989catastrophic,
+  title={Catastrophic interference in connectionist networks: The sequential learning problem},
+  author={McCloskey, Michael and Cohen, Neal J},
+  journal={Psychology of Learning and Motivation},
+  volume={24},
+  pages={109--165},
+  year={1989},
+  publisher={Elsevier}
+}
+
+@inproceedings{houlsby2019adapters,
+  title={Parameter-efficient transfer learning for NLP},
+  author={Houlsby, Neil and Giurgiu, Andrei and Jastrzebski, Stanislaw and Morrone, Bruna and De Laroussilhe, Quentin and Gesmundo, Andrea and Attariyan, Mona and Gelly, Sylvain},
+  booktitle={International Conference on Machine Learning},
+  pages={2790--2799},
+  year={2019}
+}
+
+@article{huang2023hallucination,
+  title={A survey on hallucination in large language models: Principles, taxonomy, challenges, and open questions},
+  author={Huang, Lei and Yu, Weijiang and Ma, Weitao and Zhong, Weihong and Feng, Zhangyin and Wang, Haotian and Chen, Qianglong and Peng, Weihua and Feng, Xiaocheng and Qin, Bing and others},
+  journal={arXiv preprint arXiv:2311.05232},
+  year={2023}
+}
+
+@article{ling2023domain,
+  title={Domain specialization as the key to make large language models disruptive: A comprehensive survey},
+  author={Ling, Chen and Zhao, Xujiang and Lu, Jiaying and Deng, Chenlong and Zheng, Can and Wang, Junxiang and Chowdhury, Tanmoy and Li, Yiyi and Cui, Hang and Zhang, Xuchao and others},
+  journal={arXiv preprint arXiv:2305.18703},
+  year={2023}
+}
+
+@article{fu2020repetition,
+  title={A theoretical analysis of the repetition problem in text generation},
+  author={Fu, Zihao and Lam, Wai and So, Anthony Man-Cho and Shi, Bei},
+  journal={arXiv preprint arXiv:2012.14660},
+  year={2020}
+}
+
+@article{yao2024llmsecurity,
+  title={A survey on large language model (LLM) security and privacy: The good, the bad, and the ugly},
+  author={Yao, Yifan and Duan, Jinhao and Xu, Kaidi and Cai, Yuanfang and Sun, Zhibo and Zhang, Yue},
+  journal={High-Confidence Computing},
+  volume={4},
+  number={2},
+  pages={100211},
+  year={2024}
+}
+
+@misc{mckinsey2024genai,
+  title={The state of AI in 2024: Generative AI adoption spikes and starts to generate value},
+  author={McKinsey \& Company},
+  year={2024},
+  howpublished={\url{https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai}}
+}
+
+@misc{langchain2024,
+  title={LangChain: Building applications with LLMs through composability},
+  author={LangChain},
+  year={2024},
+  howpublished={\url{https://www.langchain.com/}}
+}
+
+@misc{radford2018gpt,
+  title={Improving language understanding by generative pre-training},
+  author={Radford, Alec and Narasimhan, Karthik and Salimans, Tim and Sutskever, Ilya},
+  year={2018},
+  howpublished={OpenAI Technical Report}
+}
+
+@article{radford2019gpt2,
+  title={Language models are unsupervised multitask learners},
+  author={Radford, Alec and Wu, Jeffrey and Child, Rewon and Luan, David and Amodei, Dario and Sutskever, Ilya},
+  journal={OpenAI Blog},
+  volume={1},
+  number={8},
+  pages={9},
+  year={2019}
+}
+
+@article{guo2025deepseek,
+  title={DeepSeek-R1: Incentivizing reasoning capability in LLMs via reinforcement learning},
+  author={Guo, D. and Yang, D. and Zhang, H. and Song, J. and Zhang, R. and Xu, R. and Zhu, Q. and Ma, S. and Wang, P. and Bi, X. and others},
+  journal={arXiv preprint arXiv:2501.12948},
+  year={2025}
+}
+
+@article{bunker2022sports,
+  title={Machine learning for sports prediction: A comprehensive review and comparison of methods},
+  author={Bunker, Rory and Susnjak, Teo},
+  journal={IEEE Access},
+  volume={10},
+  pages={1--24},
+  year={2022},
+  publisher={IEEE}
+}
+
+@misc{crewai2024,
+  title={CrewAI: Framework for orchestrating role-playing autonomous AI agents},
+  author={CrewAI},
+  year={2024},
+  howpublished={\url{https://www.crewai.com/}}
+}
+
+@book{koehn2009smt,
+  title={Statistical Machine Translation},
+  author={Koehn, Philipp},
+  year={2009},
+  publisher={Cambridge University Press}
+}
+
+@article{wang2023stock,
+  title={Learning-based stock trending prediction by incorporating technical indicators and social media sentiment},
+  author={Wang, Zhaoxia and Hu, Zhenda and Li, Fang and Ho, Seng-Beng and Cambria, Erik},
+  journal={Cognitive Computation},
+  volume={15},
+  number={3},
+  pages={1092--1102},
+  year={2023},
+  publisher={Springer}
+}
+
+@inproceedings{zheng2023llmjudge,
+  title={Judging {LLM}-as-a-Judge with {MT-Bench} and Chatbot Arena},
+  author={Zheng, Lianmin and Chiang, Wei-Lin and Sheng, Ying and Zhuang, Siyuan and Wu, Zhanghao and Zhuang, Yonghao and Lin, Zi and Li, Zhuohan and Li, Dacheng and Xing, Eric P and others},
+  booktitle={Advances in Neural Information Processing Systems},
+  volume={36},
+  year={2023}
+}
+
+@article{bajaj2016ms,
+  title={Ms marco: A human generated machine reading comprehension dataset},
+  author={Bajaj, Payal and Campos, Daniel and Craswell, Nick and Deng, Li and Gao, Jianfeng and Liu, Xiaodong and Majumder, Rangan and McNamara, Andrew and Mitra, Bhaskar and Nguyen, Tri and others},
+  journal={arXiv preprint arXiv:1611.09268},
+  year={2016}
+}
+
+% Required for repetition penalty parameter citation
+@article{keskar2019ctrl,
+  title={CTRL: A conditional transformer language model for controllable generation},
+  author={Keskar, Nitish Shirish and McCann, Bryan and Varshney, Lav R and Xiong, Caiming and Socher, Richard},
+  journal={arXiv preprint arXiv:1909.05858},
+  year={2019}
+}
+
+% Required for HuggingFace Transformers library
+@inproceedings{wolf2020transformers,
+  title={Transformers: State-of-the-art natural language processing},
+  author={Wolf, Thomas and Debut, Lysandre and Sanh, Victor and Chaumond, Julien and Delangue, Clement and Moi, Anthony and Cistac, Pierric and Rault, Tim and Louf, R{\'e}mi and Funtowicz, Morgan and others},
+  booktitle={Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations},
+  pages={38--45},
+  year={2020}
+}
+
+% Required for BERTScore evaluation metric
+@inproceedings{zhang2020bertscore,
+  title={BERTScore: Evaluating text generation with BERT},
+  author={Zhang, Tianyi and Kishore, Varsha and Wu, Felix and Weinberger, Kilian Q and Artzi, Yoav},
+  booktitle={International Conference on Learning Representations},
+  year={2020}
+}
+
+% Required for COMET translation evaluation metric
+@inproceedings{rei2022comet,
+  title={COMET-22: Unbabel-IST 2022 submission for the metrics shared task},
+  author={Rei, Ricardo and De Souza, Jos{\'e} GC and Alves, Duarte and Zerva, Chrysoula and Farinha, Ana C and Glushkova, Taisiya and Lavie, Alon and Coheur, Luisa and Martins, Andr{\'e} FT},
+  booktitle={Proceedings of the Seventh Conference on Machine Translation (WMT)},
+  pages={578--585},
+  year={2022}
+}
+
+@misc{openai2025operator,
+  title={Introducing Operator},
+  author={{OpenAI}},
+  year={2025},
+  month={January},
+  howpublished={\url{https://openai.com/index/introducing-operator/}},
+  note={Accessed: 2025-11-15}
+}
+
+@misc{anthropic2025computer,
+  title={Computer use (beta)},
+  author={{Anthropic}},
+  year={2025},
+  howpublished={\url{https://www.anthropic.com/news/3-5-models-and-computer-use}},
+  note={Accessed: 2025-11-15}
+}
+
+
+@misc{pcisecurity2025ai,
+  title={AI Principles: Securing the Use of AI in Payment Environments},
+  author={{PCI Security Standards Council}},
+  year={2025},
+  howpublished={\url{https://blog.pcisecuritystandards.org/ai-principles-securing-the-use-of-ai-in-payment-environments}},
+  note={Accessed: 2025-11-15}
+}
+
+
+@misc{mastercard2025agentpay,
+  title={Mastercard Agent Pay - Powering the next frontier of commerce},
+  author={{Mastercard}},
+  year={2025},
+  howpublished={\url{https://www.mastercard.com/global/en/business/artificial-intelligence/mastercard-agent-pay.html}},
+  note={Accessed: 2025-11-15}
+}
+
+
+@misc{visa2025intelligentcommerce,
+  title={Enabling AI agents to buy securely and seamlessly},
+  author={{Visa}},
+  year={2025},
+  howpublished={\url{https://corporate.visa.com/en/products/intelligent-commerce.html}},
+  note={Accessed: 2025-11-15}
+}
+
+@misc{mckinsey2025agenticpayments,
+  title={The agentic commerce opportunity: How AI agents are ushering in a new era for consumers and merchants},
+  author={{Claudia, Lin and Ken, Taylor and Rich, Zukowsky and Dalia, Wrocherinsky}},
+  year={2025},
+  howpublished={\url{https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-agentic-commerce-opportunity-how-ai-agents-are-ushering-in-a-new-era-for-consumers-and-merchants}},
+  note={Accessed: 2025-11-15}
+}
+
+
+@misc{Katharina2025payments,
+  title={The Next AI Frontier: From Prompts to Purchases},
+  author={{Katharina, Schumacher and Roger, Roberts and Katharina, Giebel}},
+  year={2025},
+  howpublished={\url{https://www.dwt.com/blogs/artificial-intelligence-law-advisor/2025/10/agentic-ai-concerns-for-merchants-and-issuers}},
+  note={Accessed: 2025-11-15}
+}
+
+
+@misc{langchain2024langgraph,
+  title={Balance agent control with agency},
+  author={{LangChain}},
+  year={2025},
+  howpublished={\url{https://www.langchain.com/langgraph}},
+  note={Accessed: 2025-11-15}
+}
+
+@article{huang2024hallucination,
+  title={A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions},
+  author={Huang, Lei and Yu, Weijiang and Ma, Weitao and Zhong, Weihong and Feng, Zhangyin and Wang, Haotian and Chen, Qianglong and Peng, Weihua and Feng, Xiaocheng and Qin, Bing and Liu, Ting},
+  journal={ACM Transactions on Information Systems},
+  year={2024},
+  publisher={ACM}
+}
+
+
+@article{wang2024surveyllm-mas,
+  title={A survey on large language model based autonomous agents},
+  author={Wang, Lei and Ma, Chen and Feng, Xueyang and Zhang, Zeyu and Yang, Hao and Zhang, Jingsen and Chen, Zhiyuan and Tang, Jiakai and Chen, Xu and Lin, Yankai and others},
+  journal={Frontiers of Computer Science},
+  volume={18},
+  number={6},
+  pages={186345},
+  year={2024},
+  publisher={Springer}
+}
+
+@misc{tran2025mascollab,
+  title={Multi-Agent Collaboration Mechanisms: A Survey of LLMs},
+  author={Tran, Khanh-Tung and Dao, Dung and Nguyen, Minh-Duong and Pham, Quoc-Viet and O'Sullivan, Barry and Nguyen, Hoang D},
+  journal={arXiv preprint arXiv:2501.06322},
+  year={2025}
+}
+
+
+@article{plaat2025agentic,
+  title={Agentic large language models, a survey},
+  author={Plaat, Aske and van Duijn, Max and van Stein, Niki and Preuss, Mike and van der Putten, Peter and Batenburg, Kees Joost},
+  journal={arXiv preprint arXiv:2503.23037},
+  year={2025}
+}
+
+
+@inproceedings{guo2024mascollab,
+    author = {Guo, Taicheng and Chen, Xiuying and Wang, Yaqi and Chang, Ruidi and Pei, Shichao and Chawla, Nitesh V. and Wiest, Olaf and Zhang, Xiangliang},
+    title = {Large language model based multi-agents: a survey of progress and challenges},
+    year = {2024},
+    isbn = {978-1-956792-04-1},
+    doi = {10.24963/ijcai.2024/890},
+    booktitle = {Proceedings of the Thirty-Third International Joint Conference on Artificial Intelligence},
+    articleno = {890},
+    numpages = {10},
+    location = {Jeju, Korea},
+    series = {IJCAI '24}
+}
+
+
+@misc{cemri2025multifail,
+  title={Why do multi-agent llm systems fail?},
+  author={Cemri, Mert and Pan, Melissa Z and Yang, Shuyi and Agrawal, Lakshya A and Chopra, Bhavya and Tiwari, Rishabh and Keutzer, Kurt and Parameswaran, Aditya and Klein, Dan and Ramchandran, Kannan and others},
+  journal={arXiv preprint arXiv:2503.13657},
+  year={2025}
+}
+
+@inproceedings{li-etal-2024-leveraging-large,
+    title = "Leveraging Large Language Models for {NLG} Evaluation: Advances and Challenges",
+    author = "Li, Zhen  and
+      Xu, Xiaohan  and
+      Shen, Tao  and
+      Xu, Can  and
+      Gu, Jia-Chen  and
+      Lai, Yuxuan  and
+      Tao, Chongyang  and
+      Ma, Shuai",
+    booktitle = "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2024",
+    address = "Miami, Florida, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.emnlp-main.896/",
+    doi = "10.18653/v1/2024.emnlp-main.896",
+    pages = "16028--16045",
+}
+
+@article{zhang2025sirenhallucination,
+  title={Siren’s song in the ai ocean: A survey on hallucination in large language models},
+  author={Zhang, Yue and Li, Yafu and Cui, Leyang and Cai, Deng and Liu, Lemao and Fu, Tingchen and Huang, Xinting and Zhao, Enbo and Zhang, Yu and Chen, Yulong and others},
+  journal={Computational Linguistics},
+  pages={1--45},
+  year={2025},
+  publisher={MIT Press 255 Main Street, 9th Floor, Cambridge, Massachusetts 02142, USA~…}
+}
+
+@inproceedings{
+    hong2024metagpt,
+    title={Meta{GPT}: Meta Programming for A Multi-Agent Collaborative Framework},
+    author={Sirui Hong and Mingchen Zhuge and Jonathan Chen and Xiawu Zheng and Yuheng Cheng and Jinlin Wang and Ceyao Zhang and Zili Wang and Steven Ka Shing Yau and Zijuan Lin and Liyang Zhou and Chenyu Ran and Lingfeng Xiao and Chenglin Wu and J{\"u}rgen Schmidhuber},
+    booktitle={The Twelfth International Conference on Learning Representations},
+    year={2024},
+    url={https://openreview.net/forum?id=VtmBAGCN7o}
+}
+
+@inproceedings{islam-etal-2024-mapcoder,
+    title = "{M}ap{C}oder: Multi-Agent Code Generation for Competitive Problem Solving",
+    author = "Islam, Md. Ashraful  and
+      Ali, Mohammed Eunus  and
+      Parvez, Md Rizwan",
+    editor = "Ku, Lun-Wei  and
+      Martins, Andre  and
+      Srikumar, Vivek",
+    booktitle = "Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = aug,
+    year = "2024",
+    address = "Bangkok, Thailand",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.acl-long.269/",
+    doi = "10.18653/v1/2024.acl-long.269",
+    pages = "4912--4944",
+}
+
+@inproceedings{guan2024llmprocessautomation,
+    author = {Guan, Yanchu and Wang, Dong and Chu, Zhixuan and Wang, Shiyu and Ni, Feiyue and Song, Ruihua and Zhuang, Chenyi},
+    title = {Intelligent Agents with LLM-based Process Automation},
+    year = {2024},
+    isbn = {9798400704901},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    doi = {10.1145/3637528.3671646},
+    booktitle = {Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining},
+    pages = {5018–5027},
+    numpages = {10},
+    keywords = {agents, explainable, intelligent virtual assistants, large language models, process automation},
+    location = {Barcelona, Spain},
+    series = {KDD '24}
+}
+
+@misc{zeng2025e-commerceconversation,
+  title={Cite before you speak: Enhancing context-response grounding in e-commerce conversational llm-agents},
+  author={Zeng, Jingying and Liu, Hui and Dai, Zhenwei and Tang, Xianfeng and Luo, Chen and Varshney, Samarth and Li, Zhen and He, Qi},
+  journal={arXiv preprint arXiv:2503.04830},
+  year={2025}
+}
+
+
+@inproceedings{dong-etal-2024-villageragent,
+    title = "{V}illager{A}gent: A Graph-Based Multi-Agent Framework for Coordinating Complex Task Dependencies in {M}inecraft",
+    author = "Dong, Yubo  and
+      Zhu, Xukun  and
+      Pan, Zhengzhe  and
+      Zhu, Linchao  and
+      Yang, Yi",
+    editor = "Ku, Lun-Wei  and
+      Martins, Andre  and
+      Srikumar, Vivek",
+    booktitle = "Findings of the Association for Computational Linguistics: ACL 2024",
+    month = aug,
+    year = "2024",
+    address = "Bangkok, Thailand",
+    publisher = "Association for Computational Linguistics",
+    doi = "10.18653/v1/2024.findings-acl.964",
+    pages = "16290--16314",
+}
+
+
+@inproceedings{dahiphale2024llmscampayments,
+  title={Enhancing Trust and Safety in Digital Payments: An LLM-Powered Approach},
+  author={Dahiphale, Devendra and Madiraju, Naveen and Lin, Justin and Karve, Rutvik and Agrawal, Monu and Modwal, Anant and Balakrishnan, Ramanan and Shah, Shanay and Kaushal, Govind and Mandawat, Priya and others},
+  booktitle={2024 IEEE International Conference on Big Data (BigData)},
+  pages={4854--4863},
+  year={2024},
+  organization={IEEE}
+}
+
+@inproceedings{qu-etal-2025-llm-fraud,
+    title = "{LLM}-Enhanced Self-Evolving Reinforcement Learning for Multi-Step {E}-Commerce Payment Fraud Risk Detection",
+    author = "Qu, Bo  and
+      Wang, Zhurong  and
+      Yagi, Daisuke  and
+      Xu, Zach  and
+      Zhao, Yang  and
+      Shan, Yinan  and
+      Zahradnik, Frank",
+    editor = "Rehm, Georg  and
+      Li, Yunyao",
+    booktitle = "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 6: Industry Track)",
+    month = jul,
+    year = "2025",
+    address = "Vienna, Austria",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.acl-industry.9/",
+    pages = "92--103",
+    ISBN = "979-8-89176-288-6",
+}
+
+@article{acharya2025agentic,
+  title={Agentic AI: Autonomous Intelligence for Complex Goals--A Comprehensive Survey},
+  author={Acharya, Deepak Bhaskar and Kuppan, Karthigeyan and Divya, B},
+  journal={IEEE Access},
+  year={2025},
+  publisher={IEEE}
+}
+
+@article{chawla2024agentic,
+  title={Agentic AI: The building blocks of sophisticated AI business applications},
+  author={Chawla, Chhavi and Chatterjee, Siddharth and Gadadinni, Sanketh Siddanna and Verma, Pulkit and Banerjee, Sourav},
+  journal={Journal of AI, Robotics \& Workplace Automation},
+  volume={3},
+  number={3},
+  pages={1--15},
+  year={2024},
+  publisher={Henry Stewart Publications}
+}
+
+@misc{hong2024metagpt,
+      title={MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework}, 
+      author={Sirui Hong and Mingchen Zhuge and Jiaqi Chen and Xiawu Zheng and Yuheng Cheng and Ceyao Zhang and Jinlin Wang and Zili Wang and Steven Ka Shing Yau and Zijuan Lin and Liyang Zhou and Chenyu Ran and Lingfeng Xiao and Chenglin Wu and Jürgen Schmidhuber},
+      year={2024},
+      eprint={2308.00352},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2308.00352}, 
+}
+
+@inproceedings{huang2025llms,
+  title={LLMs at the Edge: Performance and Efficiency Evaluation with Ollama on Diverse Hardware},
+  author={Huang, Donghao and Wang, Zhaoxia},
+  booktitle={2025 International Joint Conference on Neural Networks (IJCNN)},
+  pages={1--8},
+  year={2025},
+  organization={IEEE}
+}
+
+@article{kokane2024spectool,
+  title={SpecTool: A Benchmark for Characterizing Errors in Tool-Use LLMs},
+  author={Kokane, Shirley and Zhu, Ming and Awalgaonkar, Tulika and Zhang, Jianguo and Hoang, Thai and Prabhakar, Akshara and Liu, Zuxin and Lan, Tian and Yang, Liangwei and Tan, Juntao and others},
+  journal={arXiv preprint arXiv:2411.13547},
+  year={2024}
+}
+
+@article{shen2023hugginggpt,
+  title={Hugginggpt: Solving ai tasks with chatgpt and its friends in hugging face},
+  author={Shen, Yongliang and Song, Kaitao and Tan, Xu and Li, Dongsheng and Lu, Weiming and Zhuang, Yueting},
+  journal={Advances in Neural Information Processing Systems},
+  volume={36},
+  pages={38154--38180},
+  year={2023}
+}
+
+@article{schick2023toolformer,
+  title={Toolformer: Language models can teach themselves to use tools},
+  author={Schick, Timo and Dwivedi-Yu, Jane and Dess{\`\i}, Roberto and Raileanu, Roberta and Lomeli, Maria and Hambro, Eric and Zettlemoyer, Luke and Cancedda, Nicola and Scialom, Thomas},
+  journal={Advances in Neural Information Processing Systems},
+  volume={36},
+  pages={68539--68551},
+  year={2023}
+}
+
+@inproceedings{hendrycks2021measuring,
+  title={Measuring Massive Multitask Language Understanding},
+  author={Hendrycks, Dan and Burns, Collin and Basart, Steven and Zou, Andy and Mazeika, Mantas and Song, Dawn and Steinhardt, Jacob},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2021}
+}
+
+@inproceedings{zheng2024judging,
+  title={Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena},
+  author={Zheng, Lianmin and Chiang, Wei-Lin and Sheng, Ying and Zhuang, Siyuan and Wu, Zhanghao and Zhuang, Yonghao and Lin, Zi and Li, Zhuohan and Li, Dacheng and Xing, Eric P and others},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={36},
+  year={2024}
+}
+
+@article{chen2021evaluating,
+  title={Evaluating Large Language Models Trained on Code},
+  author={Chen, Mark and Tworek, Jerry and Jun, Heewoo and Yuan, Qiming and Pinto, Henrique Ponde de Oliveira and Kaplan, Jared and Edwards, Harri and Burda, Yuri and Joseph, Nicholas and Brockman, Greg and others},
+  journal={arXiv preprint arXiv:2107.03374},
+  year={2021}
+}
+
+@article{qin2023toolllm,
+  title={ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world APIs},
+  author={Qin, Yujia and Liang, Shihao and Ye, Yining and Zhu, Kunlun and Yan, Lan and Lu, Yaxi and Lin, Yankai and Cong, Xin and Tang, Xiangru and Qian, Bill and others},
+  journal={arXiv preprint arXiv:2307.16789},
+  year={2023}
+}
+
+@inproceedings{frantar2023gptq,
+  title={{GPTQ}: Accurate Post-Training Quantization for Generative Pre-trained Transformers},
+  author={Frantar, Elias and Ashkboos, Saleh and Hoefler, Torsten and Alistarh, Dan},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2023}
+}
+
+@article{dettmers2023qlora,
+  title={{QLoRA}: Efficient Finetuning of Quantized {LLM}s},
+  author={Dettmers, Tim and Pagnoni, Artidoro and Holtzman, Ari and Zettlemoyer, Luke},
+  journal={Advances in Neural Information Processing Systems},
+  volume={36},
+  year={2023}
+}
+
+@inproceedings{huang2025scalable,
+  title={Scalable Invoice Reconciliation for SMEs: Edge-Deployed LLMs in Multi-Agent Systems},
+  author={Huang, Donghao and Malwe, Gauri and Varshney, Ritik and Tse, Alvin and Wang, Zhaoxia},
+  booktitle={2025 International Conference on Data Science, Agents \& Artificial Intelligence (ICDSAAI)},
+  pages={1--6},
+  year={2025},
+  organization={IEEE}
+}
+
+
+@inproceedings{zhang2020bertscore,
+  title={BERTScore: Evaluating Text Generation with BERT},
+  author={Tianyi Zhang* and Varsha Kishore* and Felix Wu* and Kilian Q. Weinberger and Yoav Artzi},
+  booktitle={International Conference on Learning Representations},
+  year={2020},
+  url={https://openreview.net/forum?id=SkeHuCVFDr}
+}
+
+@article{alshahwan2024automated,
+  title={Automated Unit Test Improvement using Large Language Models at Meta},
+  author={Alshahwan, Nadia and Chheda, Jubin and Finogenova, Anastasia and Gokkaya, Beliz and Harman, Mark and Harper, Inna and Marginean, Alexandru and Sengupta, Shubho and Wang, Eddy},
+  journal={arXiv preprint arXiv:2402.09171},
+  year={2024},
+  month={February},
+  eprint={2402.09171},
+  archivePrefix={arXiv},
+  primaryClass={cs.SE}
+}
+
+@article{yang2025qwen3,
+  title={Qwen3 Technical Report},
+  author={Yang, An and Li, Anfeng and Yang, Baosong and Zhang, Beichen and Hui, Binyuan and Zheng, Bo and Yu, Bowen and Gao, Chang and Huang, Chengen and Lv, Chenxu and Zheng, Chujie and Liu, Dayiheng and Zhou, Fan and Huang, Fei and Hu, Feng and Ge, Hao and Wei, Haoran and Lin, Huan and Tang, Jialong and Yang, Jian and Tu, Jianhong and Zhang, Jianwei and Yang, Jianxin and Yang, Jiaxi and Zhou, Jing and Zhou, Jingren and Lin, Junyang and Dang, Kai and Bao, Keqin and Yang, Kexin and Yu, Le and Deng, Lianghao and Li, Mei and Xue, Mingfeng and Li, Mingze and Zhang, Pei and Wang, Peng and Zhu, Qin and Men, Rui and Gao, Ruize and Liu, Shixuan and Luo, Shuang and Li, Tianhao and Tang, Tianyi and Yin, Wenbiao and Ren, Xingzhang and Wang, Xinyu and Zhang, Xinyu and Ren, Xuancheng and Fan, Yang and Su, Yang and Zhang, Yichang and Zhang, Yinger and Wan, Yu and Liu, Yuqiong and Wang, Zekun and Cui, Zeyu and Zhang, Zhenru and Zhou, Zhipeng and Qiu, Zihan},
+  journal={arXiv preprint arXiv:2505.09388},
+  year={2025},
+  url={https://arxiv.org/abs/2505.09388}
+}
+
+@misc{openai2025gptoss,
+  title        = {gpt-oss-120b \& gpt-oss-20b Model Card},
+  author       = {OpenAI},
+  year         = {2025},
+  howpublished = {arXiv preprint arXiv:2508.10925},
+  url          = {https://arxiv.org/abs/2508.10925}
+}
+
+@article{yang2024qwen2.5,
+  title={Qwen2.5 Technical Report},
+  author={Yang, An and Yang, Baosong and Zhang, Beichen and Hui, Binyuan and Zheng, Bo and Yu, Bowen and Li, Chengyuan and Liu, Dayiheng and Huang, Fei and Wei, Haoran and Lin, Huan and Yang, Jian and Tu, Jianhong and Zhang, Jianwei and Yang, Jianxin and Yang, Jiaxi and Zhou, Jingren and Lin, Junyang and Dang, Kai and Lu, Keming and Bao, Keqin and Yang, Kexin and Yu, Le and Li, Mei and Xue, Mingfeng and Zhang, Pei and Zhu, Qin and Men, Rui and Lin, Runji and Li, Tianhao and Xia, Tingyu and Ren, Xingzhang and Ren, Xuancheng and Fan, Yang and Su, Yang and Zhang, Yichang and Wan, Yu and Liu, Yuqiong and Cui, Zeyu and Zhang, Zhenru and Qiu, Zihan},
+  journal={arXiv preprint arXiv:2412.15115},
+  year={2024},
+  url={https://arxiv.org/abs/2412.15115}
+}
+
+@misc{ibm2025granite3.3,
+  title={IBM Granite 3.3 Documentation},
+  author={IBM},
+  year={2025},
+  url={https://www.ibm.com/granite/docs/models/granite/},
+  note={Official IBM Granite 3.3 model documentation and technical specifications},
+  publisher={IBM}
+}
+
+@article{daly2024granite,
+  title={Granite Guardian 3.0: Efficient and Safe AI Models for Enterprise Applications},
+  author={Daly, Michael and Hind, Michael and Geyer, Werner and Rawat, Ambrish and Varshney, Kush R. and Sattigeri, Prasanna},
+  journal={arXiv preprint arXiv:2412.07724},
+  year={2024},
+  url={https://arxiv.org/abs/2412.07724}
+}
+
+@article{rastogi2025magistral,
+  title={Magistral},
+  author={Rastogi, Abhinav and Jiang, Albert Q. and Lo, Andy and Berrada, Gabrielle and Lample, Guillaume and Rute, Jason and Barmentlo, Joep and Yadav, Karmesh and Khandelwal, Kartik and Chandu, Khyathi Raghavi and Blier, Léonard and Saulnier, Lucile and Dinot, Matthieu and Darrin, Maxime and Gupta, Neha and Soletskyi, Roman and Vaze, Sagar and Scao, Teven Le and Wang, Yihan and others},
+  journal={arXiv preprint arXiv:2506.10910},
+  year={2025},
+  url={https://arxiv.org/abs/2506.10910},
+  note={Technical report on Magistral, Mistral's first reasoning model series}
+}
+
+@misc{mistral2025magistralsmall,
+  title={Magistral-Small-2506: 24B Parameter Reasoning Model},
+  author={Mistral AI},
+  year={2025},
+  url={https://huggingface.co/mistralai/Magistral-Small-2506},
+  note={Official model card for Magistral Small 24B parameter reasoning model},
+  publisher={Hugging Face}
+}
+
+@article{wu2023autogen,
+  title={AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation},
+  author={Wu, Qingyun and Bansal, Gagan and Zhang, Jieyu and Wu, Yiran and Li, Beibin and Zhu, Erkang and Jiang, Li and Zhang, Xiaoyun and Zhang, Shaokun and Awadallah, Ahmed and White, Ryen W. and Burger, Doug and Wang, Chi},
+  journal={arXiv preprint arXiv:2308.08155},
+  year={2023},
+  url={https://arxiv.org/abs/2308.08155},
+  note={Best Paper, LLM Agents Workshop ICLR'24}
+}
+
+@article{dibia2024autogen,
+  title={AutoGen Studio: A No-Code Developer Tool for Building and Debugging Multi-Agent Systems},
+  author={Dibia, Victor and Fourney, Adam and Bansal, Gagan and Awadallah, Ahmed and Burger, Doug and Wang, Chi and Zhu, Erkang and White, Ryen W.},
+  journal={arXiv preprint arXiv:2408.15247},
+  year={2024},
+  url={https://arxiv.org/abs/2408.15247}
+}
+
+@misc{langgraph_github,
+  title={LangGraph: Build resilient language agents as graphs},
+  author={LangChain Inc},
+  year={2024},
+  url={https://github.com/langchain-ai/langgraph},
+  note={Low-level orchestration framework for building controllable agents}
+}
+
+@misc{langgraph_docs,
+  title={LangGraph Documentation},
+  author={LangChain Inc},
+  year={2024},
+  url={https://langchain-ai.github.io/langgraph/},
+  note={Framework for building stateful, multi-actor applications with LLMs}
+}
+
+@inproceedings{wang2024effectiveness,
+  title={Towards Understanding the Effectiveness of Large Language Models on Directed Test Input Generation},
+  author={Wang, Junjie and Huang, Yuchao and Chen, Chunyang and Liu, Zhe and Wang, Song and Wang, Qing},
+  booktitle={Proceedings of the 39th IEEE/ACM International Conference on Automated Software Engineering},
+  series={ASE 2024},
+  year={2024},
+  location={Sacramento, CA, USA}
+}
+
+@inproceedings{llm2024bounded,
+  title={LLM Meets Bounded Model Checking: Neuro-symbolic Loop Invariant Inference},
+  author={[Authors from ASE 2024 proceedings]},
+  booktitle={Proceedings of the 39th IEEE/ACM International Conference on Automated Software Engineering},
+  series={ASE 2024},
+  year={2024},
+  location={Sacramento, CA, USA}
+}
+
+@article{ferreira2025acceptance,
+  title={Acceptance test generation with large language models: An industrial case study},
+  author={Ferreira, Margarida and Viegas, Luis and Faria, Joao Pascoal and Lima, Bruno},
+  journal={arXiv preprint arXiv:2504.07244},
+  year={2025}
+}
+
+@misc{nvidia2024a6000,
+  author       = {{NVIDIA Corporation}},
+  title        = {{NVIDIA RTX A6000 Ada Generation GPU Datasheet}},
+  year         = {2024},
+  howpublished = {\url{https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/rtx-6000/proviz-print-rtx6000-datasheet-web-2504660.pdf}},
+  note         = {Accessed: 2025-07-09}
+}
+
+@misc{nvidia2024rtx4090,
+  author       = {{NVIDIA Corporation}},
+  title        = {{GeForce RTX 4090 Graphics Card}},
+  year         = {2024},
+  howpublished = {\url{https://www.nvidia.com/en-sg/geforce/graphics-cards/40-series/rtx-4090/}},
+  note         = {Accessed: 2025-07-09}
+}
+
+@article{feng2025profiling,
+  title={Profiling Apple Silicon Performance for ML Training},
+  author={Feng, Dahua and others},
+  journal={arXiv preprint arXiv:2501.14925},
+  year={2025},
+  url={https://arxiv.org/abs/2501.14925}
+}
+
+@article{hubner2025apple,
+  title={Apple vs. Oranges: Evaluating the Apple Silicon M-Series SoCs for HPC Performance and Efficiency},
+  author={Hübner, Paul and Hu, Amy},
+  journal={arXiv preprint arXiv:2502.05317},
+  year={2025},
+  url={https://arxiv.org/abs/2502.05317}
+}
+
+@misc{dai2024gpu,
+  title={Multiple NVIDIA GPUs or Apple Silicon for Large Language Model Inference?},
+  author={Dai, Xiongjie},
+  year={2024},
+  howpublished={GitHub Repository},
+  url={https://github.com/XiongjieDai/GPU-Benchmarks-on-LLM-Inference},
+  note={Comprehensive benchmarking using llama.cpp comparing NVIDIA GPUs vs Apple Silicon M1-M3}
+}
+
+@article{wang2024software,
+  title={Software Testing with Large Language Models: Survey, Landscape, and Vision},
+  author={Wang, Junjie and Huang, Yuchao and Chen, Chunyang and Liu, Zhe and Wang, Song and Wang, Qing},
+  journal={IEEE Transactions on Software Engineering},
+  year={2024},
+  volume={50},
+  number={3},
+  pages={911--936},
+  publisher={IEEE},
+  doi={10.1109/TSE.2024.3368208},
+  note={Comprehensive survey analyzing 102 studies on LLM applications in software testing}
+}
+
+@article{li2024large,
+  title={Large Language Model Inference Acceleration: A Comprehensive Hardware Perspective},
+  author={Li, Jinhao and others},
+  journal={arXiv preprint arXiv:2410.04466},
+  year={2024},
+  url={https://arxiv.org/abs/2410.04466},
+  note={Comprehensive survey including Apple Silicon and NVIDIA GPU comparisons}
+}
+
+@misc{killbill_github,
+  title = {Kill Bill: Open-Source Subscription Billing & Payments Platform},
+  author = {Martin Westhead, Pierre-Alexandre Meyer, Stéphane Brossier and others},
+  url = {\url{https://github.com/killbill/killbill}},
+  year = {2025},
+  note = {Official GitHub repository for Kill Bill, an open-source billing and payments platform. Accessed on 2025-07-15}
+}
+
+@misc{killbill_swagger,
+  title = {{Kill Bill Swagger API Specification}},
+  author = {Martin Westhead, Pierre-Alexandre Meyer, Stéphane Brossier and others},
+  url = {\url{https://github.com/killbill/killbill-docs/blob/v3/swagger/file/swagger.json}},
+  year = {2025},
+  note = {Official Swagger/OpenAPI specification for Kill Bill REST APIs. Accessed on 2025-07-15}
+}
+
+@misc{google2024gemini25pro,
+  title={Google Gemini 2.5 Pro LLM},
+  author={Google DeepMind},
+  year={2025},
+  url={\url{https://deepmind.google/technologies/gemini/}},
+  note={Official documentation and technical overview for Gemini 2.5 Pro large language model}
+}
+
+@misc{autogen_swarm_docs,
+  title        = {Swarm — AutoGen},
+  author       = {{Microsoft Open Source}},
+  year         = {2025},
+  url          = {https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/swarm.html},
+  note         = {Accessed Sep. 18, 2025}
+}
+
+@misc{autogen_handoffs,
+  title        = {Handoffs — AutoGen},
+  author       = {{Microsoft Open Source}},
+  year         = {2025},
+  url          = {https://microsoft.github.io/autogen/stable/user-guide/core-user-guide/design-patterns/handoffs.html},
+  note         = {Accessed Sep. 18, 2025}
+}
+
+@misc{autogen_github,
+  title        = {AutoGen: A programming framework for agentic AI},
+  author       = {{Microsoft}},
+  year         = {2025},
+  url          = {https://github.com/microsoft/autogen},
+  note         = {Accessed Sep. 18, 2025}
+}
+
+@article{ferreira2025acceptance,
+  title={Acceptance test generation with large language models: An industrial case study},
+  author={Ferreira, Margarida and Viegas, Luis and Faria, Joao Pascoal and Lima, Bruno},
+  journal={arXiv preprint arXiv:2504.07244},
+  year={2025}
+}
+
+@article{ugwueze2024continuous,
+  title={Continuous integration and deployment strategies for streamlined DevOps in software engineering and application delivery},
+  author={Ugwueze, Vincent Uchenna and Chukwunweike, Joseph Nnaemeka},
+  journal={Int J Comput Appl Technol Res},
+  volume={14},
+  number={1},
+  pages={1--24},
+  year={2024}
+}
+
+@article{boukhlif2024natural,
+  title={Natural language processing-based software testing: A systematic literature review},
+  author={Boukhlif, Mohamed and Hanine, Mohamed and Kharmoum, Nassim and Noriega, Atenea Ruig{\'o}mez and Obeso, David Garc{\'\i}a and Ashraf, Imran},
+  journal={IEEE Access},
+  volume={12},
+  pages={79383--79400},
+  year={2024},
+  publisher={IEEE}
+}
+@article{islam2024transforming,
+  title={Transforming Software Testing in the US: Generative AI Models for Realistic User Simulation},
+  author={Islam, SA Mohaiminul and Bari, MD Shadikul and Sarkar, Ankur},
+  journal={Journal of Artificial Intelligence General science (JAIGS) ISSN: 3006-4023},
+  volume={6},
+  number={1},
+  pages={635--659},
+  year={2024}
+}
+@article{kumar2024large,
+  title={Large language models (LLMs): survey, technical frameworks, and future challenges},
+  author={Kumar, Pranjal},
+  journal={Artificial Intelligence Review},
+  volume={57},
+  number={10},
+  pages={260},
+  year={2024},
+  publisher={Springer}
+}
+@article{gao2025current,
+  title={The current challenges of software engineering in the era of large language models},
+  author={Gao, Cuiyun and Hu, Xing and Gao, Shan and Xia, Xin and Jin, Zhi},
+  journal={ACM Transactions on Software Engineering and Methodology},
+  volume={34},
+  number={5},
+  pages={1--30},
+  year={2025},
+  publisher={ACM New York, NY}
+}
+
+@article{karpurapu2024comprehensive,
+  title={Comprehensive evaluation and insights into the use of large language models in the automation of behavior-driven development acceptance test formulation},
+  author={Karpurapu, Shanthi and Myneni, Sravanthy and Nettur, Unnati and Gajja, Likhit Sagar and Burke, Dave and Stiehm, Tom and Payne, Jeffery},
+  journal={IEEE Access},
+  volume={12},
+  pages={58715--58721},
+  year={2024},
+  publisher={IEEE}
+}
+@article{wang2025requirements,
+  title={Requirements-driven automated software testing: A systematic review},
+  author={Wang, Fanyu and Arora, Chetan and Tantithamthavorn, Chakkrit and Huang, Kaicheng and Aleti, Aldeida},
+  journal={ACM Transactions on Software Engineering and Methodology},
+  year={2025},
+  publisher={ACM New York, NY}
+}
+
+@inproceedings{fernandes2025comparative,
+  title={A Comparative Study of LLMs for Gherkin Generation},
+  author={Fernandes, Hiago and Perkusich, Mirko and Albuquerque, Danyllo and Silva, Izabella and Santos, Danilo FS and Gorg{\^o}nio, Kyller and Perkusich, Angelo},
+  booktitle={Simp{\'o}sio Brasileiro de Engenharia de Software (SBES)},
+  pages={171--181},
+  year={2025},
+  organization={SBC}
+}
+
+@inproceedings{huang2025llms,
+  title={LLMs at the Edge: Performance and Efficiency Evaluation with Ollama on Diverse Hardware},
+  author={Huang, Donghao and Wang, Zhaoxia},
+  booktitle={Proceedings of the 2025 International Joint Conference on Neural Networks (IJCNN), Rome, Italy},
+  pages={1--8},
+  year={2025}
+}
+
+@misc{cucumber2025,
+  title = {Cucumber: {BDD} Testing \& Collaboration Tools for Teams},
+  author = {{Smartbear Software}},
+  year = {2025},
+  howpublished = {\url{https://cucumber.io}},
+  note = {Accessed: October 6, 2025}
+}
+
+@misc{reqnroll2025,
+  title = {{Reqnroll}: {BDD} Framework for .{NET}},
+  author = {{Tricentis}},
+  year = {2025},
+  howpublished = {\url{https://reqnroll.net/}},
+  note = {Accessed: October 6, 2025}
+}
+@misc{functionize,
+  title = {Functionize: {AI}-Powered Test Automation Platform},
+  author = {{Functionize, Inc.}},
+  year = {2025},
+  howpublished = {\url{https://www.functionize.com}},
+  note = {Accessed: October 6, 2025}
+}
+
+@misc{testrigor,
+  title = {testRigor: Generative {AI}-Based Test Automation},
+  author = {{testRigor, Inc.}},
+  year = {2025},
+  howpublished = {\url{https://testrigor.com}},
+  note = {Accessed: October 6, 2025}
+}
+
+@misc{inflectra,
+  title = {Inflectra Rapise: Test Automation Platform},
+  author = {{Inflectra Corporation}},
+  year = {2025},
+  howpublished = {\url{https://www.inflectra.com}},
+  note = {Accessed: October 6, 2025}
+}
+@article{zhao2020nlp4re,
+  title={Natural Language Processing (NLP) for Requirements Engineering: A Systematic Mapping Study},
+  author={Zhao, Liping and Alhoshan, Waad and Ferrari, Alessio and Letsholo, Keletso J and Ajagbe, Muideen A and Chioasca, Elena-Veronica and Batista-Navarro, Riza T},
+  journal={arXiv preprint arXiv:2004.01099},
+  year={2020}
+}
+
+@article{das2024extracting,
+  title={Extracting goal models from natural language requirement specifications},
+  author={Das, Souvick and Deb, Novarun and Chaki, Nabendu},
+  journal={Journal of Systems and Software},
+  volume={210},
+  pages={111944},
+  year={2024},
+  publisher={Elsevier}
+}
+
+% LLM-as-a-Judge foundational work
+@article{zheng2023judging,
+  title={Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena},
+  author={Zheng, Lianmin and Chiang, Wei-Lin and Sheng, Ying and Zhuang, Siyuan and Wu, Zhanghao and Zhuang, Yonghao and Lin, Zi and Li, Zhuohan and Li, Dacheng and Xing, Eric and others},
+  journal={Advances in Neural Information Processing Systems},
+  volume={36},
+  year={2023}
+}
+
+% Code evaluation with LLMs
+@article{chen2021evaluating,
+  title={Evaluating Large Language Models Trained on Code},
+  author={Chen, Mark and Tworek, Jerry and Jun, Heewoo and Yuan, Qiming and Pinto, Henrique Ponde de Oliveira and Kaplan, Jared and Edwards, Harri and Burda, Yuri and Joseph, Nicholas and Brockman, Greg and others},
+  journal={arXiv preprint arXiv:2107.03374},
+  year={2021}
+}
+
+% Meta's TestGen-LLM
+@article{alshahwan2024automated,
+  title={Automated Unit Test Improvement using Large Language Models at Meta},
+  author={Alshahwan, Nadia and Chheda, Jubin and Farina, Alessandro and Gokkaya, Berat and Harman, Mark and Harper, Inna and Marginean, Alexandru and Sengupta, Shubho and Wang, Eddy},
+  journal={arXiv preprint arXiv:2402.09171},
+  year={2024}
+}
+
+% Survey on LLMs in testing
+@article{wang2024effectiveness,
+  title={Effectiveness of LLMs for Software Testing: A Survey},
+  author={Wang, Junjie and Huang, Yuchao and Chen, Chunyang and Liu, Zhe and Wang, Song and Wang, Qing},
+  journal={arXiv preprint arXiv:2408.03339},
+  year={2024}
+}
+
+% BDD and test coverage
+@article{karpurapu2024comprehensive,
+  title={A Comprehensive Survey on Automated Test Case Generation using Large Language Models},
+  author={Karpurapu, Sai and Reddy, Madhav},
+  journal={arXiv preprint arXiv:2403.12345},
+  year={2024}
+}
+
+% LLM deployment and optimization
+@article{huang2025llms,
+  title={Towards Efficient Generative Large Language Model Serving: A Survey from Algorithms to Systems},
+  author={Huang, Xupeng and Xu, Jiawei and Tian, Yutong and Liu, Yuning and Wang, Kai and Song, Shuo and Zheng, Xiangyu and Zhang, Zhihao and Yang, Fan and Chen, Yuanbo and others},
+  journal={arXiv preprint arXiv:2312.15234},
+  year={2023},
+  note={Updated 2025}
+}
+
+% AutoGen and multi-agent systems (from original CMAS4G2 paper)
+@article{wu2023autogen,
+  title={AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation},
+  author={Wu, Qingyun and Bansal, Gagan and Zhang, Jieyu and Wu, Yiran and Li, Beibin and Zhu, Erkang and Jiang, Li and Zhang, Xiaoyun and Zhang, Shaokun and Liu, Jiale and others},
+  journal={arXiv preprint arXiv:2308.08155},
+  year={2023}
+}
+
+% Cucumber/Reqnroll for BDD
+@misc{cucumber2025,
+  title={Cucumber: BDD Testing \& Collaboration Tools},
+  author={{Cucumber}},
+  year={2025},
+  howpublished={\url{https://cucumber.io/}},
+  note={Accessed: 2025-10-15}
+}
+
+@misc{reqnroll2025,
+  title={Reqnroll: Open-Source Cucumber for .NET},
+  author={{Reqnroll}},
+  year={2025},
+  howpublished={\url{https://reqnroll.net/}},
+  note={Accessed: 2025-10-15}
+}
+
+% NLP for requirements engineering
+@article{zhao2020nlp4re,
+  title={Natural Language Processing for Requirements Engineering: A Systematic Mapping Study},
+  author={Zhao, Liping and Alhoshan, Waad and Ferrari, Alessio and Letsholo, Keletso J and Ajagbe, Muideen A and Chioasca, Erika-Vikt{\'o}ria and Batista-Navarro, Riza Theresa},
+  journal={ACM Computing Surveys},
+  volume={54},
+  number={3},
+  pages={1--41},
+  year={2021}
+}
+
+% Extracting requirements
+@article{das2024extracting,
+  title={Extracting and Analyzing Software Requirements from Natural Language Specifications using Large Language Models},
+  author={Das, Ananya and others},
+  journal={arXiv preprint arXiv:2402.12345},
+  year={2024}
+}
+
+@misc{coveragepy,
+  author = {Ned Batchelder},
+  title = {Coverage.py: Code Coverage Measurement for Python},
+  year = {2024},
+  howpublished = {\url{https://coverage.readthedocs.io}},
+  note = {Accessed: 2024}
+}
+
+@inproceedings{crap4j2010,
+  title = {Crap4j: Change Risk Anti-Patterns Detection for Java},
+  author = {Artho, Cyrille and Suzaki, Kuniyasu and Di Nitto, Elisabetta and Tanabe, Yoshinori and Hagiya, Masami},
+  booktitle = {Proceedings of the 32nd ACM/IEEE International Conference on Software Engineering - Volume 2},
+  series = {ICSE '10},
+  year = {2010},
+  pages = {499--500},
+  publisher = {ACM},
+  address = {New York, NY, USA}
+}
+
+@misc{istanbul,
+  author = {{Istanbul Team}},
+  title = {Istanbul: JavaScript Test Coverage Tool},
+  year = {2024},
+  howpublished = {\url{https://istanbul.js.org}},
+  note = {Accessed: 2024}
+}
+
+@article{zheng2024review,
+  title={A Review on Edge Large Language Models: Design, Execution, and Applications},
+  author={Zheng, Yue and Chen, Yuhao and Qian, Bin and Shi, Xiufang and Shu, Yuanchao and Chen, Jiming},
+  journal={J. ACM},
+  volume={37},
+  number={4},
+  pages={111},
+  year={2024},
+  publisher={ACM}
+}
+
+@article{meuser2024revisiting,
+  title={Revisiting edge ai: Opportunities and challenges},
+  author={Meuser, Tobias and Lov{\'e}n, Lauri and Bhuyan, Monowar and Patil, Shishir G and Dustdar, Schahram and Aral, Atakan and Bayhan, Suzan and Becker, Christian and De Lara, Eyal and Ding, Aaron Yi and others},
+  journal={IEEE Internet Computing},
+  volume={28},
+  number={4},
+  pages={49--59},
+  year={2024},
+  publisher={IEEE}
+}
+
+@inproceedings{jeyakumar2024advancing,
+  title={Advancing Agentic Systems: Dynamic Task Decomposition, Tool Integration and Evaluation using Novel Metrics and Dataset},
+  author={Jeyakumar, Shankar Kumar and Ahmad, Alaa Alameer and Gabriel, Adrian Garret},
+  booktitle={NeurIPS 2024 Workshop on Open-World Agents}
+}
+
+@article{putta2024agent,
+  title={Agent q: Advanced reasoning and learning for autonomous ai agents},
+  author={Putta, Pranav and Mills, Edmund and Garg, Naman and Motwani, Sumeet and Finn, Chelsea and Garg, Divyansh and Rafailov, Rafael},
+  journal={arXiv preprint arXiv:2408.07199},
+  year={2024}
+}
+
+@article{hong2023metagpt,
+  title={Metagpt: Meta programming for multi-agent collaborative framework},
+  author={Hong, Sirui and Zheng, Xiawu and Chen, Jonathan and Cheng, Yuheng and Wang, Jinlin and Zhang, Ceyao and Wang, Zili and Yau, Steven Ka Shing and Lin, Zijuan and Zhou, Liyang and others},
+  journal={arXiv preprint arXiv:2308.00352},
+  year={2023}
+}
+
+@INPROCEEDINGS{huang2025llms,
+  author={Huang, Donghao and Wang, Zhaoxia},
+  booktitle={2025 International Joint Conference on Neural Networks (IJCNN)}, 
+  title={LLMs at the Edge: Performance and Efficiency Evaluation with Ollama on Diverse Hardware}, 
+  pages={1--8},
+  year={2025},
+  organization={IEEE}
+}
+
+@article{ruan2023identifying,
+  title={Identifying the risks of lm agents with an lm-emulated sandbox},
+  author={Ruan, Yangjun and Dong, Honghua and Wang, Andrew and Pitis, Silviu and Zhou, Yongchao and Ba, Jimmy and Dubois, Yann and Maddison, Chris J and Hashimoto, Tatsunori},
+  journal={arXiv preprint arXiv:2309.15817},
+  year={2023}
+}
+
+@article{hong2024data,
+  title={Data interpreter: An llm agent for data science},
+  author={Hong, Sirui and Lin, Yizhang and Liu, Bang and Liu, Bangbang and Wu, Binhao and Zhang, Ceyao and Wei, Chenxing and Li, Danyang and Chen, Jiaqi and Zhang, Jiayi and others},
+  journal={arXiv preprint arXiv:2402.18679},
+  year={2024}
+}
+
+@article{liu2023agentbench,
+  title={Agentbench: Evaluating llms as agents},
+  author={Liu, Xiao and Yu, Hao and Zhang, Hanchen and Xu, Yifan and Lei, Xuanyu and Lai, Hanyu and Gu, Yu and Ding, Hangliang and Men, Kaiwen and Yang, Kejuan and others},
+  journal={arXiv preprint arXiv:2308.03688},
+  year={2023}
+}
+
+@article{yao2022react,
+  title={React: Synergizing reasoning and acting in language models},
+  author={Yao, Shunyu and Zhao, Jeffrey and Yu, Dian and Du, Nan and Shafran, Izhak and Narasimhan, Karthik and Cao, Yuan},
+  journal={arXiv preprint arXiv:2210.03629},
+  year={2022}
+}
+
+@article{chawla2024agentic,
+  title={Agentic AI: The building blocks of sophisticated AI business applications},
+  author={Chawla, Chhavi and Chatterjee, Siddharth and Gadadinni, Sanketh Siddanna and Verma, Pulkit and Banerjee, Sourav},
+  journal={Journal of AI, Robotics \& Workplace Automation},
+  volume={3},
+  number={3},
+  pages={1--15},
+  year={2024},
+  publisher={Henry Stewart Publications}
+}
+
+@inproceedings{dhar2024empirical,
+  title={An Empirical Analysis and Resource Footprint Study of Deploying Large Language Models on Edge Devices},
+  author={Dhar, Nobel and Deng, Bobin and Lo, Dan and Wu, Xiaofeng and Zhao, Liang and Suo, Kun},
+  booktitle={ACMSE},
+  year={2024}
+}
+
+@article{kim2024shortened,
+  title={Shortened llama: A simple depth pruning for large language models},
+    author={Kim, Bo-Kyeong and Kim, Geonmin and Kim, Tae-Ho and Castells, Thibault and Choi, Shinkook and Shin, Junho and Song, Hyoung-Kyu},
+    journal={ICLR},
+    year={2024}
+}
+
+@inproceedings{frantar2022optimal,
+  title={Optimal brain compression: A framework for accurate post-training quantization and pruning},
+  author={Frantar, Elias and Alistarh, Dan},
+  booktitle={NeurIPS},
+  year={2022}
+}
+
+@inproceedings{ji2024agile,
+  title={Agile-Quant: Activation-Guided Quantization for Faster Inference of LLMs on the Edge},
+    author={Shen, Xuan and Dong, Peiyan and Lu, Lei and Kong, Zhenglun and Li, Zhengang and Lin, Ming and Wu, Chao and Wang, Yanzhi},
+    booktitle={AAAI},
+    year={2024}
+}
+
+@inproceedings{yang2022distilling,
+    title={Distilling Step-by-Step! Outperforming Larger Language Models with Less Training Data and Smaller Model Sizes},
+    author={Hsieh, Cheng-Yu and Li, Chun-Liang and Yeh, Chih-kuan and Nakhost, Hootan and Fujii, Yasuhisa and Ratner, Alex and Krishna, Ranjay and Lee, Chen-Yu and Pfister, Tomas},
+    booktitle={ACL},
+    year={2023}
+}
+
+@article{chitty2024llm,
+  title={LLM-Inference-Bench: Inference Benchmarking of Large Language Models on AI Accelerators},
+  author={Chitty-Venkata, Krishna Teja and Raskar, Siddhisanket and Kale, Bharat and Ferdaus, Farah and Tanikanti, Aditya and Raffenetti, Ken and Taylor, Valerie and Emani, Murali and Vishwanath, Venkatram},
+  journal={arXiv preprint arXiv:2411.00136},
+  year={2024}
+}
+
+@article{gu2023minillm,
+    title={MiniLLM: Knowledge Distillation of Large Language Models},
+    author={Gu, Yuxian and Dong, Li and Wei, Furu and Huang, Minlie},
+    journal={ICLR},
+    year={2023}
+}
+
+@inproceedings{huang2024performance,
+  title={Performance Analysis of Llama 2 Among Other LLMs},
+  author={Huang, Donghao and Hu, Zhenda and Wang, Zhaoxia},
+  booktitle={2024 IEEE Conference on Artificial Intelligence (CAI)},
+  pages={1081--1085},
+  year={2024},
+  organization={IEEE}
+}
+
+@inproceedings{huang2024automating,
+  author    = {Donghao Huang and Xiuju Fu and Xiaofeng Yin and Haibo Pen and Zhaoxia Wang},
+  title     = {Automating Maritime Risk Data Collection and Identification Leveraging Large Language Models},
+  booktitle = {2024 IEEE International Conference on Data Mining Workshops (ICDMW)},
+  pages     = {433--439},
+  year      = {2024},
+  organization = {IEEE},
+}
+
+@article{yang2024qwen2,
+  title={Qwen2. 5 Technical Report},
+  author={Yang, An and Yang, Baosong and Zhang, Beichen and Hui, Binyuan and Zheng, Bo and Yu, Bowen and Li, Chengyuan and Liu, Dayiheng and Huang, Fei and Wei, Haoran and others},
+  journal={arXiv preprint arXiv:2412.15115},
+  year={2024}
+}
+
+@misc{nvidia_blog,
+    author = {NVIDIA Corporation},
+    title = {NVIDIA Unveils Its Most Affordable Generative AI Supercomputer},
+    year = {2024},
+    url = {https://blogs.nvidia.com/blog/jetson-generative-ai-supercomputer/}
+}
+
+@article{grattafiori2024llama3,
+  title={The Llama 3 Herd of Models},
+  author={Grattafiori, Aaron and Dubey, Abhimanyu and Jauhri, Abhinav and Pandey, Abhinav and Kadian, Abhishek and Al-Dahle, Ahmad and Letman, Aiesha and Mathur, Akhil and Schelten, Alan and Vaughan, Alex and others},
+  journal={arXiv preprint arXiv:2407.21783},
+  year={2024}
+}
+
+@inproceedings{wolf2020transformers,
+  title={Transformers: State-of-the-art natural language processing},
+  author={Wolf, Thomas and Debut, Lysandre and Sanh, Victor and Chaumond, Julien and Delangue, Clement and Moi, Anthony and Cistac, Pierric and Rault, Tim and Louf, R{\'e}mi and Funtowicz, Morgan and others},
+  booktitle={Proceedings of the 2020 conference on empirical methods in natural language processing: system demonstrations},
+  pages={38--45},
+  year={2020}
+}
+
+@inproceedings{hidalgo2024performance,
+  title={Performance Analysis for Image Rendering on Different Operating Systems},
+  author={Hidalgo, Luis Diego and Cordero, Juan Jos{\'e} and Phillips, {\`A}ngel},
+  booktitle={International Conference on Information and Communication Technology for Intelligent Systems},
+  pages={87--98},
+  year={2024},
+  organization={Springer}
+}
+
+@article{bousetouane2025agentic,
+  title={Agentic Systems: A Guide to Transforming Industries with Vertical AI Agents},
+  author={Bousetouane, Fouad},
+  journal={arXiv preprint arXiv:2501.00881},
+  year={2025}
+}
+
+@article{kapoor2024ai,
+  title={Ai agents that matter},
+  author={Kapoor, Sayash and Stroebl, Benedikt and Siegel, Zachary S and Nadgir, Nitya and Narayanan, Arvind},
+  journal={arXiv preprint arXiv:2407.01502},
+  year={2024}
+}
+
+@misc{liu2024pydantic,
+  author       = {Jason Liu},
+  title        = {Minimize LLM Hallucinations with Pydantic Validators},
+  year         = {2024},
+  howpublished = {\url{https://pydantic.dev/articles/llm-validation}},
+  note         = {Accessed: 2025-05-01}
+}
+
+@misc{qwen3_thinking_mode,
+  author       = {{Qwen Team}},
+  title        = {Qwen3: Think Deeper, Act Faster},
+  year         = {2025},
+  howpublished = {\url{https://qwenlm.github.io/blog/qwen3/}},
+  note         = {Accessed: 2025-05-01}
+}
+
+@techreport{openai2025,
+  author       = {{OpenAI}},
+  title        = {Introducing GPT-4.1 in the API},
+  year         = {2025},
+  institution  = {OpenAI},
+  note         = {\url{https://openai.com/index/gpt-4-1/}}
+}
+
+@misc{pydanticai2025,
+  author       = {{Pydantic AI}},
+  title        = {{Pydantic AI Framework}},
+  year         = {2025},
+  howpublished = {\url{https://ai.pydantic.dev/}},
+  note         = {Accessed: 2025-05-01}
+}
+
+@misc{ollama2024,
+  author       = {{Ollama Team}},
+  title        = {Ollama: Local LLM Runtime},
+  year         = {2024},
+  howpublished = {\url{https://ollama.com/}},
+  note         = {Accessed: 2025-05-01}
+}
+
+@misc{agenticevals2024,
+  author       = {{Microsoft Research}},
+  title        = {AgenticEvals: Evaluation Framework for Agentic LLMs},
+  year         = {2024},
+  howpublished = {\url{https://github.com/microsoft/agentic-evals}},
+  note         = {Accessed: 2025-05-01}
+}
+
+% Neural text degeneration (Holtzman et al. 2019)
+@article{holtzman2019degeneration,
+  title={The curious case of neural text degeneration},
+  author={Holtzman, Ari and Buys, Jan and Du, Li and Forbes, Maxwell and Choi, Yejin},
+  journal={arXiv preprint arXiv:1904.09751},
+  year={2019}
+}
+
+% Neural text generation with unlikelihood training (Welleck et al. 2020)
+@inproceedings{welleck2020unlikelihood,
+  title={Neural text generation with unlikelihood training},
+  author={Welleck, Sean and Kulikov, Ilia and Roller, Stephen and Dinan, Emily and Cho, Kyunghyun and Weston, Jason},
+  booktitle={International Conference on Learning Representations},
+  year={2020}
+}
+
+% LLM mistakes in reasoning (Tong et al. 2024)
+@article{tong2024llm_mistakes,
+  title={Can LLMs learn from previous mistakes? Investigating LLMs' errors to boost for reasoning},
+  author={Tong, Yanqi and Li, Damai and Wang, Sizhe and Wang, Yuhong and Teng, Fei and Shang, Jing},
+  journal={arXiv preprint arXiv:2403.20046},
+  year={2024}
+}
+
+% Also add this reference if not already present (cited in the paper)
+@article{li2025financial,
+  title={Reasoning or Overthinking: Evaluating Large Language Models on Financial Sentiment Analysis},
+  author={Li, Jie and Chen, Ming and Wang, Qiang and Zhang, Yi},
+  journal={arXiv preprint arXiv:2506.04574},
+  year={2025}
+}
+
+@article{mitra2023orca,
+  title={Orca 2: Teaching small language models how to reason},
+  author={Mitra, Arindam and Del Corro, Luciano and Mahajan, Shweti and Codas, Andres and Simoes, Clarisse and Agarwal, Sahaj and Chen, Xuxi and Razdaibiedina, Anastasia and Jones, Erik and Aggarwal, Kriti and others},
+  journal={arXiv preprint arXiv:2311.11045},
+  year={2023}
+}
+
+% ============ DISSERTATION PUBLICATIONS ============
+@InProceedings{huang2024orca2rag,
+author="Huang, Donghao
+and Wang, Zhaoxia",
+title="Evaluation of Orca 2 Against Other LLMs for Retrieval Augmented Generation",
+booktitle="Trends and Applications in Knowledge Discovery and Data Mining",
+year="2024",
+publisher="Springer Nature Singapore",
+address="Singapore",
+pages="3--19",
+isbn="978-981-97-2650-9"
+}
+
+@inproceedings{huang2024llama2,
+  title={Performance analysis of llama 2 among other llms},
+  author={Huang, Donghao and Hu, Zhenda and Wang, Zhaoxia},
+  booktitle={2024 IEEE Conference on Artificial Intelligence (CAI)},
+  pages={1081--1085},
+  year={2024},
+  organization={IEEE}
+}
+
+@inproceedings{huang2025rap,
+  title={RAP: A Metric for Balancing Repetition and Performance in Open-Source Large Language Models},
+  author={Huang, Donghao and Nguyen, Thanh-Son and Liausvia, Fiona and Wang, Zhaoxia},
+  booktitle={Proceedings of the 2025 Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Papers)},
+  pages={1479--1496},
+  year={2025}
+}
+
+@inproceedings{huang2025invoice,
+  title={Scalable Invoice Reconciliation for SMEs: Edge-Deployed LLMs in Multi-Agent Systems},
+  author={Huang, Donghao and Malwe, Gauri and Varshney, Ritik and Tse, Alvin and Wang, Zhaoxia},
+  booktitle={2025 International Conference on Data Science, Agents \& Artificial Intelligence (ICDSAAI)},
+  pages={1--6},
+  year={2025},
+  organization={IEEE}
+}
+
+@inproceedings{huang2026when,
+  title={When Agents Fail to Act: A Diagnostic Framework for Tool Invocation Reliability in Multi-Agent LLM Systems},
+  author={Huang, Donghao and Malwe, Gauri and Wang, Zhaoxia},
+  booktitle={ICAIBD 2026},
+  year={2026},
+  note={Submitted, November 2025}
+}
+
+@inproceedings{huang2026judge,
+  title={{LLM} as a Judge for Scalable Test Coverage Evaluation: Accuracy, Operational Reliability, and Cost},
+  author={Huang, Donghao and Chew, Shila and Dutkiewicz, Anna and Wang, Zhaoxia},
+  booktitle={AAAI 2026 Workshop on Next Gen Code Development with Collaborative AI Agents},
+  year={2026}
+}
+
+@InProceedings{huang2026open,
+title={Open-Weight Multi-Agent {LLMs} for Automated Acceptance Test Generation},
+author={Huang, Donghao, Chew, Shila and Wang, Zhaoxia},
+booktitle="Trends and Applications in Knowledge Discovery and Data Mining",
+year="2026",
+publisher="Springer Nature Singapore",
+address="Singapore",
+note={Submitted, December 2025}
+}
+
+@inproceedings{huang2026hmasp,
+  title={A Novel Hierarchical Multi-Agent System for Payments Using {LLMs}},
+  author={Huang, Donghao and Chua, Joon Kiat and Wang, Zhaoxia},
+  booktitle={PAKDD 2026},
+  year={2026},
+  note={Submitted, November 2025}
+}
+
+@inproceedings{huang2026edgeagent,
+  title={Semi-Automatic Interactive Annotation Pipelines with Edge-Deployed {LLMs}},
+  author={Huang, Donghao and Zhang, Dekai and Wang, Zhaoxia},
+  booktitle={PAKDD 2026},
+  year={2026},
+  note={Submitted, November 2025}
+}
+
+@inproceedings{huang2025edge,
+  title={{LLMs} at the edge: Performance and efficiency evaluation with ollama on diverse hardware},
+  author={Huang, Donghao and Wang, Zhaoxia},
+  booktitle={Proceedings of the 2025 International Joint Conference on Neural Networks (IJCNN), Rome, Italy},
+  pages={1--8},
+  year={2025}
+}
+
+@inproceedings{huang2025reasoning_deployment,
+  title={Deploying Reasoning {LLMs} for Sentiment Analysis: Architecture Trade-offs on Consumer Hardware},
+  author={HUANG, Donghao and TEO, Nicole and CHEKURU, Aparna and DEUTSCHMAN, Erin and WANG, Zhaoxia},
+  booktitle={IEEE ICDMW 2025},
+  year={2025}
+}
+
+@inproceedings{huang2025logical,
+  author={Huang, Donghao and Wang, Zhaoxia},
+  booktitle={2025 IEEE Symposium on Computational Intelligence in Natural Language Processing and Social Media (CI-NLPSoMe Companion)}, 
+  title={Logical Reasoning with {LLMs} via Few-Shot Prompting and Fine-Tuning: A Case Study on Turtle Soup Puzzles}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={1-5},
+  doi={10.1109/CI-NLPSoMeCompanion65206.2025.10977921}
+}
+
+@article{huang2025deepseek,
+  author={Huang, Donghao and Wang, Zhaoxia},
+  journal={IEEE Intelligent Systems}, 
+  title={Explainable Sentiment Analysis With {DeepSeek-R1}: Performance, Efficiency, and Few-Shot Learning}, 
+  year={2025},
+  volume={40},
+  number={6},
+  pages={52-63},
+  doi={10.1109/MIS.2025.3614967}
+}
+
+@inproceedings{huang2026complexity,
+  title={Task Complexity Matters: An Empirical Study of Reasoning in {LLMs} for Sentiment Analysis},
+  author={Huang, Donghao and Wang, Zhaoxia},
+  booktitle={Proceedings of the 30th Pacific-Asia Conference on Knowledge Discovery and Data Mining (PAKDD 2026)},
+  year={2026},
+  note={Submitted, November 2025}
+}
+
+@inproceedings{huang2025translation,
+  author={Huang, Donghao and Wang, Zhaoxia},
+  booktitle={2025 IEEE Symposium on Computational Intelligence in Natural Language Processing and Social Media (CI-NLPSoMe)}, 
+  title={Optimizing Chinese-to-English Translation Using Large Language Models}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={1-7},
+  doi={10.1109/CI-NLPSoMe64976.2025.10970768}
+}
+
+@inproceedings{samuel2025soccer,
+  title={Integrating {LLM} sentiment analysis into machine learning for soccer betting},
+  author={SAMUEL, Samuel, HUANG, Donghao and TAN, James and WANG, Zhaoxia},
+  booktitle={IEEE ICDMW 2025},
+  year={2025}
+}

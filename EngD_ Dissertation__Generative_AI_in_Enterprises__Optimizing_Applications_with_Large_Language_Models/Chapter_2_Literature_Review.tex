@@ -1,0 +1,459 @@
+\chapter{Literature Review}
+\label{ch:literature}
+
+This chapter provides a comprehensive review of the foundational concepts, techniques, and prior research relevant to this dissertation. We begin with an overview of generative AI and large language models, then examine implementation approaches for enterprise deployment, and finally review existing work on the three core research pillars: RAG optimization, agentic AI systems, and enterprise deployment and application strategies including edge computing, reasoning enhancement, and cross-domain applications. Throughout, we identify specific research gaps that motivate the contributions presented in subsequent chapters.
+
+\section{Foundational Concepts: Generative AI and Large Language Models}
+\label{sec:lit_foundations}
+
+\subsection{Definition and Evolution of Generative AI}
+
+Generative AI represents a class of artificial intelligence models distinguished by their ability to generate new, realistic data instances that bear resemblance to the data on which they were trained~\cite{goodfellow2014generative}. This capability extends across various modalities, encompassing text, images, audio, video, and computer code. The evolution of generative AI has been significantly shaped by advancements in machine learning techniques, with deep learning and neural networks playing a pivotal role in its progress.
+
+Early milestones in generative modeling include Generative Adversarial Networks (GANs)~\cite{goodfellow2014generative} and Variational Autoencoders (VAEs)~\cite{kingma2014vae}, which laid foundational principles for machine-generated content. These approaches demonstrated the potential for neural networks to learn complex data distributions and generate novel samples.
+
+The emergence of transformer architectures~\cite{vaswani2017attention} marked a paradigm shift in natural language processing and generative AI. The self-attention mechanism central to transformers enables models to capture long-range dependencies in sequential data more effectively than recurrent architectures. This innovation paved the way for the development of increasingly capable language models.
+
+\subsection{Historical Evolution of Language Models}
+
+The development of language models has progressed through several distinct phases:
+
+\textbf{Statistical Language Models (1980s--2000s):} Early approaches relied on n-gram statistics to estimate the probability of word sequences. While computationally tractable, these models suffered from data sparsity and limited ability to capture semantic relationships~\cite{manning1999foundations}.
+
+\textbf{Neural Language Models (2000s--2017):} The introduction of neural network-based language models, beginning with Bengio et al.'s~\cite{bengio2003neural} feedforward architecture and later recurrent variants including LSTMs~\cite{hochreiter1997lstm}, enabled distributed representations of words and improved handling of long-range dependencies.
+
+\textbf{Transformer Era (2017--present):} The transformer architecture~\cite{vaswani2017attention} fundamentally changed language modeling by enabling efficient parallel processing and attention-based context modeling. Key developments include:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{GPT Series:} OpenAI's Generative Pre-trained Transformer models demonstrated the power of unsupervised pre-training followed by task-specific fine-tuning~\cite{radford2018gpt,radford2019gpt2,brown2020gpt3}.
+    
+    \item \textbf{BERT:} Bidirectional encoder representations enabled superior performance on understanding tasks through masked language modeling~\cite{devlin2019bert}.
+    
+    \item \textbf{T5:} The text-to-text transfer transformer unified diverse NLP tasks under a common framework~\cite{raffel2020t5}.
+    
+    \item \textbf{Modern LLMs:} GPT-4~\cite{achiam2023gpt4}, Claude~\cite{anthropic2024claude}, Llama~\cite{touvron2023llama,grattafiori2024llama3}, DeepSeek-R1~\cite{guo2025deepseek}, and others represent the current state of the art, with capabilities spanning reasoning, code generation, and multimodal understanding.
+\end{itemize}
+
+\subsection{Architecture of Large Language Models}
+\label{subsec:llm_architecture}
+
+Modern LLMs are characterized by several architectural components and design choices:
+
+\subsubsection{Transformer Architecture}
+
+The transformer~\cite{vaswani2017attention} employs multi-head self-attention and position-wise feed-forward networks. The self-attention mechanism computes attention weights as:
+
+\begin{equation}
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+
+where $Q$, $K$, and $V$ represent query, key, and value matrices, and $d_k$ is the dimension of the keys.
+
+Multi-head attention extends this by learning multiple attention patterns in parallel:
+
+\begin{equation}
+\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h)W^O
+\end{equation}
+
+\subsubsection{Architectural Variants}
+
+Table~\ref{tab:llm_architectures} summarizes the major architectural paradigms for LLMs.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison of LLM Architectural Paradigms}
+\label{tab:llm_architectures}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}p{2.5cm}p{3cm}p{3cm}p{4cm}@{}}
+\toprule
+\textbf{Type} & \textbf{Examples} & \textbf{Strengths} & \textbf{Primary Use Cases} \\
+\midrule
+Encoder-Only & BERT, RoBERTa & Strong understanding, bidirectional context & Classification, NER, QA \\
+Decoder-Only & GPT, Llama, Claude & Excellent generation, scalable & Text generation, chat, code \\
+Encoder-Decoder & T5, BART & Flexible, good for seq2seq & Translation, summarization \\
+Mixture of Experts & Mixtral, DeepSeek-V3 & Efficient scaling, specialization & Large-scale deployment \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\subsubsection{Scaling Laws and Their Limitations}
+
+Research has established empirical scaling laws relating model performance to compute, parameters, and training data~\cite{kaplan2020scaling,hoffmann2022chinchilla}. Key findings include:
+
+\begin{itemize}[leftmargin=*]
+    \item Performance improves predictably with increased compute, following power-law relationships
+    \item Optimal training requires balanced scaling of model size and training data
+    \item Emergent capabilities appear at certain scale thresholds
+\end{itemize}
+
+However, recent research challenges conventional assumptions about scale, revealing that performance does not always scale monotonically with model size. Architectural design, training strategies, and optimization techniques can outweigh parameter count. The Qwen2.5 technical report demonstrates that 32B Qwen2.5-based distillations can outperform 70B Llama-based variants~\cite{yang2024qwen2.5}, while evaluation studies show DeepSeek-R1:32b (81.7\% F1) substantially outperforming DeepSeek-R1:70b (74.2\% F1) on sentiment classification tasks~\cite{guo2025deepseek}. %Similarly, within model families, smaller variants sometimes achieve peak performance---qwen3:8b achieves 84.8\% F1 on five-level sentiment classification, surpassing larger 14B, 30B, and 32B variants in the same family. These findings suggest that scaling laws require nuanced interpretation for deployment decisions, with model selection guided by task-specific evaluation rather than parameter count alone.
+
+\subsection{Training Methodologies}
+
+Modern LLM training typically involves multiple phases:
+
+\textbf{Pre-training:} Self-supervised learning on large text corpora using objectives like next-token prediction (causal language modeling) or masked language modeling. Pre-training datasets often comprise trillions of tokens from diverse sources~\cite{touvron2023llama}.
+
+\textbf{Instruction Tuning:} Fine-tuning on datasets pairing instructions with desired responses improves model ability to follow user intent~\cite{wei2022flan,ouyang2022instructgpt}.
+
+\textbf{Alignment:} Techniques including Reinforcement Learning from Human Feedback (RLHF)~\cite{christiano2017rlhf,ouyang2022instructgpt} and Direct Preference Optimization (DPO)~\cite{rafailov2024dpo} align model behavior with human preferences.
+
+\section{Implementation Approaches for LLMs in Enterprises}
+\label{sec:lit_implementation}
+
+\subsection{Leveraging Pre-trained Models: Zero-shot and Few-shot Learning}
+
+Pre-trained LLMs can be applied to downstream tasks through various prompting strategies without modifying model weights:
+
+\textbf{Zero-shot Learning:} The model is prompted with a task description and expected to generate appropriate responses without examples. This approach is effective for well-understood tasks but may struggle with domain-specific requirements~\cite{brown2020gpt3}.
+
+\textbf{Few-shot Learning:} Providing several input-output examples in the prompt enables models to infer the desired behavior through in-context learning. Research has shown few-shot prompting can substantially improve performance on diverse tasks~\cite{brown2020gpt3}. However, the optimal number of examples varies depending on model architecture and task complexity---larger models often approach peak performance with fewer examples, especially in simpler tasks, while smaller models benefit more from added context~\cite{brown2020gpt3}.% Moreover, for reasoning-capable models, few-shot learning can be remarkably efficient; DeepSeek-R1 achieves 99.31\% accuracy on binary sentiment classification with just 5 shots, representing an 8$\times$ improvement over the shot count required by GPT-4o to reach comparable performance.
+
+\textbf{Chain-of-Thought Prompting:} Including intermediate reasoning steps in examples encourages models to generate explicit reasoning chains, improving performance on complex tasks requiring multi-step inference~\cite{wei2022cot}.
+
+\subsection{Fine-tuning Approaches}
+
+When prompting proves insufficient, fine-tuning adapts model weights to specific tasks or domains:
+
+\textbf{Full Fine-tuning:} Updating all model parameters on task-specific data. While effective, this approach requires substantial computational resources and may lead to catastrophic forgetting~\cite{mccloskey1989catastrophic}.
+
+\textbf{Parameter-Efficient Fine-Tuning (PEFT):} Methods that update only a small subset of parameters:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{LoRA (Low-Rank Adaptation):} Freezes pre-trained weights and injects trainable rank decomposition matrices into transformer layers~\cite{hu2022lora}.
+    
+    \item \textbf{QLoRA:} Combines LoRA with 4-bit quantization for memory-efficient fine-tuning~\cite{dettmers2023qlora}.
+    
+    \item \textbf{Adapter Methods:} Insert small trainable modules between frozen layers~\cite{houlsby2019adapters}.
+\end{itemize}
+
+These parameter-efficient approaches are particularly relevant for enterprise deployment, enabling domain adaptation without the computational overhead of full fine-tuning. %Empirical studies demonstrate that fine-tuning dramatically improves output reliability---for classification tasks, the Valid Classification Ratio (VCR)---measuring the proportion of model outputs that match predefined labels---can improve from as low as 1.17\% to 100\% within just 0.2 training epochs, providing practitioners with concrete measures of deployment readiness~\cite{wolf2020transformers}.
+
+\section{Retrieval-Augmented Generation}
+\label{sec:lit_rag}
+
+Retrieval-Augmented Generation (RAG) addresses LLM limitations by incorporating external knowledge during inference~\cite{lewis2020rag}. This section reviews the RAG paradigm, which forms the foundation for Chapter~\ref{ch:rag}.
+
+\subsection{RAG Architecture and Components}
+
+The RAG paradigm combines retrieval and generation through several stages:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Document Processing:} Ingesting and chunking source documents into manageable units
+    \item \textbf{Embedding Generation:} Creating vector representations using models like Sentence-BERT~\cite{reimers2019sbert} or Instructor~\cite{su2023instructor}
+    \item \textbf{Indexing:} Storing embeddings in vector databases for efficient similarity search
+    \item \textbf{Retrieval:} Identifying relevant documents through similarity search at query time
+    \item \textbf{Augmented Generation:} Conditioning LLM outputs on retrieved context
+\end{enumerate}
+
+\subsection{Advantages for Enterprise Applications}
+
+RAG offers several advantages for enterprise applications:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Knowledge Currency:} External knowledge bases can be updated without model retraining
+    \item \textbf{Reduced Hallucination:} Grounding responses in retrieved evidence improves factual accuracy~\cite{gao2023rag_survey}
+    \item \textbf{Domain Adaptation:} Organization-specific knowledge can be incorporated without fine-tuning
+    \item \textbf{Traceability:} Retrieved sources provide citations for generated content
+\end{itemize}
+
+\subsection{RAG Evaluation Frameworks}
+
+Evaluating RAG systems requires metrics addressing both retrieval and generation quality:
+
+\textbf{RAGAS}~\cite{es2023ragas} provides automated evaluation through:
+\begin{itemize}[leftmargin=*]
+    \item Faithfulness: Consistency of generated responses with retrieved context
+    \item Answer Relevancy: Alignment of responses with user queries
+    \item Context Relevancy: Quality of retrieved documents
+\end{itemize}
+
+\textbf{ARES}~\cite{saad2023ares} uses synthetic training data to fine-tune lightweight evaluation models, enabling assessment with minimal human annotation.
+
+However, existing RAG evaluation frameworks focus primarily on semantic accuracy while overlooking critical user experience factors such as output verbosity, repetition, and formatting quality. Traditional metrics like BLEU~\cite{papineni2002bleu}, ROUGE~\cite{lin2004rouge}, and even neural metrics like BERTScore~\cite{zhang2020bertscore} do not capture these dimensions~\cite{fu2020repetition}. This gap motivates the development of new evaluation approaches that integrate output quality assessment into performance measurement, as addressed in Chapter~\ref{ch:rag}.
+
+\subsection{Challenges in RAG Optimization}
+
+Despite its advantages, RAG presents several optimization challenges:
+
+\textbf{Output Quality:} Open-source LLMs frequently produce repetitive, verbose, or poorly structured outputs that degrade user experience~\cite{fu2020repetition,holtzman2019degeneration}. The repetition problem can be particularly severe---analysis has shown that some models generate responses where the vast majority of content is repetitive, with repeated text constituting over 90\% of overall answer length in extreme cases~\cite{fu2020repetition}. Repetition occurs in two primary forms: non-word character (NWC) repetition (repeated whitespaces, punctuation, and symbols) and text repetition (repeated phrases or sentences). Existing metrics inadequately capture these user experience factors, necessitating novel approaches that quantify repetition and integrate it into performance assessment.
+
+\textbf{Hyperparameter Sensitivity:} RAG performance depends critically on parameters including chunk size, retrieval count, and generation settings. The repetition penalty parameter (RPP)~\cite{keskar2019ctrl} significantly impacts output quality by penalizing previously seen tokens during sampling, but traditional metrics like precision and BLEU overlook repetition, making optimal tuning challenging. Research has shown that while higher RPP values generally reduce repetition, excessive application can result in incomplete or fragmented responses, highlighting the need for metrics that enable balanced optimization.
+
+% \textbf{Model Selection:} Systematic benchmarking of open-source models against proprietary alternatives for RAG-specific tasks remains limited. Research has demonstrated that smaller, efficiently designed models can achieve superior overall scores in RAG applications compared to larger proprietary alternatives when properly configured~\cite{mitra2023orca}---for example, Orca-2-13b achieving approximately 99\% answer relevancy while surpassing GPT-3.5-Turbo and GPT-4 on faithfulness metrics.
+
+These gaps motivate research on RAG optimization presented in Chapter~\ref{ch:rag}, including the development of the Repetition-Aware Performance (RAP) metric and Repetition Detection Algorithm (ReDA) that explicitly account for repetition in model outputs.
+
+\section{Agentic AI and Multi-Agent Systems}
+\label{sec:lit_agentic}
+
+Agentic AI extends LLM capabilities beyond single-turn interactions to autonomous, goal-directed behavior. This section reviews foundations relevant to Chapter~\ref{ch:agentic}.
+
+\subsection{Foundations of Agentic AI}
+
+Agentic AI systems are characterized by several distinguishing capabilities~\cite{chawla2024agentic,acharya2025agentic}:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Tool Use:} Ability to interact with external tools, APIs, and databases~\cite{schick2023toolformer,shen2023hugginggpt}
+    \item \textbf{Planning:} Decomposing complex goals into executable sub-tasks
+    \item \textbf{Memory:} Maintaining state across interactions for long-term objectives
+    \item \textbf{Reflection:} Self-evaluation and strategy adjustment
+\end{itemize}
+
+These capabilities enable LLMs to move beyond passive question-answering toward active problem-solving and workflow execution.
+
+\subsection{Multi-Agent Architectures}
+
+Multi-agent systems leverage specialized agents for distinct subtasks, coordinated through various paradigms~\cite{wang2024surveyllm-mas,tran2025mascollab,guo2024mascollab}:
+
+\textbf{Hierarchical Systems:} Supervisor agents delegate tasks to specialized workers, enabling complex workflow automation~\cite{hong2024metagpt}. This architecture is particularly suited for business processes with clear task decomposition, such as payment processing workflows requiring card management, transaction handling, and authorization coordination.% Hierarchical designs can span multiple levels---for example, a four-level hierarchy comprising conversational agents, supervisor agents, routing agents, and process summary agents enables modular task execution distributed across specialized roles.
+
+\textbf{Collaborative Systems:} Agents engage in peer-to-peer communication to solve problems collectively~\cite{li2023camel}. Collaboration enables diverse expertise to be brought to bear on complex problems, with structured handoff mechanisms enabling seamless agent transitions while preserving contextual information.
+
+\textbf{Competitive Systems:} Adversarial dynamics between agents can improve output quality through debate and critique~\cite{du2023debate}.
+
+\subsection{Orchestration Frameworks}
+
+Several frameworks support multi-agent system development:
+
+\textbf{LangGraph}~\cite{langgraph_docs,langgraph_github}: Graph-based workflow orchestration enabling flexible agent coordination with support for cycles, branching, and state management. LangGraph's architecture supports modular and adaptive task pipelines, making it particularly well-suited for complex applications requiring customizable and context-aware processing. The framework enables architectural patterns including shared state variables for information isolation, decoupled message states preventing data hallucination, and structured handoff protocols facilitating agent coordination.
+
+\textbf{AutoGen}~\cite{wu2023autogen,dibia2024autogen}: Microsoft's framework for multi-agent conversations and task execution with human-in-the-loop capabilities, supporting swarm patterns and structured handoffs~\cite{autogen_swarm_docs,autogen_handoffs}. AutoGen's Swarm pattern enables coordination among specialized agents through conditional handoff logic, where agents decide handoff targets based on input characteristics.
+
+\textbf{CrewAI}~\cite{crewai2024}: Role-based agent coordination with support for hierarchical and sequential workflows.
+
+\subsection{Enterprise Applications}
+
+Agentic AI has demonstrated effectiveness across enterprise applications:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Software Development:} Automated coding, testing, and debugging workflows~\cite{jimenez2024swe,islam-etal-2024-mapcoder}
+    \item \textbf{Data Analysis:} Autonomous data science pipelines~\cite{hong2024datainterpreter}
+    \item \textbf{Document Processing:} Automated extraction, validation, and workflow routing
+    \item \textbf{Process Automation:} Intelligent virtual assistants for business process workflows~\cite{guan2024llmprocessautomation}
+    \item \textbf{E-Commerce:} Conversational agents with grounded responses~\cite{zeng2025e-commerceconversation}
+\end{itemize}
+
+Financial services---including payment processing, fraud detection, and transaction management---represent emerging applications for agentic AI. However, end-to-end agentic payment workflows remain largely unexplored, with no established reference framework for implementing such systems using LLM-based multi-agent architectures.
+
+\subsection{LLM-as-a-Judge Paradigm}
+
+A related development is the emergence of LLM-based evaluation, where language models assess the quality of outputs from other models or systems. The ``LLM-as-a-Judge'' paradigm~\cite{zheng2023llmjudge} has gained traction across various evaluation contexts, including natural language generation~\cite{li-etal-2024-leveraging-large}, creative writing assessment, and software testing~\cite{alshahwan2024automated}. However, systematic investigation of LLM judges for software testing---particularly regarding accuracy, cost, and operational reliability---remains limited. 
+
+% The reliability dimension, including completion rates and retry handling, has received insufficient attention despite direct impact on operational costs and user experience. Research has revealed that reliability failures have material cost implications---models with low first-attempt completion rates incur retry overhead that substantially increases operational costs. Furthermore, cost spans across model configurations can reach 175$\times$ (from under \$1 to nearly \$80 per 1,000 evaluations), making cost-aware model selection critical for production deployment.
+
+\subsection{Challenges in Agentic Systems}
+
+Enterprise deployment of agentic systems presents unique challenges:
+
+\textbf{Reliability and Failure Diagnosis:} Agent failures may stem from poor system design rather than model limitations~\cite{kapoor2024ai,cemri2025multifail}. Understanding when and why agents fail to invoke tools correctly is critical for production deployment. Recent work by Kokane et al.~\cite{kokane2024spectool} demonstrates the value of granular error taxonomies for single-agent tool use, yet these frameworks remain insufficient for multi-agent contexts where failures cascade through coordination protocols. 
+
+% Multi-agent systems require systematic diagnostic frameworks that characterize failure modes across tool initialization, parameter handling, execution, and result interpretation. A comprehensive taxonomy---such as one spanning 12 categories across OCR processing, database query operations, and database update operations---can reveal that tool initialization failures constitute the primary reliability bottleneck, with catastrophic rates in small models (e.g., 89\% errors at 3B parameters) largely absent at larger scales (e.g., 32B achieving flawless performance). Standard accuracy metrics fail to capture this operational dimension.
+
+\textbf{Safety:} Autonomous actions require careful guardrails and human oversight mechanisms~\cite{ruan2023identifying}.
+
+\textbf{Cost:} Multi-agent workflows can accumulate significant API costs through extensive LLM calls. %Research has revealed cost spans of 175$\times$ across model configurations, from under \$1 to nearly \$80 per 1,000 evaluations~\cite{zheng2023llmjudge}, necessitating cost-aware model selection and reliability metrics that account for retry overhead.
+
+\textbf{Latency:} Sequential agent operations may introduce unacceptable delays for real-time applications.
+
+\textbf{Evaluation:} Standard accuracy metrics may be insufficient for assessing end-to-end workflow automation~\cite{jeyakumar2024advancing,putta2024agent}, necessitating new metrics that capture pipeline-level success rates rather than individual task accuracy.% Fine-grained metrics that decompose workflows into atomic steps---such as tool invocation, parameter transmission, query execution, and downstream processing---can reveal partial failures that binary success metrics would obscure.
+
+These challenges motivate research on agentic AI for business automation presented in Chapter~\ref{ch:agentic}, including novel reliability metrics such as the Agentic Success Rate (ASR), which decomposes tasks into atomic steps, and Evaluation Completion Rate (ECR@1), which measures first-attempt success rates with direct cost implications.
+
+\section{Edge Deployment of Large Language Models}
+\label{sec:lit_edge}
+
+Edge deployment---executing LLMs locally on consumer-grade or enterprise hardware---addresses critical constraints around privacy, latency, and cost. This section reviews foundations relevant to the edge deployment strategies discussed in Chapter~\ref{ch:strategies}.
+
+\subsection{Motivation for Edge Deployment}
+
+Enterprise requirements often necessitate local LLM deployment~\cite{zheng2024edgellm,meuser2024revisiting}:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Data Privacy:} Sensitive data cannot leave organizational boundaries, particularly in regulated industries such as finance and healthcare
+    \item \textbf{Latency:} Real-time applications require low-latency inference unavailable through cloud APIs
+    \item \textbf{Cost:} Cloud API costs may be prohibitive for high-volume applications
+    \item \textbf{Reliability:} Local deployment eliminates external dependencies and ensures availability
+    \item \textbf{Sustainability:} Edge deployment can reduce the environmental footprint of AI systems by optimizing energy consumption~\cite{dhar2024empirical}
+\end{itemize}
+
+The democratization of LLMs through edge deployment holds significant potential for social good, enhancing privacy in sensitive domains, reducing environmental footprint, and expanding access to AI in regions with limited cloud infrastructure~\cite{zheng2024edgellm}.
+
+\subsection{Model Optimization Techniques}
+
+Several techniques enable LLM deployment on resource-constrained hardware:
+
+\textbf{Quantization:} Reducing precision of model weights from FP32 to lower bit-widths (INT8, INT4) substantially reduces memory requirements and improves inference speed~\cite{dettmers2022llmint8,frantar2023gptq}. Recent advances in quantization-aware training and post-training quantization enable aggressive compression with minimal accuracy loss.% Empirical studies have shown that optimized quantization schemes (such as Q4\_K\_M) can outperform standard 4-bit implementations, with quantized models achieving higher F1 scores compared to baselines (e.g., Llama3.1:8b achieving 3.28\% higher F1 with Ollama's Q4\_K\_M versus bitsandbytes 4-bit: 92.87\% vs. 89.50\%) while enabling deployment on consumer hardware~\cite{chitty2024llm}.
+
+\textbf{Model Pruning:} Removing less important weights or structures reduces model size while maintaining performance~\cite{frantar2023sparsegpt,kim2024shortened}. Both structured and unstructured pruning approaches have been applied to transformer architectures.
+
+\textbf{Knowledge Distillation:} Training smaller ``student'' models to mimic larger ``teacher'' models transfers capabilities to more deployable architectures~\cite{hinton2015distilling,gu2023minillm,yang2022distilling,guo2025deepseek}. %However, distillation effectiveness depends critically on base architecture and task characteristics---studies show that smaller models with superior base architectures can outperform larger distilled models, and reasoning patterns optimized for complex tasks may transfer poorly to simpler classification scenarios~\cite{guo2025deepseek}.
+
+\textbf{Efficient Attention:} Techniques like Flash Attention~\cite{dao2022flashattention} reduce memory overhead of attention computation, enabling longer context lengths on limited hardware.
+
+\subsection{Deployment Frameworks}
+
+Frameworks supporting edge LLM deployment include:
+
+\textbf{Ollama}~\cite{ollama2024}: Simplified local deployment with automatic optimization, cross-platform support (macOS, Linux, Windows), and an intuitive API for model management. %Ollama addresses deployment complexities while enhancing transparency, privacy, and performance. The framework supports various quantization formats including Q4\_K\_M, enabling efficient deployment across heterogeneous hardware.
+
+\textbf{llama.cpp}~\cite{llamacpp2024}: CPU-optimized inference for quantized models with broad hardware support.
+
+\textbf{vLLM}~\cite{kwon2023vllm}: High-throughput serving with PagedAttention for efficient memory management.
+
+\textbf{MLX}~\cite{apple2024mlx}: Apple Silicon-optimized inference framework leveraging unified memory architecture.
+
+\subsection{Hardware Considerations}
+
+Edge deployment requires careful hardware selection balancing performance, cost, and power consumption~\cite{chitty2024llm,li2024large}:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Enterprise GPUs:} NVIDIA H100 (96GB HBM3) provides maximum performance for enterprise workloads; NVIDIA RTX A6000 Ada (48GB VRAM) provides headroom for larger models at approximately \$10,000~\cite{nvidia2024a6000}
+    \item \textbf{Consumer GPUs:} NVIDIA RTX 4090 (24GB VRAM) enables deployment of models up to 70B parameters with quantization at approximately \$5,000~\cite{nvidia2024rtx4090}
+    \item \textbf{Apple Silicon:} M3/M4 Max chips with unified memory provide efficient inference for medium-sized models at approximately \$4,000, representing viable edge deployment options~\cite{feng2025profiling,hubner2025apple,dai2024gpu}
+    \item \textbf{Edge Devices:} NVIDIA Jetson platforms enable deployment in IoT and embedded contexts
+    \item \textbf{CPU-Only:} Quantized models can run on commodity hardware, albeit with reduced throughput
+\end{itemize}
+
+\subsection{Research Gaps in Edge Deployment}
+
+Despite advances in optimization techniques, several gaps remain:
+
+\begin{itemize}[leftmargin=*]
+    \item Systematic benchmarking across diverse hardware platforms is limited, particularly for energy efficiency metrics
+    \item Guidelines for model selection based on hardware constraints and task requirements are lacking
+    \item Trade-offs between quantization methods require further investigation across different model families
+    \item Cross-platform consistency of quantized models needs better characterization
+    \item The impact of platform configuration (e.g., WSL vs. native Windows) on inference performance requires more comprehensive study
+\end{itemize}
+
+These gaps motivate research on edge deployment strategies presented in Chapter~\ref{ch:strategies}, including comprehensive evaluation across six hardware platforms and the introduction of energy efficiency metrics.
+
+\section{Reasoning in Large Language Models}
+\label{sec:lit_reasoning}
+
+Reasoning capabilities distinguish advanced AI systems from simple pattern matching. This section reviews reasoning enhancement techniques relevant to Chapter~\ref{ch:strategies}.
+
+\subsection{Reasoning Capabilities and Limitations}
+
+While LLMs demonstrate impressive language generation capabilities, their reasoning abilities remain an active area of research. Key challenges include:
+
+\textbf{Multi-step Reasoning:} LLMs often struggle with problems requiring extended chains of logical inference, exhibiting error accumulation across reasoning steps~\cite{huang2023reasoning,tong2024llm_mistakes}.
+
+\textbf{Mathematical Reasoning:} Arithmetic and mathematical problem-solving expose limitations in systematic computation~\cite{cobbe2021gsm8k}.
+
+\textbf{Logical Consistency:} Models may generate superficially coherent but logically inconsistent responses~\cite{jin2022fallacy}. Logical fallacy detection remains challenging, requiring models to identify subtle reasoning errors in natural language arguments~\cite{teo2025fallacy}.
+
+\textbf{Lateral Thinking:} Problems requiring unconventional reasoning approaches, such as lateral thinking puzzles (e.g., ``Turtle Soup'' puzzles requiring deductive reasoning from partial information), present particular challenges for current models~\cite{alhindi2023fallacy}.
+
+\subsection{Chain-of-Thought Prompting}
+
+Chain-of-thought (CoT) prompting~\cite{wei2022cot} has emerged as a pivotal technique for enhancing LLM reasoning. By including intermediate reasoning steps in prompts, models are encouraged to generate explicit reasoning chains before final answers.
+
+\textbf{Few-shot CoT:} Providing examples with detailed reasoning solutions instructs models to emulate step-by-step reasoning patterns.
+
+\textbf{Zero-shot CoT:} Simple instructions like ``Let's think step by step'' can trigger improved reasoning without examples~\cite{kojima2022zerocot}.
+
+Empirical studies demonstrate marked improvements on arithmetic, commonsense, and symbolic reasoning tasks when using CoT prompting~\cite{wei2022cot}. However, effectiveness varies with model scale and task complexity---a relationship explored further in Section~\ref{subsec:task_complexity}.
+
+\subsection{Specialized Reasoning Models}
+
+Recent developments have produced models specifically optimized for reasoning tasks:
+
+\textbf{OpenAI o1 Series:} Employs reinforcement learning to develop deliberative reasoning capabilities, allocating variable computational effort based on problem complexity~\cite{openai2024o1}.
+
+\textbf{DeepSeek-R1:} Features explicit reasoning traces generated through reinforcement learning, providing step-by-step reasoning processes that distinguish it from conventional LLMs~\cite{guo2025deepseek}. The model family includes distilled variants (8B--70B) enabling deployment on diverse hardware.% DeepSeek-R1's native reasoning capability generates complete reasoning traces during inference, enabling built-in interpretability and transparent decision-making---especially important for tasks where intermediate reasoning supports output validation.
+
+\textbf{Qwen3:} Alibaba's reasoning-enhanced model family with support for ``thinking mode'' that generates explicit reasoning traces through adaptive compute based on query difficulty~\cite{yang2025qwen3,qwen3_thinking_mode}. Thinking mode can be enabled or disabled via system prompts, enabling evaluation of reasoning impact on specific tasks.
+
+\textbf{Granite3.3:} IBM's lightweight models with conditional reasoning that separates intermediate reasoning from final answers~\cite{ibm2025granite3.3,daly2024granite}.
+
+\textbf{Magistral:} Mistral's reasoning model using reinforcement learning to shape reasoning paths~\cite{rastogi2025magistral,mistral2025magistralsmall}.
+
+These models represent a shift toward ``thinking before responding,'' with explicit reasoning phases prior to answer generation.
+
+\subsection{Task Complexity and Reasoning Effectiveness}
+\label{subsec:task_complexity}
+
+Recent research has begun to question whether reasoning capabilities universally improve LLM performance across all NLP tasks. Studies on financial sentiment analysis demonstrate that chain-of-thought reasoning can lead to ``overthinking''---generating elaborate reasoning chains that introduce errors rather than clarifying decisions~\cite{li2025financial}.
+
+\section{Sentiment Analysis and Cross-Domain Applications}
+\label{sec:lit_sentiment}
+
+LLMs have demonstrated broad applicability across diverse NLP tasks. This section reviews sentiment analysis and related applications relevant to Chapter~\ref{ch:strategies}.
+
+\subsection{Evolution of Sentiment Analysis}
+
+Sentiment analysis has evolved through several paradigms~\cite{wang2025chinese_sentiment}:
+
+\textbf{Lexicon-Based Methods:} Using predefined sentiment dictionaries to classify text polarity~\cite{mohammad2013nrc}. While interpretable, these methods struggle with context-dependent sentiment.
+
+\textbf{Machine Learning Approaches:} Supervised classifiers (SVM, Naive Bayes) trained on labeled sentiment data~\cite{pang2002sentiment}. Feature engineering was critical for performance.
+
+\textbf{Deep Learning Methods:} Neural architectures (CNN, LSTM, Transformers) learning sentiment features from data~\cite{socher2013recursive}. Pre-trained representations substantially improved performance.
+
+\textbf{LLM-Based Analysis:} Leveraging pre-trained language models for zero-shot or few-shot sentiment classification~\cite{zhang2024sentiment}. Modern LLMs achieve competitive performance without task-specific training, with reasoning-capable models providing transparent reasoning traces that enhance interpretability---particularly valuable for fine-grained sentiment tasks requiring nuanced distinctions between adjacent categories (e.g., ``Strongly Positive'' vs. ``Positive'').
+
+\subsection{Machine Translation}
+
+Machine translation between typologically distant languages such as Chinese and English presents particular challenges:
+
+\textbf{Traditional Approaches:} Rule-based and statistical machine translation relied on handcrafted rules or patterns from parallel corpora~\cite{koehn2009smt}.
+
+\textbf{Neural Machine Translation:} The transformer architecture enabled end-to-end learning of translation patterns~\cite{vaswani2017attention}.
+
+\textbf{LLM-Based Translation:} Large language models demonstrate competitive translation performance through few-shot prompting, with fine-tuning further improving quality. Evaluation metrics have evolved from n-gram overlap (BLEU~\cite{papineni2002bleu}) to neural-based metrics like COMET~\cite{rei2022comet} that better correlate with human judgments. However, these metrics may not capture all aspects of translation quality---LLMs sometimes produce outputs with untranslated segments, motivating the introduction of complementary metrics that measure the proportion of fully rendered translations.
+
+\subsection{Sports Predictive Analytics}
+
+The integration of LLMs with traditional machine learning for predictive analytics represents an emerging application area~\cite{bunker2022sports,wang2023stock}. Sentiment features extracted from social media and news sources can enhance prediction accuracy when combined with conventional statistical models, demonstrating that LLM-derived features provide complementary signal to historical data.% Task-specific optimization is critical: metric selection for model training must align with downstream objectives, as different optimization targets (e.g., accuracy vs. F1) can produce substantially different practical outcomes.
+
+\section{Summary and Research Gaps}
+\label{sec:lit_summary}
+
+This literature review has surveyed foundational concepts in LLMs, implementation approaches for enterprise deployment, and existing research on the three core research pillars. Several research gaps motivate this dissertation:
+
+\subsection{Gaps in RAG Optimization (RQ1)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Evaluation Metrics:} Existing metrics inadequately capture user experience factors like repetition and verbosity in LLM outputs. Traditional metrics (BLEU, ROUGE, F1) and even neural metrics (BERTScore, COMET) overlook repetitive content that degrades output quality~\cite{fu2020repetition,holtzman2019degeneration}. Novel metrics are needed that balance performance with output quality, integrating repetition penalty into model evaluation through mechanisms such as a repetition ratio computed from detected non-word character and text repetitions.
+    
+    \item \textbf{Hyperparameter Optimization:} The impact of generation parameters, particularly repetition penalty~\cite{keskar2019ctrl}, on RAG output quality is underexplored. While the repetition penalty parameter (RPP) aims to reduce redundancy, traditional metrics fail to capture this dimension, making optimal tuning challenging. Metrics that enable identification of trade-off values---significantly reducing repetition while minimizing performance loss---are needed.
+    
+    \item \textbf{Open-Source Benchmarking:} Systematic comparison of open-source models against proprietary alternatives for RAG-specific tasks remains limited, particularly regarding the trade-offs between model size, architecture, and performance across diverse datasets and prompting strategies.
+\end{enumerate}
+
+\subsection{Gaps in Agentic AI (RQ2)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Workflow Automation:} Real-world evaluation of agentic systems for complex business processes such as invoice reconciliation and payment processing is lacking. Most existing work focuses on simpler single-task automation rather than end-to-end multi-agent workflows~\cite{wang2024surveyllm-mas}. No established reference framework exists for implementing end-to-end agentic payment workflows using LLM-based multi-agent systems.
+    
+    \item \textbf{Reliability Metrics:} Standard accuracy metrics are insufficient for assessing multi-agent pipeline reliability~\cite{kokane2024spectool,kapoor2024ai}. Metrics that capture end-to-end success rates, first-attempt completion rates, and cost implications of failures are needed for production deployment decisions. Fine-grained metrics that decompose workflows into atomic steps can reveal that smaller models fail primarily at tool orchestration rather than downstream processing---insights invisible to binary success metrics.
+    
+    \item \textbf{Error Taxonomy:} Systematic diagnostic frameworks for characterizing failure modes in multi-agent systems are underdeveloped. A comprehensive taxonomy covering tool initialization failures, parameter mismatches, execution errors, and result interpretation failures across different tool categories is needed to enable targeted reliability improvements.
+    
+    \item \textbf{Edge Deployment:} Practical guidelines for deploying multi-agent systems on resource-constrained enterprise hardware are needed, including model selection, energy efficiency considerations, and cost-performance trade-offs~\cite{dhar2024empirical}.
+\end{enumerate}
+
+\subsection{Gaps in Enterprise Deployment (RQ3)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Hardware Benchmarking:} Systematic evaluation across diverse consumer and enterprise hardware platforms is limited, particularly for energy efficiency metrics~\cite{chitty2024llm}. Cross-platform comparisons including enterprise GPUs (H100, RTX A6000), consumer GPUs (RTX 4090), Apple Silicon (M3/M4 Max), and edge devices are needed.
+    
+    \item \textbf{Reasoning Reliability:} Methods for assessing the reliability of LLM reasoning outputs require further development. Beyond accuracy, metrics capturing the proportion of valid classifications and reasoning efficiency are needed for deployment decisions.
+    
+    \item \textbf{Task-Complexity-Dependent Reasoning:} The relationship between task complexity and reasoning effectiveness remains underexplored. Understanding when reasoning mechanisms improve versus degrade performance across tasks of varying complexity---from binary classification to fine-grained multi-class emotion recognition---is critical for model selection~\cite{li2025financial}. Comprehensive evaluation across 500+ configurations spanning multiple model families is needed to establish principled guidelines.
+    
+    \item \textbf{Model Selection Guidelines:} Evidence-based recommendations for model selection based on task requirements, hardware constraints, and efficiency trade-offs are lacking. The relationship between model architecture, parameter count, and performance requires nuanced investigation, including Pareto frontier analysis of cost-performance trade-offs~\cite{guo2025deepseek,yang2024qwen2.5}.
+    
+    \item \textbf{Cross-Domain Validation:} Demonstration that optimization techniques generalize across diverse enterprise applications (translation, sentiment analysis, predictive analytics) is needed to establish the broader applicability of LLM deployment strategies.
+\end{enumerate}
+
+The following chapters address these gaps through systematic empirical research and methodological contributions:
+
+\begin{itemize}[leftmargin=*]
+    \item Chapter~\ref{ch:rag} addresses RAG optimization gaps through comparative evaluation, the RAP metric and ReDA algorithm for repetition detection, and deployment guidelines enabling up to 93.1\% repetition reduction with only 3.7\% performance degradation
+    \item Chapter~\ref{ch:agentic} addresses agentic AI gaps through multi-agent architectures for business automation (invoice reconciliation achieving 99.9\% success, payment processing achieving 97.0\% task success), a 12-category error taxonomy for systematic failure diagnosis, and novel evaluation frameworks including ASR and ECR@1 reliability metrics
+    \item Chapter~\ref{ch:strategies} addresses enterprise deployment gaps through edge benchmarking across six hardware platforms, reasoning enhancement evaluation across 504 configurations demonstrating task-complexity-dependent effectiveness, and cross-domain applications including translation and predictive analytics demonstrating technique generalizability
+\end{itemize}
