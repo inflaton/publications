@@ -202,7 +202,6 @@
 
 ## Change 10 — Updated ASR top-models table and highlighted open-weight dominance
 
-**Date:** 2026-04-08
 **Reviewer points:** #1a (Expand core threads), #2 (Clarify theoretical contributions)
 **Files modified:** `Chapter_4_Agentic_AI.tex`, `Chapter_1_Introduction.tex`
 
@@ -236,7 +235,6 @@
 
 ## Change 9 — Generalized error taxonomy terminology; repositioned ConvPayMAS as work-in-progress
 
-**Date:** 2026-04-08
 **Reviewer points:** #2 (Clarify theoretical contributions), #3 (More cautious generalizability claims)
 **Files modified:** `Chapter_4_Agentic_AI.tex`, `Chapter_1_Introduction.tex`, `Chapter_2_Literature_Review.tex`, `Chapter_6_Conclusions.tex`, `Appendix_A.tex`, `abstract.tex`
 
