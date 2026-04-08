@@ -833,7 +833,7 @@ Figure~\ref{fig:betting_evolution} illustrates bankroll evolution across the 202
 
 \subsubsection{Motivation}
 
-Entity matching (EM)---the task of identifying records that refer to the same real-world entity across different data sources---is fundamental to data integration in enterprises.  Financial institutions, for example, must match raw transaction descriptors to canonical merchant records, a task performed at scale by systems such as Mastercard's Generative AI Merchant Enrichment (GAIME).  Traditional approaches rely on rule-based, distance-based, or supervised-learning pipelines~\cite{fellegi1969theory,getoor2012entity,li2015rule,mudgal2018deep}, but LLMs now enable zero-shot entity matching that requires no task-specific training data.  However, three questions remain open for practitioners: (1)~can open-weight models match proprietary APIs on EM tasks? (2)~how does configurable reasoning effort affect accuracy and cost? and (3)~what budget tier achieves acceptable performance?
+Entity matching (EM)---the task of identifying records that refer to the same real-world entity across different data sources---is fundamental to data integration in enterprises.  Financial institutions, for example, must match raw transaction descriptors to canonical merchant records.  Traditional approaches rely on rule-based, distance-based, or supervised-learning pipelines~\cite{fellegi1969theory,getoor2012entity,li2015rule,mudgal2018deep}, but LLMs now enable zero-shot entity matching that requires no task-specific training data.  However, three questions remain open for practitioners: (1)~can open-weight models match proprietary APIs on EM tasks? (2)~how does configurable reasoning effort affect accuracy and cost? and (3)~what budget tier achieves acceptable performance?
 
 \subsubsection{Background: ComEM Framework}
 
@@ -855,11 +855,13 @@ ComEM composes these into a two-stage pipeline.  In the \emph{ranking stage}, a 
 \begin{itemize}[leftmargin=*]
     \item \textbf{OpenAI proprietary} (15 variants): GPT-4o-mini, GPT-4o, GPT-4.1 family (nano/mini/standard), GPT-5 family (nano/mini/standard $\times$ low/medium/high reasoning), GPT-5.2 (low/medium/high)
     \item \textbf{Anthropic proprietary} (10 variants): Claude Haiku~4.5, Sonnet~4.5, Opus~4.5, Sonnet~4.6, Opus~4.6---each with and without thinking/adaptive-thinking modes
-    \item \textbf{Open-weight local} (7 models): GPT-OSS (20B, 120B) at three reasoning levels, GLM-4.7-Flash, Gemma3:27b, Llama4:Scout, Granite4:32b---deployed on NVIDIA DGX Spark (128\,GB unified memory) via Ollama
-    \item \textbf{Open-weight via API} (8 models): DeepSeek-Chat-v3.1, Kimi-K2, GLM-5, Qwen3-235b, MiniMax-M2.5---with and without reasoning/thinking variants
+    \item \textbf{Open-weight local} (7 models): GPT-OSS (20B, 120B) at three reasoning levels, GLM-4.7-Flash, Gemma3:27b, Llama4:Scout, Granite4:32b---deployed on NVIDIA DGX Spark (128\,GB unified memory) using Ollama v0.15.6 with sequential inference (batch size~$=1$, single concurrent request), and \texttt{num\_ctx=8192}.
+    \item \textbf{Open-weight via OpenRouter API} (8 models): DeepSeek-Chat-v3.1, Kimi-K2, GLM-5, Qwen3-235b, MiniMax-M2.5---with and without reasoning/thinking variants
 \end{itemize}
 
 All models use temperature~0 and the identical ComEM selecting-stage prompt.  Only the selecting-stage LLM and reasoning configuration vary; all other pipeline components remain fixed.
+
+\textbf{Evaluation metrics.}  We report F1 score on the positive class (matching pairs), together with Precision and Recall, computed as the mean across all 8 datasets. % Unparseable model responses default to ``no match,'' which penalises Recall.
 
 \textbf{Cost metric.}  We compute API-equivalent token cost as $\text{Cost} = N_{\text{in}} \times P_{\text{in}} + (N_{\text{out}} + N_{\text{reason}}) \times P_{\text{out}}$, summed across all 8 datasets for numerical precision.
 
@@ -897,13 +899,42 @@ Table~\ref{tab:entity_matching_top} presents the top-performing models.
 
 \textbf{Open-weight models rival proprietary APIs.}  GPT-OSS:120b (high) achieves 92.10~F1, outperforming prior-generation proprietary baselines GPT-4.1 (90.36) and GPT-4o (89.58) while costing only \$1.20---approximately 20$\times$ less than GPT-5 (high) at \$24.50.  GPT-OSS:20b (high) achieves 91.36~F1 at just \$0.46.  This competitiveness reflects the architectural maturity of recent open-weight models and the structured nature of the EM task, which favours strong instruction-following over broad world knowledge.
 
-\textbf{Reasoning effort has opposite effects across families.}  The optimal reasoning level is family-dependent rather than universal:
-\begin{itemize}[leftmargin=*]
-    \item \textbf{GPT-5:} Low reasoning is optimal---93.14~F1 at \$6.25 versus 92.14~F1 at \$24.50 for high (performance \emph{degrades} with additional reasoning at 4$\times$ the cost).
-    \item \textbf{GPT-5.2:} Reasoning effort has minimal impact ($\sim$92.5~F1 across all levels); low is the value choice at \$3.43 versus \$5.74 for high.
-    \item \textbf{Open-weight:} High reasoning is critical---GPT-OSS:120b improves from 90.11 to 92.10~F1 (+1.99\,pp) and GPT-OSS:20b from 88.74 to 91.36~F1 (+2.62\,pp) with increasing effort.
-    \item \textbf{Claude:} Thinking produces the most dramatic and asymmetric effects---Sonnet~4.5 gains +10.13~F1 (precision improves by +15.22\,pp while maintaining recall), Haiku~4.5 gains +8.55~F1, yet Opus~4.5 loses $-$0.25~F1 at 2.6$\times$ cost.  Without thinking, all Claude models exhibit high recall (92--93\%) but poor precision (70--79\%), defaulting to predicting ``match'' without deeper analysis.
-\end{itemize}
+\textbf{Reasoning effort has opposite effects across families.}  Table~\ref{tab:em_reasoning} summarises the impact of reasoning effort across model families.  The optimal reasoning level is family-dependent rather than universal.
+
+\begin{table}[htbp]
+\centering
+\caption{Impact of reasoning effort on entity matching across model families.  F1 is the mean across 8 datasets.  ``Best'' = recommended setting considering both F1 and cost; $^\ast$medium is marginally higher (93.17 vs.\ 93.14) but costs 2$\times$ more.  $\Delta$F1 = F1 range (max$-$min); $\Delta$Cost = cost multiplier from lowest to highest setting.  For models with a thinking toggle, ``On'' and ``Off'' denote thinking enabled/disabled; ``Adapt'' denotes adaptive thinking.}
+\label{tab:em_reasoning}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lccccccc}
+\toprule
+\textbf{Model Family} & \textbf{Low} & \textbf{Medium} & \textbf{High} & \textbf{Best} & \textbf{$\Delta$F1} & \textbf{$\Delta$Cost} & \textbf{Trend} \\
+\midrule
+gpt-5        & \textbf{93.14} & 93.17 & 92.14 & Low$^\ast$  & 1.03 & 3.9$\times$ & $\downarrow$ \\
+gpt-5.2      & \textbf{92.75} & 92.53 & 92.54 & Low  & 0.22 & 1.7$\times$ & $\approx$ \\
+gpt-5-mini   & \textbf{91.72} & 91.46 & 91.62 & Low  & 0.26 & 3.2$\times$ & $\approx$ \\
+gpt-5-nano   & 88.38 & \textbf{89.34} & 85.71 & Medium  & 3.63 & 6.3$\times$ & $\cap$ \\
+gpt-oss:120b & 90.11 & 91.26 & \textbf{92.10} & High & 1.99 & 7.1$\times$ & $\uparrow$ \\
+gpt-oss:20b  & 88.74 & 90.87 & \textbf{91.36} & High & 2.62 & 5.8$\times$ & $\uparrow$ \\
+\midrule
+ & \textbf{Off} & \multicolumn{2}{c}{\textbf{On\,/\,Adapt}} & & & & \\
+\cmidrule(lr){2-2} \cmidrule(lr){3-4}
+claude-sonnet-4.5 & 79.57 & \multicolumn{2}{c}{\textbf{89.70}} & On & 10.13 & 1.9$\times$ & $\uparrow\uparrow$ \\
+claude-haiku-4.5  & 82.64 & \multicolumn{2}{c}{\textbf{91.19}} & On & 8.55 & 2.0$\times$ & $\uparrow\uparrow$ \\
+claude-opus-4.6   & 85.18 & \multicolumn{2}{c}{\textbf{90.13}} & Adapt & 4.95 & 1.4$\times$ & $\uparrow$ \\
+claude-sonnet-4.6 & 82.48 & \multicolumn{2}{c}{82.55} & Adapt & 0.07 & 1.0$\times$ & $\approx$ \\
+claude-opus-4.5   & \textbf{80.53} & \multicolumn{2}{c}{80.28} & Off & 0.25 & 2.6$\times$ & $\downarrow$ \\
+glm-5        & 79.77 & \multicolumn{2}{c}{\textbf{91.02}} & On & 11.25 & 23$\times$ & $\uparrow\uparrow$ \\
+qwen3-235b   & \textbf{86.85} & \multicolumn{2}{c}{81.76} & Off & 5.09 & 34$\times$ & $\downarrow$ \\
+deepseek-v3.1 & 79.16 & \multicolumn{2}{c}{\textbf{86.52}} & On & 7.36 & 7.0$\times$ & $\uparrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For GPT-5, low reasoning achieves 93.14~F1 at \$6.25, virtually identical to medium (93.17 at \$12.29) while costing 49\% less; high reasoning actually \emph{degrades} performance to 92.14~F1 at 4$\times$ the cost.  GPT-5.2 and GPT-5-mini show minimal sensitivity, making low the value choice in both cases.  In contrast, open-weight models benefit substantially from extended reasoning: GPT-OSS:120b improves from 90.11 to 92.10~F1 (+1.99\,pp) and GPT-OSS:20b from 88.74 to 91.36~F1 (+2.62\,pp) with increasing effort.
+
+The Claude family exhibits the most extreme and asymmetric thinking effects.  Thinking primarily boosts precision while maintaining recall: Sonnet~4.5 gains +10.13~F1 (precision +15.22\,pp), Haiku~4.5 gains +8.55~F1, and Opus~4.6 gains +4.95~F1 with adaptive thinking.  Yet Opus~4.5 \emph{loses} 0.25~F1 with thinking at 2.6$\times$ cost, and Sonnet~4.6 gains only +0.07.  Without thinking, all Claude models share high recall (92--93\%) but poor precision (70--79\%), suggesting they default to predicting ``match'' without deeper analysis.  Thinking can also hurt elsewhere: Qwen3-235b drops 5.09~F1 at 34$\times$ cost.
 
 This family-dependent pattern extends the task-complexity findings from Section~\ref{subsec:task_complexity}: just as reasoning effectiveness depends on task complexity, it also depends on model family, with open-weight models benefiting from extended deliberation likely because they have less internalised entity matching knowledge than frontier proprietary models.
 
@@ -914,9 +945,16 @@ This family-dependent pattern extends the task-complexity findings from Section~
     \item \textbf{Premium} (\$3+): Diminishing returns---each additional dollar beyond \$3 buys \textless0.3~F1 points.  GPT-5 (low) at \$6.25 achieves 93.14~F1; paying 4$\times$ more for GPT-5 (high) \emph{reduces} F1 to 92.14.
 \end{itemize}
 
-Only 13 of 46 configurations form the Pareto frontier, dominated by the GPT ecosystem (GPT-OSS variants, GPT-5-mini, GPT-5.2, GPT-5) plus Gemma3:27b and Qwen3-235b.  No Claude or GLM configuration reaches the frontier.
+Only 13 of 46 configurations form the Pareto frontier, dominated by the GPT ecosystem (GPT-OSS variants, GPT-5-mini, GPT-5.2, GPT-5) plus Gemma3:27b and Qwen3-235b.  No Claude or GLM configuration reaches the frontier.  Figure~\ref{fig:em_pareto} visualises this cost-performance landscape.
 
-These findings directly inform model selection for production entity matching systems such as GAIME, where the value tier (GPT-OSS at \$0.46--\$1.20) offers near-frontier accuracy with infrastructure costs compatible with high-volume transaction processing~\cite{huang2026entity}.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{images/pareto_cost_f1_v2.pdf}
+\caption{Cost vs.\ F1 Pareto analysis of 46 model configurations for entity matching using the compound strategy.  Each point represents a model's mean F1 (across 8 datasets) and total API-equivalent token cost.  The dashed red step line traces the Pareto frontier.  Marker shapes distinguish proprietary API models (circles), open-weight models deployed locally via Ollama (squares), and open-weight models accessed via the OpenRouter API (diamonds).}
+\label{fig:em_pareto}
+\end{figure}
+
+These findings directly inform model selection for production entity matching systems, where the value tier (GPT-OSS at \$0.46--\$1.20) offers near-frontier accuracy with infrastructure costs compatible with high-volume transaction processing~\cite{huang2026entity}.
 
 \section{Summary and Implications}
 \label{sec:deployment_summary}
