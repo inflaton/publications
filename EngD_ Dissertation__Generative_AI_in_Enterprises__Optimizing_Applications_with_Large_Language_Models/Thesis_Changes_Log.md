@@ -125,6 +125,49 @@
 
 ---
 
+## Change 6 — Replaced Section 4.8 (EdgeAgent) with ASR for Agentic Payment Systems
+
+**Date:** 2026-04-08
+**Reviewer points:** #1a (Expand core threads), #2 (Clarify theoretical contributions), #4 (Stronger cross-chapter linkage)
+**Files modified:** `Chapter_4_Agentic_AI.tex`, `Chapter_6_Conclusions.tex`, `main.tex`, `references.bib`
+
+**What changed:**
+
+*Section 4.8 — Complete replacement:*
+- Removed the entire EdgeAgent / maritime annotation section (semi-automatic labeling pipeline, OAS-based ASR definition, Qwen model evaluation on maritime risk data, hardware benchmarking).
+- Replaced with **"Agentic Success Rate: Measuring Workflow Fidelity in Multi-Agent Payment Systems"** based on the AI4DF paper~\cite{huang2026asr}, extended with deeper analysis from notebooks and the JAAMAS submission.
+- New section structure:
+  - **Motivation:** Why TSR and HF1 are insufficient for payment compliance (PCI-DSS auditability).
+  - **Architecture Adaptations:** A2A protocol layer, UCP-compliant gateway (~85% compliance), multi-turn state-machine protocol replacing LangGraph interrupts, consolidated 3-level agent hierarchy (CPA → Supervisors → Workflows). Architecture diagram copied from JAAMAS paper to `figures/asr_architecture_diagram.pdf`.
+  - **ASR Definition:** Transition (bigram)-based metric with Transition Recall (TR) and Transition Precision (TP), grounded in process-mining conformance checking. Replaces the old OAS/weighted-step definition.
+  - **Expected Trajectories:** Table of per-scenario trajectories (T1–T4) with detailed T3 step-by-step purpose table.
+  - **Experimental Setup:** 18 LLMs, 90,000 instances (5 repeats × 18 models × 1,000 data points × 4 scenarios), M3 Max with 4-bit quantization.
+  - **Results:** System engineering effectiveness (+24.2 pp average TSR across 11 HMASP models); ASR reveals hidden workflow deviations (top 8 of 18 models table); root cause analysis of the T3 confirmation shortcut with step-by-step comparison table.
+  - **Deep Dive — Per-Sample Deviation Analysis** (new, from notebooks 09/10): Hidden deviation rates (22–26% across models that exhibit the shortcut; `mistral-small3.2:24b` at 0%); input phrasing as primary trigger (imperative phrasings universally shortcutted, deliberative formulations never shortcutted).
+  - **Discussion:** Regulatory implications (PCI-DSS), ASR as both evaluation metric and diagnostic signal, integration with 12-category error taxonomy and ECR@1.
+
+*Chapter 4 introduction (lines 11–24):*
+- Publication list item 6: "EdgeAgent Annotation Pipeline" → "Agentic Success Rate for Payment Systems" with updated citation keys (`huang2026asr`, `huang2026asrjournal`) and venue info (AI4DF 2026 accepted; JAAMAS under review).
+- Chapter structure description: "payments and annotation domains" → "payment processing, introducing trajectory-level workflow fidelity evaluation."
+- ASR description: "fine-grained evaluation of tool-calling precision" → "trajectory-level workflow fidelity by comparing observed and expected agent execution sequences."
+
+*Chapter 4 summary (Section 4.10):*
+- Bullet 6 rewritten for transition-based ASR framing with 18 LLMs / 90,000 instances.
+- Cross-reference paragraphs updated: "LCS-based" → "transition (bigram) level"; model-size invariance sentence updated to reference Llama3.1:8b vs GPT-5.2 (removed JAAMAS-only qwen3.5-0.8b reference).
+- Practical Deployment Guidelines: evaluation strategy updated for trajectory-level metrics.
+
+*Chapter 6 — Conclusions:*
+- "EdgeAgent Annotation Pipeline" contribution → "Agentic Success Rate (ASR)" with transition-level framing, 18 LLMs, 90,000 instances, "7 of 8 top models skip confirmation checkpoints."
+
+*main.tex:*
+- `\usepackage{xcolor}` → `\usepackage[table]{xcolor}` to support `\cellcolor` and `\rowcolor` in ASR tables.
+
+*references.bib:*
+- Added 6 new entries: `huang2026asrjournal`, `carmona2018conformance`, `vanderaalst2012conformance`, `chen2025benchmarksfail`, `google2025a2a`, `ucp2026spec`.
+- Fixed existing `huang2026asr`: author "Wang, Zhiqi" → "Wang, Zhaoxia"; booktitle updated to "AI4DF, PAKDD 2026 Workshops."
+
+---
+
 ## Pending Changes
 
 | Reviewer Point | Description | Status |
