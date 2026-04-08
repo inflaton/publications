@@ -828,6 +828,96 @@ Figure~\ref{fig:betting_evolution} illustrates bankroll evolution across the 202
 \label{fig:betting_evolution}
 \end{figure*}
 
+\subsection{Entity Matching with LLMs at Scale}
+\label{subsec:entity_matching}
+
+\subsubsection{Motivation}
+
+Entity matching (EM)---the task of identifying records that refer to the same real-world entity across different data sources---is fundamental to data integration in enterprises.  Financial institutions, for example, must match raw transaction descriptors to canonical merchant records, a task performed at scale by systems such as Mastercard's Generative AI Merchant Enrichment (GAIME).  Traditional approaches rely on rule-based, distance-based, or supervised-learning pipelines~\cite{fellegi1969theory,getoor2012entity,li2015rule,mudgal2018deep}, but LLMs now enable zero-shot entity matching that requires no task-specific training data.  However, three questions remain open for practitioners: (1)~can open-weight models match proprietary APIs on EM tasks? (2)~how does configurable reasoning effort affect accuracy and cost? and (3)~what budget tier achieves acceptable performance?
+
+\subsubsection{Background: ComEM Framework}
+
+We adopt the Compound Entity Matching (ComEM) framework of Wang et al.~\cite{wang2025match}, which defines three LLM-based matching strategies:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Matching:} The LLM acts as a binary classifier, independently determining whether each pair $(r, r_i)$ is a match.
+    \item \textbf{Comparing:} The LLM compares two candidate records $r_i$ and $r_j$ against the anchor $r$ to decide which is more consistent, requiring $O(kn)$ invocations.
+    \item \textbf{Selecting:} The LLM directly selects the matching record from the full candidate list, requiring only $O(1)$ invocations per anchor but sensitive to position bias.
+\end{itemize}
+
+ComEM composes these into a two-stage pipeline.  In the \emph{ranking stage}, a cost-efficient model (Flan-T5-XL) scores all $n$ blocking candidates using the matching strategy and retains the top-$k$.  In the \emph{selection stage}, a more capable LLM applies the selecting strategy on the filtered $k$~candidates, with a ``[0]~if there is none'' abstention option.  Wang et al.\ show that $k=4$ balances F1 and cost while mitigating position bias and reducing context length.
+
+\subsubsection{Experimental Setup}
+
+\textbf{Datasets.}  We use 8 pyJedAI clean-clean entity resolution benchmark datasets spanning three domains: product matching (Abt-Buy, Amazon-Google, Walmart-Amazon), citation deduplication (DBLP-ACM, DBLP-Scholar), and entertainment record linkage (IMDB-TMDB, IMDB-TVDB, TMDB-TVDB).  For each dataset, 400 anchor records are sampled (300 with matches, 100 without; seed~42), yielding 3{,}200 selecting-stage evaluations across all datasets.  Sparkly blocking at $n=10$ candidates per anchor is applied, consistent with the original ComEM protocol.
+
+\textbf{Models.}  We evaluate 46 model configurations spanning four categories:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{OpenAI proprietary} (15 variants): GPT-4o-mini, GPT-4o, GPT-4.1 family (nano/mini/standard), GPT-5 family (nano/mini/standard $\times$ low/medium/high reasoning), GPT-5.2 (low/medium/high)
+    \item \textbf{Anthropic proprietary} (10 variants): Claude Haiku~4.5, Sonnet~4.5, Opus~4.5, Sonnet~4.6, Opus~4.6---each with and without thinking/adaptive-thinking modes
+    \item \textbf{Open-weight local} (7 models): GPT-OSS (20B, 120B) at three reasoning levels, GLM-4.7-Flash, Gemma3:27b, Llama4:Scout, Granite4:32b---deployed on NVIDIA DGX Spark (128\,GB unified memory) via Ollama
+    \item \textbf{Open-weight via API} (8 models): DeepSeek-Chat-v3.1, Kimi-K2, GLM-5, Qwen3-235b, MiniMax-M2.5---with and without reasoning/thinking variants
+\end{itemize}
+
+All models use temperature~0 and the identical ComEM selecting-stage prompt.  Only the selecting-stage LLM and reasoning configuration vary; all other pipeline components remain fixed.
+
+\textbf{Cost metric.}  We compute API-equivalent token cost as $\text{Cost} = N_{\text{in}} \times P_{\text{in}} + (N_{\text{out}} + N_{\text{reason}}) \times P_{\text{out}}$, summed across all 8 datasets for numerical precision.
+
+\subsubsection{Results}
+
+Table~\ref{tab:entity_matching_top} presents the top-performing models.
+
+\begin{table}[htbp]
+\centering
+\caption{Entity Matching: Top 15 of 46 Model Configurations (Mean F1 across 8 datasets)}
+\label{tab:entity_matching_top}
+\small
+\begin{tabular}{@{}rlcccc@{}}
+\toprule
+\textbf{Rank} & \textbf{Model} & \textbf{F1} & \textbf{Prec.} & \textbf{Rec.} & \textbf{Cost (\$)} \\
+\midrule
+1  & gpt-5 (medium)        & 93.17 & 92.04 & 94.42 & 12.29 \\
+2  & gpt-5 (low)           & 93.14 & 92.26 & 94.12 &  6.25 \\
+3  & gpt-5.2 (low)         & 92.75 & 90.58 & 95.12 &  3.43 \\
+4  & gpt-5.2 (high)        & 92.54 & 90.22 & 95.08 &  5.74 \\
+5  & gpt-5.2 (medium)      & 92.53 & 90.33 & 94.92 &  4.52 \\
+6  & gpt-5 (high)          & 92.14 & 92.66 & 91.71 & 24.50 \\
+7  & gpt-oss:120b (high)   & 92.10 & 89.91 & 94.46 &  1.20 \\
+8  & kimi-k2-think         & 91.84 & 90.00 & 93.83 &  8.29 \\
+9  & gpt-5-mini (low)      & 91.72 & 88.64 & 95.08 &  0.71 \\
+10 & gpt-5-mini (high)     & 91.62 & 88.47 & 95.08 &  2.30 \\
+11 & gpt-5-mini (medium)   & 91.46 & 88.21 & 95.04 &  1.28 \\
+12 & gpt-oss:20b (high)    & 91.36 & 89.86 & 93.00 &  0.46 \\
+13 & minimax-m2.5          & 91.34 & 90.64 & 92.12 &  3.74 \\
+14 & gpt-oss:120b (medium) & 91.26 & 90.29 & 92.33 &  0.38 \\
+15 & claude-haiku-4.5 (think) & 91.19 & 88.63 & 94.00 & 8.64 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Open-weight models rival proprietary APIs.}  GPT-OSS:120b (high) achieves 92.10~F1, outperforming prior-generation proprietary baselines GPT-4.1 (90.36) and GPT-4o (89.58) while costing only \$1.20---approximately 20$\times$ less than GPT-5 (high) at \$24.50.  GPT-OSS:20b (high) achieves 91.36~F1 at just \$0.46.  This competitiveness reflects the architectural maturity of recent open-weight models and the structured nature of the EM task, which favours strong instruction-following over broad world knowledge.
+
+\textbf{Reasoning effort has opposite effects across families.}  The optimal reasoning level is family-dependent rather than universal:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{GPT-5:} Low reasoning is optimal---93.14~F1 at \$6.25 versus 92.14~F1 at \$24.50 for high (performance \emph{degrades} with additional reasoning at 4$\times$ the cost).
+    \item \textbf{GPT-5.2:} Reasoning effort has minimal impact ($\sim$92.5~F1 across all levels); low is the value choice at \$3.43 versus \$5.74 for high.
+    \item \textbf{Open-weight:} High reasoning is critical---GPT-OSS:120b improves from 90.11 to 92.10~F1 (+1.99\,pp) and GPT-OSS:20b from 88.74 to 91.36~F1 (+2.62\,pp) with increasing effort.
+    \item \textbf{Claude:} Thinking produces the most dramatic and asymmetric effects---Sonnet~4.5 gains +10.13~F1 (precision improves by +15.22\,pp while maintaining recall), Haiku~4.5 gains +8.55~F1, yet Opus~4.5 loses $-$0.25~F1 at 2.6$\times$ cost.  Without thinking, all Claude models exhibit high recall (92--93\%) but poor precision (70--79\%), defaulting to predicting ``match'' without deeper analysis.
+\end{itemize}
+
+This family-dependent pattern extends the task-complexity findings from Section~\ref{subsec:task_complexity}: just as reasoning effectiveness depends on task complexity, it also depends on model family, with open-weight models benefiting from extended deliberation likely because they have less internalised entity matching knowledge than frontier proprietary models.
+
+\textbf{Cost-performance analysis.}  Pareto frontier analysis across all 46 configurations reveals three actionable tiers:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Ultra-budget} (\textless\$0.10): Qwen3-235b (86.85~F1) and GPT-OSS:20b-low (88.74~F1) provide viable performance at minimal cost.
+    \item \textbf{Value} (\$0.46--\$1.20): GPT-OSS:20b-high (91.36~F1) and GPT-OSS:120b-high (92.10~F1) offer the steepest quality-per-dollar gains, approaching frontier-model accuracy.
+    \item \textbf{Premium} (\$3+): Diminishing returns---each additional dollar beyond \$3 buys \textless0.3~F1 points.  GPT-5 (low) at \$6.25 achieves 93.14~F1; paying 4$\times$ more for GPT-5 (high) \emph{reduces} F1 to 92.14.
+\end{itemize}
+
+Only 13 of 46 configurations form the Pareto frontier, dominated by the GPT ecosystem (GPT-OSS variants, GPT-5-mini, GPT-5.2, GPT-5) plus Gemma3:27b and Qwen3-235b.  No Claude or GLM configuration reaches the frontier.
+
+These findings directly inform model selection for production entity matching systems such as GAIME, where the value tier (GPT-OSS at \$0.46--\$1.20) offers near-frontier accuracy with infrastructure costs compatible with high-volume transaction processing~\cite{huang2026entity}.
+
 \section{Summary and Implications}
 \label{sec:deployment_summary}
 
@@ -885,6 +975,8 @@ This chapter addressed RQ3 by examining deployment configurations, reasoning enh
         \item \textbf{TCR} (Translation Completeness Ratio) for translation reliability
         \item \textbf{CPS} (Characters per Second) for translation efficiency
     \end{itemize}
+
+    \item \textbf{Entity matching at scale:} Evaluation of 46 model configurations across 8 benchmark datasets reveals that open-weight models rival proprietary APIs (GPT-OSS:120b achieves 92.10~F1, outperforming GPT-4.1 at 20$\times$ lower cost).  Reasoning effort has opposite effects across model families---low is optimal for GPT-5, high is critical for open-weight models, and Claude shows extreme asymmetric thinking effects.  Cost-performance Pareto analysis identifies sharp diminishing returns beyond \$3, with ultra-budget configurations (\textless\$0.10) achieving 87--89~F1.
 \end{enumerate}
 
 These findings provide practitioners with evidence-based guidelines for deploying LLMs across diverse enterprise contexts, balancing performance, efficiency, explainability, and cost considerations. The research demonstrates that open-source models can achieve enterprise-grade performance when properly optimized, enabling privacy-preserving edge deployment while maintaining competitive accuracy with proprietary alternatives.

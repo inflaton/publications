@@ -59,7 +59,9 @@ The third pillar addressed RQ3: \textit{What strategies enable effective LLM dep
     
     \item \textbf{Translation Completeness Ratio (TCR) and Characters per Second (CPS):} We introduced domain-specific metrics for machine translation reliability and efficiency, addressing the observation that LLMs sometimes produce outputs with untranslated segments.
     
-    \item \textbf{Cross-Domain Validation:} Applications across financial prediction, sentiment analysis, machine translation, logical reasoning, and sports predictive analytics validated the generalizability of optimization techniques. F1-tuned models for sports betting achieved 279.48\% returns (Random Forest + GPT-4.1), demonstrating that metric selection must align with downstream objectives.
+    \item \textbf{Cross-Domain Validation:} Applications across financial prediction, sentiment analysis, machine translation, logical reasoning, sports predictive analytics, and entity matching validated the generalizability of optimization techniques. F1-tuned models for sports betting achieved 279.48\% returns (Random Forest + GPT-4.1), demonstrating that metric selection must align with downstream objectives.
+
+    \item \textbf{Entity Matching at Scale:} The largest empirical evaluation of LLM-based entity matching to date---46 model configurations across 8 benchmark datasets---revealed that open-weight models rival proprietary APIs (GPT-OSS:120b achieves 92.10~F1, outperforming GPT-4.1 at 20$\times$ lower cost) and that reasoning effort has family-dependent effects: low is optimal for GPT-5, high is critical for open-weight models, and Claude shows extreme asymmetric thinking impacts (+10.13~F1 for Sonnet~4.5, $-$0.25 for Opus~4.5).  Cost-performance Pareto analysis provides actionable budget-tier guidance for production deployment.
 \end{enumerate}
 
 \subsection{Unifying the Evaluation Metrics for Practice}
@@ -89,6 +91,7 @@ This finding has significant implications for enterprise AI adoption:
     \item Qwen2.5-72B surpasses GPT-4o on logical reasoning (80.88\% vs. 80.36\% F1) with only 10-shot prompting (Chapter~\ref{ch:strategies})
     \item qwen2.5:32b achieves 99.90\% success rate on invoice reconciliation (Chapter~\ref{ch:agentic}), outperforming all proprietary cloud APIs
     \item qwen3:32b matches GPT-4.1 quality (98\% ASR, 83\% F1) on annotation tasks while enabling edge deployment (Chapter~\ref{ch:agentic})
+    \item GPT-OSS:120b achieves 92.10~F1 on entity matching, outperforming GPT-4.1 (90.36) and GPT-4o (89.58) at 20$\times$ lower cost (Chapter~\ref{ch:strategies})
 \end{itemize}
 
 Organizations can leverage open-source models to reduce costs, maintain data privacy through edge deployment, and avoid vendor lock-in while achieving comparable or superior performance.
@@ -119,7 +122,7 @@ Our comprehensive evaluation across 504 configurations reveals systematic task-c
     \item 27-class emotion (GoEmotions): Only 14\% failure rate for thinking modes, $+2.0 \pm 1.0$ pp average improvement
 \end{itemize}
 
-This task-complexity hypothesis provides principled deployment guidance: reserve reasoning for complex multi-class problems where accuracy gains justify 2.1$\times$--54$\times$ computational overhead, and leverage base models for simpler classification tasks.
+This task-complexity hypothesis provides principled deployment guidance: reserve reasoning for complex multi-class problems where accuracy gains justify 2.1$\times$--54$\times$ computational overhead, and leverage base models for simpler classification tasks.  Moreover, entity matching evaluation across 46 configurations reveals that reasoning effectiveness is also \emph{family-dependent}: low reasoning is optimal for GPT-5 (93.14 vs.\ 92.14~F1 for high), whereas high reasoning is critical for open-weight models (GPT-OSS:120b gains +1.99~F1), and Claude models exhibit extreme asymmetric sensitivity (+10.13~F1 for Sonnet~4.5, $-$0.25 for Opus~4.5).
 
 \subsection{Finding 4: Few-Shot Learning Superiority}
 

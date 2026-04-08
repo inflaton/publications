@@ -409,6 +409,14 @@ Machine translation between typologically distant languages such as Chinese and 
 
 The integration of LLMs with traditional machine learning for predictive analytics represents an emerging application area~\cite{bunker2022sports,wang2023stock}. Sentiment features extracted from social media and news sources can enhance prediction accuracy when combined with conventional statistical models, demonstrating that LLM-derived features provide complementary signal to historical data.% Task-specific optimization is critical: metric selection for model training must align with downstream objectives, as different optimization targets (e.g., accuracy vs. F1) can produce substantially different practical outcomes.
 
+\subsection{Entity Matching and Resolution}
+
+Entity matching (also called entity resolution or record linkage) is the task of identifying records across one or more data sources that refer to the same real-world entity.  The standard pipeline comprises a \emph{blocking} stage that filters obvious non-matches for scalability, followed by a \emph{matching} stage that makes fine-grained decisions~\cite{fellegi1969theory,getoor2012entity,papadakis2021blocking,binette2022almost}.
+
+Traditional matching approaches range from rule-based methods~\cite{benjelloun2009swoosh,li2015rule} and adaptive string-distance techniques~\cite{bilenko2003adaptive} to deep learning models that learn record representations for comparison~\cite{mudgal2018deep,barlaug2021neural}.  Pre-trained language models have recently advanced the field: Li et al.~\cite{li2020deep} demonstrated that pre-trained transformers substantially improve matching accuracy, and Tu et al.~\cite{tu2023unicorn} proposed a unified multi-tasking approach.
+
+The advent of LLMs has introduced zero-shot and few-shot paradigms for entity matching.  Narayan et al.~\cite{narayan2022can} investigated whether foundation models can perform data wrangling tasks including entity matching; Peeters and Bizer~\cite{peeters2023using,peeters2025entity} evaluated ChatGPT and subsequent LLMs on standard benchmarks; and Fan et al.~\cite{fan2024cost} explored cost-effective in-context learning designs.  Wang et al.~\cite{wang2025match} conducted the most comprehensive investigation to date, comparing three strategies (matching, comparing, and selecting) and proposing the Compound Entity Matching (ComEM) framework that composes strategies and models for improved effectiveness and cost-efficiency.  However, the impact of configurable reasoning effort---a defining feature of recent models such as GPT-5, DeepSeek-R1, and Qwen3---on entity matching accuracy and cost remains largely unexplored, motivating the evaluation in Chapter~\ref{ch:strategies}.
+
 \section{Summary and Research Gaps}
 \label{sec:lit_summary}
 
@@ -447,7 +455,9 @@ This literature review has surveyed foundational concepts in LLMs, implementatio
     
     \item \textbf{Model Selection Guidelines:} Evidence-based recommendations for model selection based on task requirements, hardware constraints, and efficiency trade-offs are lacking. The relationship between model architecture, parameter count, and performance requires nuanced investigation, including Pareto frontier analysis of cost-performance trade-offs~\cite{guo2025deepseek,yang2024qwen2.5}.
     
-    \item \textbf{Cross-Domain Validation:} Demonstration that optimization techniques generalize across diverse enterprise applications (translation, sentiment analysis, predictive analytics) is needed to establish the broader applicability of LLM deployment strategies.
+    \item \textbf{Cross-Domain Validation:} Demonstration that optimization techniques generalize across diverse enterprise applications (translation, sentiment analysis, predictive analytics, entity matching) is needed to establish the broader applicability of LLM deployment strategies.
+
+    \item \textbf{Entity Matching at Scale:} While LLM-based entity matching has shown promise, no study has systematically evaluated the impact of configurable reasoning effort across a broad range of model families (proprietary and open-weight) and budget tiers.  Understanding family-dependent reasoning effects and cost-performance trade-offs is essential for production deployment in data-intensive enterprise applications.
 \end{enumerate}
 
 The following chapters address these gaps through systematic empirical research and methodological contributions:

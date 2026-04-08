@@ -90,13 +90,48 @@
 
 ---
 
+## Change 5 — Added Section 5.4.3 (Entity Matching) and updated Chapters 1, 2, 5, 6
+
+**Date:** 2026-04-07
+**Reviewer points:** #1a (Expand core threads), #1b (Reframe supporting work as validation), #4 (Stronger cross-chapter linkage)
+**Files modified:** `Chapter_5_Strategies.tex`, `Chapter_2_Literature_Review.tex`, `Chapter_6_Conclusions.tex`, `Chapter_1_Introduction.tex`, `references.bib`
+
+**What changed:**
+
+*Chapter 5 — New Section 5.4.3 "Entity Matching with LLMs at Scale":*
+- Full subsection with Motivation, Background (ComEM framework), Experimental Setup, and Results subsubsections.
+- Covers: 46 model configurations across 8 pyJedAI benchmark datasets; ComEM two-stage pipeline (Flan-T5-XL ranking + LLM selection); 4 model categories (OpenAI, Anthropic, open-weight local, open-weight API).
+- Results table (Top 15 of 46) with F1, Precision, Recall, Cost.
+- Three key findings: (1) open-weight models rival proprietary APIs (GPT-OSS:120b 92.10 F1, outperforming GPT-4.1/GPT-4o at 20× lower cost); (2) reasoning effort has family-dependent effects (low optimal for GPT-5, high critical for open-weight, asymmetric for Claude); (3) Pareto frontier with actionable budget tiers (ultra-budget <$0.10, value $0.46–$1.20, premium $3+).
+- Links back to task-complexity findings (Section 5.3.3) and forward to GAIME production.
+- Updated Chapter 5 Summary (Cross-Domain Application Patterns) with entity matching bullet.
+
+*Chapter 2 — New Subsection "Entity Matching and Resolution":*
+- Added under Section 2.7 (Sentiment Analysis and Cross-Domain Applications), after Sports Predictive Analytics.
+- Covers: blocking-and-matching pipeline, traditional approaches (rule-based, distance-based, deep learning), pre-trained LM advances, LLM zero-shot/few-shot paradigms, ComEM framework.
+- Identifies research gap: impact of configurable reasoning effort on EM unexplored.
+- Added "Entity Matching at Scale" as new gap item #6 in Section 2.8.3 (Gaps in Enterprise Deployment).
+
+*Chapter 6 — Conclusions updates:*
+- Added entity matching contribution to Section 6.1.3 (Enterprise Deployment Contributions).
+- Added GPT-OSS:120b entity matching result to Finding 1 (Open-Source Viability).
+- Extended Finding 3 (Task Complexity) with family-dependent reasoning effects from entity matching.
+
+*Chapter 1 — Structure of Dissertation:*
+- Updated Chapter 5 description to mention entity matching evaluation (46 configurations, 8 datasets, family-dependent reasoning, Pareto guidance).
+
+*References:*
+- Added 15 entity matching references from the paper's bibliography (wang2025match, fellegi1969theory, getoor2012entity, papadakis2021blocking, binette2022almost, benjelloun2009swoosh, bilenko2003adaptive, li2015rule, mudgal2018deep, barlaug2021neural, li2020deep, tu2023unicorn, narayan2022can, peeters2023using, peeters2025entity, fan2024cost).
+
+---
+
 ## Pending Changes
 
 | Reviewer Point | Description | Status |
 |----------------|-------------|--------|
-| #1a | Expand core threads with 1–2 pages of deeper discussion | **Partially done** (Research Journey subsection + Industry Impact in Ch 1) |
-| #1b | Reframe supporting work as "validation" | Not started |
+| #1a | Expand core threads with 1–2 pages of deeper discussion | **Done** (Research Journey + Entity Matching section + Industry Impact) |
+| #1b | Reframe supporting work as "validation" | **Partially done** (Entity matching validates cross-domain reasoning findings) |
 | #1c | Add Research Progression figure | **Done** |
-| #2 | Clarify theoretical contributions (Ch 6) | Not started |
+| #2 | Clarify theoretical contributions (Ch 6) | **Partially done** (Entity matching added to contributions and findings) |
 | #3 | More cautious generalizability claims | Not started |
-| #4 | Stronger cross-chapter linkage | **Partially done** (Research Journey explains cross-pillar arrows) |
+| #4 | Stronger cross-chapter linkage | **Done** (Research Journey + entity matching links Ch 2↔5↔6↔1) |
