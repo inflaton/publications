@@ -26,27 +26,26 @@ The reviewer is not asking to remove topics — the breadth is acknowledged as a
 
 | Thread | Key papers | Chapter |
 |--------|-----------|---------|
-| RAP metric & repetition control | Papers 2, 3, 9 (NAACL 2025) | Ch 3 |
-| Multi-agent reliability (Invoice → HMASP → CMAS4G2 → EdgeAgent) | Papers 8, 17, 19, 24, EdgeAgent | Ch 4 |
-| Reasoning effectiveness & task complexity | Papers 13, 14, 18 (PAKDD 2026) | Ch 5 |
+| RAP metric & repetition control | Papers 1–3 (PAKDD Workshops, IEEE CAI, NAACL 2025) | Ch 3 |
+| Multi-agent reliability (Invoice → HMASP → CMAS4G2 → ASR) | Papers 4–9 (ICDSAAI, ICAIBD, AAAI Workshops, PAKDD 2026) | Ch 4 |
+| Reasoning effectiveness, task complexity & entity matching | Papers 10–17 incl. Paper 14 (PAKDD 2026) & Paper 15 Entity Matching (PAKDD 2026 Workshops) | Ch 5 |
 
 For each of these three threads, add 1–2 pages of deeper discussion covering design rationale, ablation insights, failure cases, and lessons learned that go beyond what the published papers contain.
 
 **b) Reframe supporting work as "validation."** For the papers that are more application-driven (translation, soccer betting, logical reasoning puzzles), add a brief framing paragraph at the start of each section explaining how they serve as cross-domain validation of the core metrics/strategies rather than standalone contributions.
 
-**c) Add a "Research Progression" figure.** In Chapter 1, add a visual (e.g., a timeline or flow diagram) showing how the 16 papers build on each other — making the focused progression explicit rather than leaving it to the reader to reconstruct.
+**c) Add a "Research Progression" figure.** In Chapter 1, add a visual (e.g., a timeline or flow diagram) showing how the 17 papers build on each other — making the focused progression explicit rather than leaving it to the reader to reconstruct.
 
-### Additional published papers available for strengthening (not currently in thesis)
+### Recently incorporated papers
 
-The following accepted/published papers could be cited or briefly referenced to reinforce depth in key areas, even if not formally incorporated as thesis chapters:
+Two new papers have been formally added to the dissertation publications list in the revised Chapter 1:
 
-- **Paper 04** (IEEE ICDM 2024) — Maritime Risk Data Collection → supports EdgeAgent's maritime domain context
-- **Paper 20** (AAMAS 2026) — ConvPayMAS → extends HMASP payments work with agent-to-agent protocols
-- **Paper 21** (AAMAS 2026) — Voice-Based Agentic Assistant → additional agentic architecture validation
-- **Paper 22** (ACM) — Commonsense Reasoning Survey → can strengthen lit review on reasoning
-- **Paper 23** (RAFDA 2026) — Entity Matching at Scale → cross-domain validation of accuracy–cost–reasoning trade-offs
+- **Paper 9** — *Beyond Task Success: Measuring Workflow Fidelity in LLM-Based Agentic Payment Systems* (PAKDD 2026 Workshops, Accepted) → introduces the ASR metric for trajectory-level workflow fidelity; replaces EdgeAgent as the culminating paper in the Ch 4 multi-agent reliability thread.
+- **Paper 15** — *Entity Matching with LLMs at Scale: Accuracy, Cost, and Reasoning Effects* (PAKDD 2026 Workshops, Accepted) → cross-domain validation of accuracy–cost–reasoning trade-offs across 46 model configurations and 8 datasets; strengthens the Ch 5 enterprise deployment thread.
 
-These can be added to the publications list and briefly cited in relevant discussion sections without requiring new chapter material.
+### Additional published paper available for strengthening (not currently in thesis)
+
+- **ConvPayMAS** (AAMAS 2026 Demonstration, Accepted) — extends HMASP payments work with agent-to-agent protocols. Currently commented out in Chapter 1; could be cited in Ch 4 discussion if needed.
 
 ---
 
@@ -83,7 +82,7 @@ These can be added to the publications list and briefly cited in relevant discus
 
 **c) Soften specific claims.** For example:
 
-- "ASR generalizes to arbitrary agentic architectures including chains, trees, or complex DAGs" → "ASR is designed to be architecture-agnostic and could in principle extend to chains, trees, or DAGs, though empirical validation was conducted on linear and hierarchical workflows"
+- "ASR generalizes to arbitrary agentic architectures including chains, trees, or complex DAGs" → "ASR is designed to be architecture-agnostic and could in principle extend to chains, trees, or DAGs, though empirical validation was conducted on HMASP's hierarchical payment workflows (Paper 9)"
 - Claims about open-source competitiveness should note they apply to the specific benchmarks tested
 
 ---
@@ -104,54 +103,15 @@ These can be added to the publications list and briefly cited in relevant discus
 
 **c) Add a cross-chapter metrics summary table.** A single table in Chapter 1 or Chapter 6 showing all seven metrics, which chapter introduces each, and how they relate to each other (complementary dimensions of the same operational reliability framework).
 
----
 
-## 5. Formatting: AI-Assisted Writing Artifacts
+## Priority, Effort & Workflow
 
-**Comment (from supervisor/reviewer):** *"There are lots of trajectories of using AI for writing, e.g., the dash highlighted is different from manual entry."*
+| Step | Reviewer Point | Est. Effort | Key Chapters | Rationale | Status |
+|------|---------------|-------------|--------------|-----------|--------|
+| 1 | Highlight focused work (#1) | 2–3 days | Ch 1, 3, 4, 5 | Expand core threads with integration framing already in place | |
+| 2 | Clarify theoretical contributions (#2) | 1–2 days | Ch 1, 5, 6 | Requires the most careful writing | |
+| 3 | Cautious generalizability (#3) | 1 day | Ch 3, 4, 5 | Audit and soften claims while re-reading the full text | |
+| 4 | Cross-chapter linkage (#4) | 1 day | Ch 1, 3, 4, 5, 6 | Add connection paragraphs during the same re-read pass | |
+| 5 | Final pass | 0.5 day | All | Re-read end-to-end for consistency and voice | |
 
-### Issue
-
-Certain typographic artifacts suggest AI-assisted drafting — most notably, the use of Unicode en-dashes (–) or em-dashes (—) in places where LaTeX conventions expect `--` (en-dash) or `---` (em-dash). The screenshot specifically highlights "accuracy–reliability–cost" where the dash character differs from standard LaTeX output.
-
-### Proposed actions
-
-**a) Global find-and-replace for non-standard dashes.** Search all `.tex` files for:
-
-- Unicode en-dash `–` (U+2013) → replace with `--`
-- Unicode em-dash `—` (U+2014) → replace with `---`
-- Unicode minus `−` (U+2212) → replace with `-` (in math mode)
-- Any other non-ASCII punctuation (smart quotes `""''`, ellipsis `…`, etc.)
-
-**b) Audit for other AI writing patterns.** Review the manuscript for:
-
-- Overly uniform sentence structures (e.g., repeated "This demonstrates that…" patterns)
-- Inconsistent British/American spelling (the thesis uses `UKenglish` and `english` babel)
-- Overly hedged or overly confident phrasing that doesn't match the author's voice
-- Any remaining non-ASCII characters that shouldn't be in a LaTeX source
-
-
----
-
-## Summary: Priority & Effort Estimate
-
-| # | Reviewer Point | Priority | Est. Effort | Key Chapters |
-|---|---------------|----------|-------------|--------------|
-| 1 | Highlight focused work | Medium | 2–3 days | Ch 1, 3, 4, 5 |
-| 2 | Clarify theoretical contributions | High | 1–2 days | Ch 1, 5, 6 |
-| 3 | Cautious generalizability | High | 1 day | Ch 3, 4, 5 |
-| 4 | Cross-chapter linkage | Medium | 1 day | Ch 1, 3, 4, 5, 6 |
-| 5 | Formatting / dash artifacts | Low | 0.5 day | All `.tex` files |
-
-**Total estimated effort: ~6–8 days of focused revision**
-
----
-
-## Suggested Workflow
-
-1. **Start with #5 (formatting)** — mechanical, low-risk, and clears the decks
-2. **Then #3 (generalizability)** — audit and soften claims while re-reading the full text
-3. **Then #4 (cross-chapter linkage)** — add connection paragraphs during the same re-read pass
-4. **Then #2 (theoretical contributions)** — requires the most careful writing
-5. **Finally #1 (deepen focused work)** — expand core threads with the integration framing already in place
-6. **Final pass:** re-read the entire manuscript end-to-end for consistency and voice
+**Total estimated effort: ~5–7 days of focused revision**
