@@ -8,21 +8,21 @@ Agentic AI extends LLM capabilities beyond single-turn interactions to autonomou
 
 This chapter addresses the second research question (RQ2): \textit{How can multi-agent LLM systems be designed and evaluated for reliable, scalable enterprise automation?} The research presented here builds upon the evaluation methodology established in Chapter~\ref{ch:rag}---particularly the philosophy of multi-dimensional evaluation that integrates quality considerations beyond accuracy---and extends it to the unique challenges of multi-agent coordination. The findings inform deployment strategies examined in Chapter~\ref{ch:strategies}, where reasoning configuration and hardware selection interact to determine system effectiveness.
 
-This chapter presents the design and evaluation of autonomous, LLM-driven multi-agent systems for enterprise workflow automation, synthesizing findings from seven peer-reviewed publications:
+This chapter presents the design and evaluation of autonomous, LLM-driven multi-agent systems for enterprise workflow automation, synthesizing findings from six first-authored publications and one collaborative demonstration paper:
 
 \begin{enumerate}[leftmargin=*]
     \item \textbf{Invoice Reconciliation System}~\cite{huang2025invoice}: Edge-deployed LLMs in multi-agent systems for SME automation (ICDSAAI 2025)
-    \item \textbf{Tool Invocation Reliability Framework}~\cite{huang2026when}: Diagnostic framework for multi-agent systems introducing the 12-category error taxonomy, validated on invoice reconciliation (ICAIBD 2026, submitted)
+    \item \textbf{Tool Invocation Reliability Framework}~\cite{huang2026when}: Diagnostic framework for multi-agent systems introducing the structured error taxonomy, validated on invoice reconciliation (ICAIBD 2026, submitted)
     \item \textbf{LLM-as-Judge Framework}~\cite{huang2026judge}: Scalable test coverage evaluation with novel Evaluation Completion Rate (ECR@1) metric for operational reliability (AAAI 2026 Workshops, accepted)
     \item \textbf{Automated Acceptance Test Generation}~\cite{huang2026open}: Cooperative multi-agent system for Gherkin test generation using AutoGen Swarm, evaluated using the LLM-as-Judge framework (PAKDD 2026 Workshops, submitted)
     \item \textbf{Hierarchical Multi-Agent System for Payments}~\cite{huang2026hmasp}: End-to-end agentic payment processing with modular architecture (PAKDD 2026, submitted)
     \item \textbf{Agentic Success Rate for Payment Systems}~\cite{huang2026asr,huang2026asrjournal}: Trajectory-level workflow fidelity metric for multi-agent payment systems, exposing systematic procedural deviations invisible to conventional metrics (AI4DF 2026, accepted; JAAMAS, under review)
-    \item \textbf{ConvPayMAS: Conversational Payment Multi-Agent System}~\cite{chua2026convpaymas}: Production-evolved agentic payment system with full AP2 three-mandate verification and patent-pending security features, demonstrated at AAMAS 2026
+    \item \textbf{ConvPayMAS: Conversational Payment Multi-Agent System}~\cite{chua2026convpaymas}: Ongoing evolution of the research prototype toward a production agentic payment system with AP2 three-mandate verification and patent-pending security features (AAMAS 2026 demonstration, work in progress)
 \end{enumerate}
 
-The chapter is organized to highlight methodological progressions: Sections~\ref{sec:invoice_reconciliation}--\ref{sec:diagnostic_framework} present invoice reconciliation and its evolution into a comprehensive diagnostic framework with the 12-category error taxonomy; Sections~\ref{sec:llm_judge}--\ref{sec:cmas4g2} demonstrate how LLM-as-Judge enables automated acceptance test generation; Sections~\ref{sec:hmasp}--\ref{sec:edgeagent} extend these methodologies to payment processing, introducing trajectory-level workflow fidelity evaluation; and Section~\ref{sec:convpaymas} presents the evolution from research prototype to production-ready system with enterprise-grade security and an agentic evaluation framework.
+The chapter is organized to highlight methodological progressions: Sections~\ref{sec:invoice_reconciliation}--\ref{sec:diagnostic_framework} present invoice reconciliation and its evolution into a comprehensive diagnostic framework with the structured error taxonomy; Sections~\ref{sec:llm_judge}--\ref{sec:cmas4g2} demonstrate how LLM-as-Judge enables automated acceptance test generation; Sections~\ref{sec:hmasp}--\ref{sec:asr} extend these methodologies to payment processing, introducing trajectory-level workflow fidelity evaluation; and Section~\ref{sec:convpaymas} describes ongoing work evolving the research prototype toward a production system with enterprise-grade security and an agentic evaluation framework.
 
-A key contribution of this chapter is the introduction of two novel metrics that complement the Repetition-Aware Performance (RAP) metric from Chapter~\ref{ch:rag}: the \textbf{Agentic Success Rate (ASR)}, introduced in Section~\ref{sec:edgeagent}, which measures trajectory-level workflow fidelity by comparing observed and expected agent execution sequences, and the \textbf{Evaluation Completion Rate (ECR@1)}, which measures first-attempt success rates in automated evaluation systems---both addressing critical gaps in agentic AI evaluation methodology. Together with the 12-category error taxonomy, these metrics enable systematic diagnosis of failure modes impossible with traditional binary success/failure evaluation.
+A key contribution of this chapter is the introduction of two novel metrics that complement the Repetition-Aware Performance (RAP) metric from Chapter~\ref{ch:rag}: the \textbf{Agentic Success Rate (ASR)}, introduced in Section~\ref{sec:asr}, which measures trajectory-level workflow fidelity by comparing observed and expected agent execution sequences, and the \textbf{Evaluation Completion Rate (ECR@1)}, which measures first-attempt success rates in automated evaluation systems---both addressing critical gaps in agentic AI evaluation methodology. Together with the structured error taxonomy, these metrics enable systematic diagnosis of failure modes impossible with traditional binary success/failure evaluation.
 
 \section{Foundations of Agentic AI}
 \label{sec:agentic_foundations}
@@ -66,7 +66,7 @@ These challenges motivate the systematic evaluation methodology developed in thi
 \section{Multi-Agent Architecture for Invoice Reconciliation}
 \label{sec:invoice_reconciliation}
 
-This section presents the first of two related studies on invoice reconciliation. The initial system~\cite{huang2025invoice} establishes the multi-agent architecture and demonstrates feasibility, while Section~\ref{sec:diagnostic_framework} extends this work with a comprehensive diagnostic framework~\cite{huang2026when} introducing the 12-category error taxonomy for systematic failure characterization.
+This section presents the first of two related studies on invoice reconciliation. The initial system~\cite{huang2025invoice} establishes the multi-agent architecture and demonstrates feasibility, while Section~\ref{sec:diagnostic_framework} extends this work with a comprehensive diagnostic framework~\cite{huang2026when} introducing the structured error taxonomy for systematic failure characterization.
 
 \subsection{Problem Context}
 
@@ -254,15 +254,15 @@ This diagnostic gap has significant practical implications:
 Our diagnostic framework provides systematic methodology for evaluating procedural reliability in multi-agent LLM systems through two core components:
 
 \begin{enumerate}[leftmargin=*]
-    \item \textbf{12-Category Error Taxonomy:} Comprehensive failure characterization spanning tool initialization, parameter handling, execution, and result interpretation
+    \item \textbf{Structured Error Taxonomy:} Comprehensive failure characterization spanning four error types---tool initialization, parameter handling, execution, and result interpretation---applicable per tool call stage
     \item \textbf{Hardware-Performance Characterization:} Systematic evaluation across deployment configurations for deployment guidance
 \end{enumerate}
 
 The framework is designed for broad applicability across multi-agent scenarios while maintaining diagnostic precision through domain-specific instantiation. We validate this approach using the invoice reconciliation system from Section~\ref{sec:invoice_reconciliation}, demonstrating how the framework transforms coarse error categories into actionable diagnostics.
 
-\subsection{12-Category Error Taxonomy}
+\subsection{Structured Error Taxonomy}
 
-For comprehensive failure characterization in multi-agent coordination scenarios, we develop a systematic error taxonomy. The taxonomy combines four error types with three tool categories, yielding twelve distinct failure modes.
+For comprehensive failure characterization in multi-agent coordination scenarios, we develop a systematic error taxonomy based on four generalizable error types. When applied per tool call stage, the taxonomy scales with system complexity: in the three-tool invoice reconciliation system, the four types yield twelve distinct failure modes; systems with more tool calls would produce correspondingly more categories.
 
 \paragraph{Error Type Categories.}
 
@@ -378,7 +378,7 @@ functionary-medium & RTX A6000 & 53.2 & 30.8 $\pm$ 242.6 & 7.8 $\pm$ 2.8 \\
 
 \subsubsection{Diagnostic Error Analysis}
 
-Tables~\ref{tab:asr_error_vision} and~\ref{tab:asr_error_nonvision} present detailed error distributions across all evaluated models, categorized according to our 12-category taxonomy.
+Tables~\ref{tab:asr_error_vision} and~\ref{tab:asr_error_nonvision} present detailed error distributions across all evaluated models, categorized according to our four-type taxonomy (yielding twelve categories across the three tool stages).
 
 \begin{table}[htbp]
 \centering
@@ -519,7 +519,7 @@ ECR@1 measures the percentage of evaluations producing valid, parseable output o
 
 Reliability failures include API timeouts, malformed JSON, and schema violations. ECR@1 reveals operational reliability variations from 85.4\% to 100\% across models---with direct cost implications through retry overhead.
 
-This metric complements the diagnostic framework from Section~\ref{sec:diagnostic_framework}: while the 12-category taxonomy diagnoses \textit{what} fails in multi-agent workflows, ECR@1 quantifies \textit{how often} evaluation systems produce usable outputs---both essential dimensions for production deployment.
+This metric complements the diagnostic framework from Section~\ref{sec:diagnostic_framework}: while the structured error taxonomy diagnoses \textit{what} fails in multi-agent workflows, ECR@1 quantifies \textit{how often} evaluation systems produce usable outputs---both essential dimensions for production deployment.
 
 \subsubsection{Adjusted Cost}
 
@@ -812,7 +812,7 @@ To our knowledge, HMASP is the first LLM-based multi-agent system supporting ful
 %% =============================================================================
 
 \section{Agentic Success Rate: Measuring Workflow Fidelity in Multi-Agent Payment Systems}
-\label{sec:edgeagent}
+\label{sec:asr}
 
 While Section~\ref{sec:hmasp} demonstrated the feasibility of hierarchical multi-agent payment processing, the evaluation relied exclusively on Task Success Rate (TSR) and Agent Handoff F1-Score (HF1)---metrics that capture \textit{what} the system achieves but not \textit{how} it gets there. This section introduces the \textbf{Agentic Success Rate (ASR)}~\cite{huang2026asr}, a trajectory-level metric that exposes systematic procedural deviations invisible to both TSR and HF1. Applied to the HMASP architecture redesigned for inter-agent standards compliance, ASR reveals that models achieving perfect scores on conventional metrics nonetheless skip required confirmation checkpoints during payment checkout---a finding with direct regulatory significance for PCI-DSS compliance~\cite{pcisecurity2025ai}. This section extends the 6-page conference version~\cite{huang2026asr} with deeper deviation analysis, per-sample trajectory decomposition, and input-phrasing sensitivity analysis from the 18-model, 90{,}000-instance evaluation.
 
@@ -944,11 +944,11 @@ Table~\ref{tab:asr_engineering} compares TSR between the original HMASP~\cite{hu
 
 \subsubsection{ASR Reveals Hidden Workflow Deviations}
 
-Table~\ref{tab:asr_combined} presents TSR, HF1, and ASR for the top 8 of 18 models on the T3 (Payment) scenario, alongside averages across T1--T3. All models achieve 100\% on T4; T1 and T2 are near-perfect ($\geq$97.7\% TSR) and omitted for brevity. The key finding: every model \textit{except} \texttt{mistral-small3.2:24b} exhibits a T3 ASR gap---from 0.01\% (\texttt{qwen2.5:32b}) to 6.7\% (\texttt{llama3.1:8b})---despite high TSR and HF1. Notably, \texttt{mistral-small3.2:24b} achieves a perfect 100\% across all three metrics, demonstrating that enforcing the confirmation checkpoint is achievable without sacrificing task performance. The highlighted cells are the sharpest examples: \texttt{qwen2.5:32b} and \texttt{qwen3:8b} achieve T3 TSR = HF1 = 100\% yet ASR $<$ 100\%, exposing skipped confirmation checkpoints invisible to conventional metrics.
+Table~\ref{tab:asr_combined} presents TSR, HF1, and ASR for the top 8 models on the T3 (Payment) scenario, alongside averages across T1--T3. All models achieve 100\% on T4; T1 and T2 are near-perfect ($\geq$97.7\% TSR) and omitted for brevity. A striking result is that \textbf{all six open-weight models outperform both proprietary GPT models} on average ASR, with the top four achieving $\geq$99.9\% compared to 98.4\% for GPT-4.1 and GPT-5.2. Every model \textit{except} \texttt{mistral-small3.2:24b} exhibits a T3 ASR gap---from 0.01\% (\texttt{qwen2.5:32b}) to 2.9\% (\texttt{GPT-4.1})---despite high TSR and HF1. Notably, \texttt{mistral-small3.2:24b} achieves a perfect 100\% across all three metrics, demonstrating that enforcing the confirmation checkpoint is achievable without sacrificing task performance. The highlighted cells are the sharpest examples: \texttt{qwen2.5:32b} and \texttt{qwen3:8b} achieve T3 TSR = HF1 = 100\% yet ASR $<$ 100\%, exposing skipped confirmation checkpoints invisible to conventional metrics.
 
 \begin{table}[htbp]
     \centering
-    \caption{T3 (Payment) results (\%, mean $\pm$ std over 5 repeats) and average across T1--T3 for the top 8 of 18 models. Sorted by Avg ASR desc. \colorbox{yellow!30}{Yellow}: TSR = HF1 = 100\% but ASR $<$ 100\%.}
+    \caption{T3 (Payment) results (\%, mean $\pm$ std over 5 repeats) and average across T1--T3 for the top 8 models. Sorted by Avg ASR desc. \colorbox{yellow!30}{Yellow}: TSR = HF1 = 100\% but ASR $<$ 100\%. All six open-weight models outperform both proprietary GPT models.}
     \label{tab:asr_combined}
     \renewcommand{\arraystretch}{0.9}
     \setlength{\tabcolsep}{1.5mm}
@@ -962,11 +962,12 @@ Table~\ref{tab:asr_combined} presents TSR, HF1, and ASR for the top 8 of 18 mode
         MSmall3.2:24b  & 100           & 100           & 100                                   & 100.0 & 100.0 & 100.0 \\
         Qwen2.5:32b    & 100           & 100           & \cellcolor{yellow!30}99.99$\pm$0.02   & 100.0 & 100.0 & 100.0 \\
         Qwen3:8b       & 100           & 100           & \cellcolor{yellow!30}99.97$\pm$0.02   & 99.9  & 99.9  & 99.9 \\
+        Qwen3:14b      & 99.7$\pm$0.3  & 99.8$\pm$0.2  & 99.6$\pm$0.3                         & 99.9  & 99.9  & 99.9 \\
         Llama3.1:70b   & 98.9$\pm$1.2  & 98.8$\pm$1.1  & 98.8$\pm$1.2                         & 99.6  & 99.6  & 99.6 \\
         Qwen2.5:14b    & 99.8$\pm$0.2  & 99.8$\pm$0.2  & 99.6$\pm$0.2                         & 99.1  & 99.5  & 99.4 \\
+        \midrule
         GPT-4.1        & 99.8$\pm$0.4  & 99.9$\pm$0.2  & 97.1$\pm$0.3                         & 99.3  & 99.7  & 98.4 \\
         GPT-5.2        & 99.9$\pm$0.2  & 100.0$\pm$0.1 & 97.3$\pm$0.1                         & 99.3  & 99.6  & 98.4 \\
-        Llama3.1:8b    & 93.4$\pm$0.9  & 96.1$\pm$0.7  & 93.3$\pm$1.0                         & 97.4  & 98.4  & 97.4 \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -1061,16 +1062,16 @@ This finding has important implications for system design. The deviation is not 
 
 \subsection{Discussion: Regulatory and Architectural Implications}
 
-The T3 shortcut has direct regulatory significance. PCI-DSS~\cite{pcisecurity2025ai} requires auditable workflows where each processing step is logged; bypassing confirmation checkpoints creates gaps in the audit trail even when outcomes are correct. The T3 ASR gap of 0.01--6.7\% across 7 of 8 top models---spanning both proprietary (GPT-4.1, GPT-5.2) and open-weight families of varying sizes---indicates that this is a structural property of the agentic architecture rather than a deficiency correctable through model scaling. The fact that \texttt{mistral-small3.2:24b} achieves perfect scores demonstrates that explicit enforcement of the CPA confirmation checkpoint is both necessary and achievable.
+The T3 shortcut has direct regulatory significance. PCI-DSS~\cite{pcisecurity2025ai} requires auditable workflows where each processing step is logged; bypassing confirmation checkpoints creates gaps in the audit trail even when outcomes are correct. The T3 ASR gap of 0.01--2.9\% across 7 of 8 top models---spanning both proprietary (GPT-4.1, GPT-5.2) and open-weight families of varying sizes (8B--70B parameters)---indicates that this is a structural property of the agentic architecture rather than a deficiency correctable through model scaling. The fact that \texttt{mistral-small3.2:24b} achieves perfect scores demonstrates that explicit enforcement of the CPA confirmation checkpoint is both necessary and achievable.
 
 ASR thus serves dual roles. As an \textbf{evaluation metric}, it provides trajectory-level visibility that TSR and HF1 cannot, detecting procedural deviations that would otherwise remain invisible. As a \textbf{diagnostic signal}, it precisely localizes the source of deviation (T3 steps 3--4, triggered by imperative input phrasings), enabling targeted architectural remediation: enforcing mandatory CPA checkpoint returns before payment commitment through deterministic routing logic.
 
-Combined with the 12-category error taxonomy from Section~\ref{sec:diagnostic_framework} and the ECR@1 metric from Section~\ref{sec:llm_judge}, ASR completes a comprehensive diagnostic toolkit for multi-agent LLM systems. Each metric addresses a different evaluation dimension: the error taxonomy classifies \textit{failure types}, ECR@1 captures \textit{operational reliability}, and ASR measures \textit{workflow fidelity}---together enabling systematic diagnosis of failure modes impossible with traditional binary evaluation.
+Combined with the structured error taxonomy from Section~\ref{sec:diagnostic_framework} and the ECR@1 metric from Section~\ref{sec:llm_judge}, ASR completes a comprehensive diagnostic toolkit for multi-agent LLM systems. Each metric addresses a different evaluation dimension: the error taxonomy classifies \textit{failure types}, ECR@1 captures \textit{operational reliability}, and ASR measures \textit{workflow fidelity}---together enabling systematic diagnosis of failure modes impossible with traditional binary evaluation.
 
-\subsection{From Prototype to Production: ConvPayMAS}
+\subsection{Ongoing Work: ConvPayMAS and Enterprise Evaluation Framework}
 \label{sec:convpaymas}
 
-The HMASP prototype (Section~\ref{sec:hmasp}) and its ASR-evaluated A2A redesign (Sections~\ref{sec:asr_architecture}--\ref{sec:asr_definition}) demonstrated feasibility and identified critical workflow deviations. Building on these findings, we have further evolved the system into \textbf{ConvPayMAS}~\cite{chua2026convpaymas} (Conversational Payment Multi-Agent System)---a comprehensive agentic payment framework with full implementation of Google's Agent Payment Protocol (AP2)~\cite{google2025ap2} and several patent-pending security features that create competitive advantages for Mastercard in agentic commerce. ConvPayMAS was accepted as a demonstration at AAMAS 2026 (25th International Conference on Autonomous Agents and Multiagent Systems) and is under active development as a production system.
+The HMASP prototype (Section~\ref{sec:hmasp}) and its ASR-evaluated A2A redesign (Sections~\ref{sec:asr_architecture}--\ref{sec:asr_definition}) demonstrated feasibility and identified critical workflow deviations. Building on these findings, we are evolving the system into \textbf{ConvPayMAS}~\cite{chua2026convpaymas} (Conversational Payment Multi-Agent System)---an agentic payment framework implementing Google's Agent Payment Protocol (AP2)~\cite{google2025ap2} with patent-pending security features for Mastercard's agentic commerce offerings. A demonstration of the current system was accepted at AAMAS 2026 (25th International Conference on Autonomous Agents and Multiagent Systems); however, significant engineering work remains before production readiness, including comprehensive evaluation, scalability testing, and regulatory certification. This subsection describes the architecture and design direction of this ongoing effort.
 
 \subsubsection{Architecture}
 
@@ -1091,7 +1092,7 @@ Figure~\ref{fig:convpaymas_architecture} presents the ConvPayMAS ecosystem archi
 
 \subsubsection{Security and Protocol Design}
 
-ConvPayMAS represents a significant evolution beyond the A2A-compliant HMASP redesign. Three advances are particularly noteworthy:
+The ConvPayMAS design introduces three advances beyond the A2A-compliant HMASP redesign:
 
 \textbf{Full AP2 Implementation with Three-Mandate Verification.} We implement Google's Agent Payment Protocol (AP2)~\cite{google2025ap2} using a cryptographic chain of three mandates that enables verifiable authorization and dispute resolution:
 
@@ -1113,17 +1114,17 @@ The end-to-end transaction proceeds through four phases: (1)~\textit{Intent \& D
 
 \subsubsection{Enterprise Agentic Evaluation and Optimization Framework}
 
-ConvPayMAS is under active development as part of a broader enterprise initiative. An \textbf{Agentic Evaluation and Optimization Framework} is being built on top of the ConvPayMAS platform, leveraging the metrics and diagnostic toolkit developed in this dissertation. This framework operationalizes the research contributions of this chapter into a production-grade engineering practice structured around three pillars:
+A key direction of ongoing work is an \textbf{Agentic Evaluation and Optimization Framework} being designed on top of the ConvPayMAS platform, leveraging the metrics and diagnostic toolkit developed in this dissertation. The goal is to operationalize the research contributions of this chapter into a production-grade engineering practice. The planned framework is structured around three pillars:
 
 \begin{enumerate}[leftmargin=*]
-    \item \textbf{Tool Call Reliability:} Measures whether individual agent tool invocations execute correctly, grounded in the tool call error taxonomy (Section~\ref{sec:diagnostic_framework}). This pillar captures initialization failures, parameter errors, execution exceptions, and result interpretation errors at the atomic operation level, providing the foundation for diagnosing why agents fail.
+    \item \textbf{Tool Call Reliability:} Measures whether individual agent tool invocations execute correctly, grounded in the structured error taxonomy (Section~\ref{sec:diagnostic_framework}). This pillar captures initialization failures, parameter errors, execution exceptions, and result interpretation errors at the atomic operation level, providing the foundation for diagnosing why agents fail.
 
-    \item \textbf{Workflow Fidelity:} Evaluates whether agents follow prescribed multi-step procedures, operationalized through ASR (Section~\ref{sec:edgeagent}) and complemented by TSR and HF1. This pillar detects the trajectory-level deviations that tool-call metrics alone cannot capture---such as the T3 confirmation shortcut where individual tool calls succeed but the overall workflow violates compliance requirements.
+    \item \textbf{Workflow Fidelity:} Evaluates whether agents follow prescribed multi-step procedures, operationalized through ASR (Section~\ref{sec:asr}) and complemented by TSR and HF1. This pillar detects the trajectory-level deviations that tool-call metrics alone cannot capture---such as the T3 confirmation shortcut where individual tool calls succeed but the overall workflow violates compliance requirements.
 
     \item \textbf{Cost Tracking:} Monitors token consumption, API costs, and latency across the agent ecosystem, enabling Pareto-optimal model selection. This pillar extends the cost-performance analysis methodology from the LLM-as-Judge framework (Section~\ref{sec:llm_judge}), where 175$\times$ cost variation was observed across evaluation models, to the full agentic pipeline.
 \end{enumerate}
 
-The framework implements an \textbf{Evaluate $\rightarrow$ Diagnose $\rightarrow$ Optimize} continuous improvement loop: evaluation metrics from all three pillars feed into automated diagnostic analysis that identifies specific failure patterns, which in turn drive targeted optimization of agent prompts, routing logic, and model selection. This closed-loop approach systematically converts ASR-identified deviations (such as the input-phrasing-triggered T3 shortcut) into architectural fixes, and extends naturally to new agentic use cases beyond payments. The combination of ASR-based trajectory evaluation, the tool call error taxonomy, and ECR@1 operational reliability metrics provides the diagnostic foundation upon which this enterprise framework is constructed.
+The envisioned framework implements an \textbf{Evaluate $\rightarrow$ Diagnose $\rightarrow$ Optimize} continuous improvement loop: evaluation metrics from all three pillars would feed into automated diagnostic analysis that identifies specific failure patterns, which in turn drive targeted optimization of agent prompts, routing logic, and model selection. This closed-loop approach would systematically convert ASR-identified deviations (such as the input-phrasing-triggered T3 shortcut) into architectural fixes, and extend naturally to new agentic use cases beyond payments. The combination of ASR-based trajectory evaluation, the structured error taxonomy, and ECR@1 operational reliability metrics provides the diagnostic foundation upon which this enterprise framework is being constructed. Realizing this vision requires substantial additional work, including automated deviation detection at scale, integration with production monitoring infrastructure, and validation across diverse agentic use cases beyond the payment domain.
 
 %% =============================================================================
 %% Practical Guidelines and Summary
@@ -1179,7 +1180,7 @@ This chapter demonstrated the viability and effectiveness of agentic AI for auto
 \begin{enumerate}[leftmargin=*]
     \item \textbf{Multi-agent invoice reconciliation (Section~\ref{sec:invoice_reconciliation}):} Validated architecture achieving 99.9\% success rate with edge-deployed open-source models, demonstrating that qwen2.5:32b outperforms proprietary alternatives while consuming only 523J per task on consumer hardware
     
-    \item \textbf{Diagnostic framework for tool invocation reliability (Section~\ref{sec:diagnostic_framework}):} Novel 12-category error taxonomy providing systematic failure characterization for multi-agent systems, distinguishing tool initialization, parameter handling, execution, and result interpretation errors
+    \item \textbf{Diagnostic framework for tool invocation reliability (Section~\ref{sec:diagnostic_framework}):} Novel structured error taxonomy providing systematic failure characterization for multi-agent systems, distinguishing tool initialization, parameter handling, execution, and result interpretation errors
     
     \item \textbf{LLM-as-Judge framework with ECR@1 (Section~\ref{sec:llm_judge}):} Production-ready evaluation system introducing Evaluation Completion Rate to capture operational reliability, revealing 175$\times$ cost variation and demonstrating that GPT-4o Mini achieves best-in-class accuracy at 78$\times$ cost reduction versus premium models
     
@@ -1187,13 +1188,13 @@ This chapter demonstrated the viability and effectiveness of agentic AI for auto
     
     \item \textbf{Hierarchical Multi-Agent System for Payments (Section~\ref{sec:hmasp}):} First LLM-based multi-agent system implementing end-to-end agentic payment workflows, achieving 97.0\% task success rate with architectural patterns enabling modular payment processing
     
-    \item \textbf{Agentic Success Rate for Payment Systems (Section~\ref{sec:edgeagent}):} Trajectory-level workflow fidelity metric that compares observed and expected agent execution sequences at the transition (bigram) level, grounded in process-mining conformance checking. Across 18 LLMs and 90{,}000 task instances, ASR exposes a universal procedural deviation---most models systematically skip CPA-mediated confirmation checkpoints during payment checkout (96.4--97.6\% T3 ASR despite near-perfect TSR and HF1)---and demonstrates that this shortcut is model-agnostic, input-driven, and requires architectural rather than model-level remediation.
+    \item \textbf{Agentic Success Rate for Payment Systems (Section~\ref{sec:asr}):} Trajectory-level workflow fidelity metric that compares observed and expected agent execution sequences at the transition (bigram) level, grounded in process-mining conformance checking. Across 18 LLMs and 90{,}000 task instances, ASR exposes systematic procedural deviations---7 of 8 top models skip CPA-mediated confirmation checkpoints during payment checkout (T3 ASR 97.1--99.99\% despite near-perfect TSR and HF1). Notably, all six open-weight models in the top 8 outperform both proprietary GPT models on average ASR, and the shortcut is model-agnostic, input-driven, and requires architectural rather than model-level remediation.
 
-    \item \textbf{ConvPayMAS: From Prototype to Production (Section~\ref{sec:convpaymas}):} Evolution of the research prototype into a production-ready agentic payment system with full AP2 three-mandate verification (Intent, Cart, Payment mandates with cryptographic hash chain), AES-256-CBC card data encryption, PCI/PII guardrail agent, and patent-pending security features creating competitive advantages for Mastercard in agentic commerce. Demonstrated at AAMAS 2026 and serving as the foundation for an enterprise agentic evaluation and optimization framework.
+    \item \textbf{ConvPayMAS: Ongoing Work (Section~\ref{sec:convpaymas}):} Ongoing evolution of the research prototype toward a production agentic payment system with AP2 three-mandate verification (Intent, Cart, Payment mandates with cryptographic hash chain), AES-256-CBC card data encryption, PCI/PII guardrail agent, and patent-pending security features. Demonstrated at AAMAS 2026 as a work in progress, with significant remaining work in comprehensive evaluation, scalability testing, and an enterprise agentic evaluation and optimization framework being designed on top.
 \end{enumerate}
 
-The ASR and ECR@1 metrics represent methodological contributions with broad applicability, extending the multi-dimensional evaluation philosophy established with RAP in Chapter~\ref{ch:rag}. ASR, introduced in Section~\ref{sec:edgeagent}, compares observed and expected agent execution trajectories at the transition (bigram) level, enabling detection of procedural deviations invisible to outcome-based metrics---a capability shown to be essential for payment compliance auditing. Combined with the 12-category error taxonomy from Section~\ref{sec:diagnostic_framework}, these tools provide comprehensive diagnostics for multi-agent systems. ECR@1 captures operational reliability invisible to accuracy-only evaluation, revealing cost implications crucial for production deployment. Together, these metrics complement traditional accuracy measures and enable meaningful comparison across diverse agentic architectures.
+The ASR and ECR@1 metrics represent methodological contributions with broad applicability, extending the multi-dimensional evaluation philosophy established with RAP in Chapter~\ref{ch:rag}. ASR, introduced in Section~\ref{sec:asr}, compares observed and expected agent execution trajectories at the transition (bigram) level, enabling detection of procedural deviations invisible to outcome-based metrics---a capability shown to be essential for payment compliance auditing. Combined with the structured error taxonomy from Section~\ref{sec:diagnostic_framework}, these tools provide comprehensive diagnostics for multi-agent systems. ECR@1 captures operational reliability invisible to accuracy-only evaluation, revealing cost implications crucial for production deployment. Together, these metrics complement traditional accuracy measures and enable meaningful comparison across diverse agentic architectures.
 
-A consistent theme across all seven systems is the viability of open-source models for enterprise deployment. qwen2.5:32b matches GPT-4.1 performance across invoice reconciliation (100\% vs 100\%), payment processing (97.0\% average TSR), and trajectory fidelity (100.0\% average ASR) while enabling privacy-preserving edge deployment. The ASR analysis further demonstrates that architectural design choices---deterministic routing guards, structured task decomposition, and prompt engineering---are the dominant performance drivers, as even small open-weight models (Llama3.1:8b at 8B parameters) achieve comparable hidden deviation rates to GPT-5.2. This finding parallels the Orca-2 results from Chapter~\ref{ch:rag} and reinforces the dissertation's broader thesis that properly configured open-source models can match or exceed proprietary alternatives for specific enterprise applications.
+A consistent theme across all seven systems is the viability of open-source models for enterprise deployment. In the ASR evaluation, all six open-weight models in the top 8 outperform both proprietary GPT models on average ASR, with qwen2.5:32b and mistral-small3.2:24b achieving perfect 100.0\% while GPT-4.1 and GPT-5.2 reach only 98.4\%. This extends to invoice reconciliation (qwen2.5:32b: 100\% matching GPT-4.1) and payment processing (97.0\% average TSR). The ASR analysis further demonstrates that architectural design choices---deterministic routing guards, structured task decomposition, and prompt engineering---are the dominant performance drivers: the T3 confirmation shortcut is model-agnostic and input-driven, affecting both open-weight and proprietary models alike. This finding parallels the Orca-2 results from Chapter~\ref{ch:rag} and reinforces the dissertation's broader thesis that properly configured open-source models can match or exceed proprietary alternatives for specific enterprise applications.
 
 These findings provide a foundation for enterprises seeking to automate knowledge-intensive workflows using agentic AI while maintaining accuracy, privacy, and cost-effectiveness. The ASR analysis reveals that in structured multi-agent architectures, architectural design choices (deterministic routing guards, multi-turn protocol structure) dominate over model capacity---a finding that complements the reasoning configuration insights from CMAS4G2, where small models benefit dramatically from thinking mode while large models can degrade with excessive reasoning. Both observations directly inform Chapter~\ref{ch:strategies}, where we systematically characterize these trade-offs across 504 configurations spanning diverse sentiment analysis tasks.

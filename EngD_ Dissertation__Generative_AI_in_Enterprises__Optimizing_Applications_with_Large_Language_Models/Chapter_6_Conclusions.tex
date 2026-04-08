@@ -4,7 +4,7 @@
 \section{Summary of Contributions}
 \label{sec:contributions_summary}
 
-Having previewed the key contributions organized by type in Chapter~\ref{ch:introduction} (Section~\ref{sec:contributions}), we now provide a detailed synthesis organized by research pillar, reflecting on what was achieved across the research portfolio spanning sixteen publications at premier AI/NLP venues.
+Having previewed the key contributions organized by type in Chapter~\ref{ch:introduction} (Section~\ref{sec:contributions}), we now provide a detailed synthesis organized by research pillar, reflecting on what was achieved across the research portfolio spanning seventeen peer-reviewed publications at premier AI/NLP venues.
 
 This dissertation has systematically investigated optimization strategies for deploying Large Language Models in enterprise applications. The research contributions span three interconnected pillars---Retrieval-Augmented Generation optimization, agentic AI for business automation, and enterprise deployment strategies---supported by cross-domain validation across diverse enterprise applications.
 
@@ -30,8 +30,6 @@ The second pillar addressed RQ2: \textit{How can multi-agent LLM architectures b
     \item \textbf{Multi-Agent Invoice Reconciliation System:} We designed and validated a three-agent architecture (Data Engineering, Email, Reconciliation) achieving 99.90\% success rate with the Qwen2.5-32B model---outperforming all proprietary cloud APIs while consuming only 523 Joules per task on consumer hardware (RTX 4090).
     
     \item \textbf{12-Category Error Taxonomy:} We developed a comprehensive diagnostic framework for tool invocation reliability, distinguishing tool initialization, parameter handling, execution, and result interpretation errors. This taxonomy enables systematic failure characterization and targeted improvement strategies for multi-agent systems.
-    
-    \item \textbf{Agentic Success Rate (ASR):} We introduced a fine-grained metric quantifying tool-calling precision throughout multi-step workflows. ASR decomposes tasks into atomic steps, revealing that smaller models fail primarily at tool orchestration rather than downstream processing---qwen3:32b achieves 98\% ASR matching GPT-4.1 quality.
     
     \item \textbf{Evaluation Completion Rate (ECR@1):} We introduced an operational reliability metric measuring first-attempt evaluation success rates. ECR@1 reveals reliability variations from 85.4\% to 100\% across models, with direct cost implications via retry overhead invisible to accuracy-only evaluation.
     
@@ -90,7 +88,7 @@ This finding has significant implications for enterprise AI adoption:
     \item Orca-2-13b achieves 99.3\% RAGAS score in RAG applications (Chapter~\ref{ch:rag}), matching GPT-4
     \item Qwen2.5-72B surpasses GPT-4o on logical reasoning (80.88\% vs. 80.36\% F1) with only 10-shot prompting (Chapter~\ref{ch:strategies})
     \item qwen2.5:32b achieves 99.90\% success rate on invoice reconciliation (Chapter~\ref{ch:agentic}), outperforming all proprietary cloud APIs
-    \item qwen3:32b matches GPT-4.1 quality (98\% ASR, 83\% F1) on annotation tasks while enabling edge deployment (Chapter~\ref{ch:agentic})
+    \item qwen2.5:32b achieves 100.0\% ASR matching GPT-4.1 on payment workflows, while enabling privacy-preserving edge deployment (Chapter~\ref{ch:agentic})
     \item GPT-OSS:120b achieves 92.10~F1 on entity matching, outperforming GPT-4.1 (90.36) and GPT-4o (89.58) at 20$\times$ lower cost (Chapter~\ref{ch:strategies})
 \end{itemize}
 
@@ -155,7 +153,7 @@ This dissertation introduces seven complementary metrics addressing distinct eva
 RAP & Repetition-aware model evaluation & \ref{ch:rag} \\
 VCR & Valid structured output proportion & \ref{ch:strategies} \\
 ECR@1 & First-attempt operational reliability & \ref{ch:agentic} \\
-ASR & Tool-calling precision in workflows & \ref{ch:agentic} \\
+ASR & Trajectory-level workflow fidelity & \ref{ch:agentic} \\
 RI & Reasoning-explainability trade-offs & \ref{ch:strategies} \\
 TCR & Translation reliability & \ref{ch:strategies} \\
 CPS & Translation efficiency & \ref{ch:strategies} \\
@@ -169,7 +167,7 @@ These metrics capture operational dimensions essential for enterprise deployment
 
 \textbf{Well-designed agent systems with clear specialization, sequential coordination, and appropriate human oversight achieve high reliability even with complex multi-step processes.}
 
-Key architectural principles validated across six multi-agent systems:
+Key architectural principles validated across seven multi-agent systems:
 \begin{itemize}[leftmargin=*]
     \item Modular agent specialization with clearly defined responsibilities
     \item Hierarchical coordination enabling modular task execution
@@ -178,7 +176,7 @@ Key architectural principles validated across six multi-agent systems:
     \item Human oversight mechanisms for high-impact decisions
 \end{itemize}
 
-The 12-category error taxonomy and ASR metric enable systematic diagnosis and improvement of multi-agent system reliability.
+The structured error taxonomy and ASR metric enable systematic diagnosis and improvement of multi-agent system reliability.
 
 \section{Practical Implications}
 \label{sec:practical_implications}
@@ -301,7 +299,7 @@ Our task-complexity findings motivate research into systems that dynamically adj
 Building on our multi-agent foundations, future work should investigate:
 \begin{itemize}[leftmargin=*]
     \item Dynamic agent allocation based on task complexity and ASR predictions
-    \item Learning-based coordination protocols optimized via the 12-category error taxonomy
+    \item Learning-based coordination protocols optimized via the structured error taxonomy
     \item Fault-tolerant architectures with graceful degradation informed by ECR@1 patterns
     \item Hybrid human-agent workflows with adaptive automation levels
     \item Cross-domain transfer of agentic patterns from payments to other financial processes
@@ -343,13 +341,13 @@ Our energy efficiency findings (performance-to-power ratios varying from 0.05 to
 
 The rapid advancement of Large Language Models presents both opportunities and challenges for enterprise adoption. This dissertation has demonstrated that systematic optimization---spanning model selection, hyperparameter tuning, prompting strategies, fine-tuning, architectural design, and evaluation methodology---enables effective deployment of LLMs for diverse business applications.
 
-The research establishes that open-source models, when properly optimized, can achieve performance competitive with proprietary alternatives while offering advantages in customization, privacy, and cost. Across sixteen publications at premier venues, we demonstrated this principle in RAG systems (Orca-2-13b matching GPT-4), logical reasoning (Qwen2.5-72B surpassing GPT-4o), multi-agent automation (qwen2.5:32b outperforming cloud APIs), and annotation pipelines (qwen3:32b matching GPT-4.1).
+The research establishes that open-source models, when properly optimized, can achieve performance competitive with proprietary alternatives while offering advantages in customization, privacy, and cost. Across seventeen peer-reviewed publications at premier venues, we demonstrated this principle in RAG systems (Orca-2-13b matching GPT-4), logical reasoning (Qwen2.5-72B surpassing GPT-4o), multi-agent automation (qwen2.5:32b outperforming cloud APIs), entity matching (GPT-OSS:120b outperforming GPT-4.1 at 20$\times$ lower cost), and payment workflow fidelity (qwen2.5:32b achieving 100.0\% ASR matching GPT-4.1).
 
 A central contribution is the recognition that reasoning effectiveness is task-dependent. The comprehensive evaluation across 504 configurations challenges the prevailing narrative that enhanced reasoning universally improves LLM performance. For simple binary classification, reasoning introduces noise rather than clarity; for complex 27-class emotion recognition, reasoning provides measurable benefits. This task-complexity hypothesis offers principled guidance for practitioners navigating the expanding landscape of reasoning-capable models.
 
 A distinguishing methodological contribution is the development of seven novel evaluation metrics that capture operational dimensions invisible to traditional accuracy-focused assessment. These metrics---RAP, VCR, ECR@1, ASR, RI, TCR, and CPS---provide practitioners with concrete, measurable targets for deployment readiness across the three research pillars. Table~\ref{tab:metrics_summary} summarizes these contributions, demonstrating how the dissertation addresses evaluation gaps across RAG systems, agentic workflows, and enterprise deployment scenarios.
 
-Multi-agent architectures represent a promising paradigm for automating complex workflows that traditionally require human coordination. Our invoice reconciliation system demonstrates that edge-deployed open-source models can outperform cloud APIs while maintaining privacy and reducing operational costs. The 12-category error taxonomy and ASR metric provide systematic tools for diagnosing and improving multi-agent reliability.
+Multi-agent architectures represent a promising paradigm for automating complex workflows that traditionally require human coordination. Our invoice reconciliation system demonstrates that edge-deployed open-source models can outperform cloud APIs while maintaining privacy and reducing operational costs. The structured error taxonomy and ASR metric provide systematic tools for diagnosing and improving multi-agent reliability.
 
 Perhaps most importantly, this research emphasizes that thoughtful engineering of the entire deployment pipeline---not merely model selection---determines success in enterprise AI applications. The contributions, guidelines, and insights presented here provide a foundation for responsible and effective integration of generative AI into enterprise operations.
 
