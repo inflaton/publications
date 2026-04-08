@@ -1,399 +1,240 @@
-\chapter{Introduction}
-\label{ch:introduction}
+\documentclass[a4paper,12pt,singleside]{report}
 
-\section{Background and Motivations}
-\label{sec:background}
+\usepackage[top=1.1in, bottom=1.1in, left=1.5in, right=1.25in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{array}
+\usepackage{algpseudocode}
+\usepackage{anyfontsize}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{courier}
+\usepackage{color}
+\usepackage{dsfont}
+\usepackage{enumitem}
+\usepackage{fleqn}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{helvet}
+\usepackage{latexsym}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{lscape}
+\usepackage{multirow}
+\usepackage{makeidx}
+\usepackage{mathtools}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{pdfpages}
+\usepackage{setspace}
+\usepackage{scrextend}
+\usepackage{subcaption}
+\usepackage{times}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{xurl}
+\usepackage{tabularx}
+\usepackage{microtype}
+\usepackage{footnote}\makesavenoteenv{tabular}
+\usepackage{rotating,booktabs,multirow}
+\usepackage{adjustbox}
+\usepackage{wasysym}
+\usepackage{scalerel,amssymb}
+\usepackage{soul}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage{minted}
+\setminted{breaklines=true, fontsize=\small, frame=lines}
+\usepackage{threeparttable}  % Add to preamble
 
-The rapid advancement of artificial intelligence (AI) over recent years has positioned Large Language Models (LLMs) at the forefront of technological innovation. Models such as GPT-4~\cite{achiam2023gpt4}, Claude 3~\cite{anthropic2024claude}, %Llama 3~\cite{grattafiori2024llama3}, 
-DeepSeek-R1~\cite{guo2025deepseek} and their successors have demonstrated unprecedented capabilities in understanding, generating, and reasoning about natural language across diverse tasks. These capabilities have profound implications for enterprises, where AI-driven automation, knowledge retrieval, and intelligent workflows are increasingly essential for maintaining competitive advantage.
 
-Enterprise adoption of generative AI is accelerating globally. According to multiple industry surveys, organizations across sectors---including finance, healthcare, manufacturing, and retail---are actively experimenting with or deploying LLM-based solutions~\cite{mckinsey2024genai}. The transformative potential of these technologies extends across the entire business value chain: from customer service automation and document processing to strategic decision support and creative content generation.
 
-However, significant gaps remain between laboratory-level AI performance and real-world deployment reliability. Several critical challenges impede widespread enterprise adoption:
+% Custom commands
+\newcommand{\ms}{MS MARCO\xspace}
+\newcommand{\rp}{RPP\xspace}
+\newcommand{\rpp}{RPP\xspace}
+\newcommand{\mrs}{MRS\xspace}
+\newcommand{\nwc}{NWC\xspace}
+\newcommand{\webqsp}{WebQSP\xspace}
+\newcommand{\rr}{RR\xspace}
+\newcommand{\rap}{RAP\xspace}
+\newcommand{\alg}{ReDA\xspace}
+\newcommand{\vcr}{VCR\xspace}
 
-\begin{itemize}[leftmargin=*]
-    \item \textbf{Hallucinations:} LLMs frequently generate plausible but factually incorrect information, undermining trust in AI-generated outputs~\cite{zhang2025sirenhallucination}. This limitation is particularly problematic in knowledge-intensive domains such as legal, medical, and financial services where accuracy is paramount. Retrieval-Augmented Generation (RAG) has emerged as a promising solution, integrating external knowledge to improve accuracy~\cite{lewis2020rag,gao2023rag_survey}.
+\usepackage[UKenglish]{isodate}
+\usepackage[english]{babel}
+\usepackage[square,numbers]{natbib}
+\bibliographystyle{abbrvnat}
+
+\usepackage[pdftex,
+bookmarksnumbered=true, bookmarksopen=true, colorlinks=true,
+citecolor=black, linkcolor=black, anchorcolor=black, urlcolor=black
+]{hyperref}
+
+\doublespacing
+
+\newcommand{\urlwofont}[1]{\urlstyle{same}\url{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}{>{\arraybackslash}m{\linewidth}}
+
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
+\def\ignore#1{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+
+% Author and title
+\def\authorname{Donghao HUANG}
+\def\titletext{Generative AI in Enterprises: Optimizing Applications with Large Language Models}
+
+\begin{document}
     
-    \item \textbf{Repetition and Quality Issues:} Open-source LLMs often generate repetitive content, leading to extensive empty lines or recurring sentences that undermine text quality and fluency~\cite{fu2020repetition,holtzman2019degeneration}. This is particularly problematic in tasks requiring coherent and contextually relevant responses, such as conversational chatbots and automated document generation~\cite{welleck2020unlikelihood}.
+% ============ COVER PAGE ============
+\vspace*{2cm}
+\thispagestyle{empty}
+
+\newcommand{\gradyear}{2026}
+\date{\gradyear}
+
+\begin{center}
+{\Large \MakeUppercase{\titletext}}
+\end{center}
+\vfill
+\begin{center}
+    {\Large \MakeUppercase{\authorname}}
+\end{center}
+\vfill
+\begin{center}
+    {\Large SINGAPORE MANAGEMENT UNIVERSITY}\\
+    {\Large \gradyear}
+\end{center}
+
+\vspace*{2cm}
+
+% ============ TITLE PAGE ============
+\begin{titlepage}
+\begin{center}
     
-    \item \textbf{Reasoning Limitations:} While LLMs demonstrate impressive pattern recognition, their capacity for complex logical reasoning, multi-step inference, and consistent decision-making remains constrained~\cite{huang2023reasoning}. Recent advancements have enhanced deductive reasoning through techniques like chain-of-thought prompting~\cite{wei2022cot}, yet models still exhibit limitations in multi-step reasoning tasks, often leading to cumulative errors in lengthy logical chains~\cite{tong2024llm_mistakes}.
+\vspace*{2cm}
+
+{\Large \bfseries \titletext}\\[1cm]
+
+{\large by}
+\vspace{-3pt}
+
+{\large\bf \authorname}\\[1cm]
+
+\begin{singlespace}
+Submitted to School of Computing and Information Systems in partial fulfillment of the requirements for the Degree of Doctor of Engineering (EngD) in Computer Science\\[1.5cm]
+\end{singlespace}
+
+\vspace*{-0.5cm}
+{\bf \underline{Dissertation Committee:}}\\[0.5cm]
+
+\end{center}
+
+\begin{addmargin}[2.5cm]{0cm}
+    \begin{singlespace}
+        Zhaoxia \textsc{WANG} (Supervisor / Chair)\\
+        Associate Professor of Computer Science (Practice), School of Computing and Information Systems\\
+        Singapore Management University
+        \\[0.5cm]
+        Chong Wah \textsc{NGO} (Co-Supervisor / Chair)\\
+        Lee Kong Chian Professor of Computer Science, School of Computing and Information Systems\\
+        Singapore Management University 
+        \\[0.5cm]
+        Qianru \textsc{SUN} \\
+        Associate Professor of Computer Science, School of Computing and Information Systems\\
+        Singapore Management University
+    \end{singlespace}
+\end{addmargin}
+
+\begin{center}
+\vfill {\large Singapore Management University\\\vspace{-3pt}\gradyear}\\
+\vspace*{0.2cm}
+{Copyright (\gradyear) \authorname}
+\end{center}
+\end{titlepage}
+
+% ============ DECLARATION PAGE ============
+\cleanlookdateon
+\hspace{0pt}
+\vfill
+\thispagestyle{empty}
+\begin{center}
+    {\Large \bfseries}\par
+    {\large 
+    I hereby declare that this EngD dissertation is my original work and it has
+     been written by me in its entirety. I have duly\par 
+    acknowledged all the sources of information which have\par
+    been used in this dissertation.\par
+    \vspace{1.5em}
+    This EngD dissertation has also not been submitted for any\par
+    degree in any university previously.\par
     
-    \item \textbf{Agentic Reliability:} Deploying LLMs as autonomous agents in multi-step workflows introduces compounding failure modes where small errors cascade into significant operational failures~\cite{kapoor2024ai,cemri2025multifail}, requiring robust reliability metrics beyond traditional accuracy measures~\cite{wang2024surveyllm-mas}.
-    
-    \item \textbf{Computational Constraints:} Enterprise deployment must balance model performance against latency requirements, energy consumption, hardware costs, and data privacy considerations~\cite{zheng2024edgellm,meuser2024revisiting}. Resource efficiency is particularly critical for edge deployment scenarios, where optimization techniques such as quantization have emerged to enable efficient deployment across heterogeneous devices~\cite{dettmers2022llmint8,frantar2023gptq}.
-\end{itemize}
-
-This dissertation addresses these challenges through systematic investigation of three interconnected technical pillars: (1) RAG optimization, (2) agentic AI for workflow automation, and (3) enterprise deployment strategies. Each pillar contributes both theoretical frameworks and practical tools for bridging the gap between LLM potential and production-ready deployment. Importantly, these pillars are not independent: insights from RAG optimization (Chapter~\ref{ch:rag}) inform output quality assessment in agentic systems (Chapter~\ref{ch:agentic}), while deployment findings (Chapter~\ref{ch:strategies}) directly impact the performance characteristics of multi-agent architectures.
-
-\section{Research Questions}
-\label{sec:research_questions}
-
-To address the challenges outlined above, this dissertation investigates the following research questions:
-
-\subsection{RQ1: Optimizing Retrieval-Augmented Generation}
-
-\textit{How can RAG systems be optimized to improve response quality while addressing critical issues such as content repetition in open-source LLMs?}
-
-Retrieval-Augmented Generation addresses hallucination by grounding LLM responses in retrieved factual content, but implementation choices regarding model selection, retrieval strategies, and output quality assessment significantly impact system effectiveness. This research question is addressed through:
-
-\begin{itemize}[leftmargin=*]
-    \item Comparative evaluation of open-source versus proprietary models for RAG applications
-    \item Development of the Repetition-Aware Performance (RAP) metric and Repetition Detection Algorithm (ReDA) for quantifying and penalizing repetition in model outputs
-    \item Empirical guidelines for optimizing RAG deployments across diverse use cases
-\end{itemize}
-
-\subsection{RQ2: Agentic AI for Workflow Automation}
-
-\textit{How can multi-agent LLM architectures be designed to reliably automate complex enterprise workflows while providing measurable reliability guarantees?}
-
-Enterprise automation demands more than single-turn text generation; it requires orchestrated systems capable of multi-step reasoning, tool usage, and adaptive decision-making. This research question is addressed through:
-
-\begin{itemize}[leftmargin=*]
-    \item Design of multi-agent systems with specialized roles for business process automation
-    \item Development of hierarchical architectures for complex workflow orchestration
-    \item Introduction of novel reliability metrics (Agentic Success Rate, Evaluation Completion Rate) that capture operational reality beyond traditional accuracy measures
-    \item Systematic error analysis through a 12-category diagnostic taxonomy for tool invocation failures
-\end{itemize}
-
-\subsection{RQ3: Enterprise Deployment and Application Strategies}
-
-\textit{What strategies enable effective LLM deployment across diverse enterprise applications, hardware configurations, and domain requirements?}
-
-The transition from prototype to production introduces challenges spanning hardware optimization, cost management, reasoning enhancement, and cross-domain generalization. This research question is addressed through:
-
-\begin{itemize}[leftmargin=*]
-    \item Systematic benchmarking across diverse hardware platforms from enterprise GPUs to edge devices
-    \item Evaluation of reasoning-capable LLMs for complex tasks requiring explainability
-    \item Introduction of metrics (Valid Classification Ratio, Reasoning Intensity, Translation Completeness Ratio) for assessing model reliability and efficiency
-    \item Cross-domain validation spanning sentiment analysis, logical reasoning, machine translation, and sports predictive analytics
-\end{itemize}
-
-\section{Publications}
-\label{sec:publications}
-
-To address these research questions, the author conducted extensive research that resulted in seventeen accepted or published papers at established international AI and NLP venues. The author was the first author or an equal-contribution first author on all works listed below. Unless otherwise marked as ``Accepted,'' all papers have been published.
-
-\subsection{Publications Supporting RAG Optimization (Chapter~\ref{ch:rag})}
-
-\begin{enumerate}[leftmargin=*]
-    \item \textbf{Evaluation of Orca 2 Against Other LLMs for Retrieval Augmented Generation}~\cite{huang2024orca2rag}\\
-    \textit{PAKDD 2024 Workshops}
-    
-    \item \textbf{Performance Analysis of Llama 2 Among Other LLMs}~\cite{huang2024llama2}\\
-    \textit{IEEE Conference on Artificial Intelligence (IEEE CAI 2024)}
-    
-    \item \textbf{RAP: A Metric for Balancing Repetition and Performance in Open-Source Large Language Models}~\cite{huang2025rap}\\
-    \textit{NAACL 2025}
-\end{enumerate}
-
-\subsection{Publications Supporting Agentic AI (Chapter~\ref{ch:agentic})}
-
-\begin{enumerate}[leftmargin=*,resume]
-    \item \textbf{Scalable Invoice Reconciliation for SMEs: Edge-Deployed LLMs in Multi-Agent Systems}~\cite{huang2025invoice}\\
-    \textit{ICDSAAI 2025}
-    
-    \item \textbf{When Agents Fail to Act: A Diagnostic Framework for Tool Invocation Reliability in Multi-Agent LLM Systems}~\cite{huang2026when}\\
-    \textit{ICAIBD 2026} \textbf{(Accepted)}
-    
-    \item \textbf{LLM as a Judge for Scalable Test Coverage Evaluation: Accuracy, Operational Reliability, and Cost}~\cite{huang2026judge}\\
-    \textit{AAAI 2026 Workshops}
-
-    \item \textbf{CMAS4G2: A Locally Deployed Cooperative Multi-Agent System for Gherkin Acceptance Test Generation}~\cite{huang2026cmas4g2}\\
-    \textit{PAKDD 2026 Workshops} \textbf{(Accepted)}
-
-    \item \textbf{A Novel Hierarchical Multi-Agent System for Payments Using LLMs}~\cite{huang2026hmasp}\\
-    \textit{PAKDD 2026} \textbf{(Accepted)}
-
-    \item \textbf{Beyond Task Success: Measuring Workflow Fidelity in LLM-Based Agentic Payment Systems}~\cite{huang2026asr}\\
-    \textit{PAKDD 2026 Workshops} \textbf{(Accepted)}
-    
-    % \item \textbf{ConvPayMAS: Conversational Payment Multi-Agent System with Agent-to-Agent Protocol and Three-Mandate Verification}~\cite{chua2026convpaymas}\\
-    % \textit{AAMAS 2026 Demonstration} \textbf{(Accepted)}
-
-\end{enumerate}
-
-\subsection{Publications Supporting Enterprise Deployment and Applications (Chapter~\ref{ch:strategies})}
-
-\begin{enumerate}[leftmargin=*,resume]
-    \item \textbf{LLMs at the Edge: Performance and Efficiency Evaluation with Ollama on Diverse Hardware}~\cite{huang2025edge}\\
-    \textit{IJCNN 2025}
-    
-    \item \textbf{Deploying Reasoning LLMs for Sentiment Analysis: Architecture Tradeoffs on Consumer Hardware}~\cite{huang2025reasoning_deployment}\\
-    \textit{IEEE ICDM 2025 Workshops}
-    
-    \item \textbf{Logical Reasoning with LLMs via Few-Shot Prompting and Fine-Tuning: A Case Study on Turtle Soup Puzzles}~\cite{huang2025logical}\\
-    \textit{IEEE Symposium Series on Computational Intelligence (IEEE SSCI 2025)}
-    
-    \item \textbf{Explainable Sentiment Analysis with DeepSeek-R1: Performance, Efficiency, and Few-Shot Learning}~\cite{huang2025deepseek}\\
-    \textit{IEEE Intelligent Systems}
-    
-    \item \textbf{Task Complexity Matters: An Empirical Study of Reasoning in LLMs for Sentiment Analysis}~\cite{huang2026complexity}\\
-    \textit{PAKDD 2026} \textbf{(Accepted)}
-
-    \item \textbf{Entity Matching with LLMs at Scale: Accuracy, Cost, and Reasoning Effects}~\cite{huang2026entity}\\
-    \textit{PAKDD 2026 Workshops} \textbf{(Accepted)}
-    
-    \item \textbf{Optimizing Chinese to English Translation with Large Language Models}~\cite{huang2025translation}\\
-    \textit{IEEE SSCI 2025}
-    
-    \item \textbf{Integrating LLM Sentiment Analysis into Machine Learning for Soccer Betting}~\cite{samuel2025soccer}\\
-    \textit{IEEE ICDM 2025 Workshops}
-\end{enumerate}
-
-Table~\ref{tab:publications_mapping} provides a summary mapping of publications to dissertation chapters, and Figure~\ref{fig:research_progression} illustrates how these papers build on each other within and across the three research pillars.
-
-\begin{table}[htbp]
-\centering
-\caption{Mapping of Publications to Dissertation Chapters}
-\label{tab:publications_mapping}
-\small
-\begin{tabular}{@{}clp{5cm}@{}}
-\toprule
-\textbf{Chapter} & \textbf{Theme} & \textbf{Primary Publications} \\
-\midrule
-3 & RAG Optimization & Papers 1--3 (PAKDD Workshops, IEEE CAI, NAACL) \\
-4 & Agentic AI & Papers 4--9 (ICDSAAI, ICAIBD, AAAI Workshops, PAKDD) \\
-5 & Enterprise Deployment and Applications & Papers 10--17 (IJCNN, IEEE ICDM Workshops, IEEE SSCI, IEEE IS, PAKDD) \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% ---------------------------------------------------------------------------
-% Research Progression Figure  (Reviewer Point 1c)
-% Uses sidewaysfigure (rotating package) for landscape orientation
-% ---------------------------------------------------------------------------
-\begin{sidewaysfigure}
-\centering
-\begin{tikzpicture}[
-    % ---- node styles ----
-    paper/.style={
-        rectangle, rounded corners=3pt, draw=#1!60, fill=#1!8,
-        font=\normalsize, align=center, minimum height=1.1cm,
-        inner sep=5pt, text width=3.4cm, line width=0.7pt},
-    paper/.default=black,
-    pillarlabel/.style={
-        font=\Large\bfseries, text=#1!70},
-    pillarlabel/.default=black,
-    yearbar/.style={
-        font=\large\sffamily\bfseries, text=gray!45},
-    arr/.style={
-        -{Stealth[length=4pt]}, line width=0.7pt, #1!50},
-    arr/.default=black,
-    crossarr/.style={
-        -{Stealth[length=4pt]}, line width=0.7pt, densely dashed, gray!50},
-    crosslabel/.style={
-        font=\normalsize, text=gray!70},
-]
-
-% ---- colour palette ----
-\colorlet{colA}{blue}    % Pillar 1 – RAG
-\colorlet{colB}{red}     % Pillar 2 – Agentic
-\colorlet{colC}{teal}    % Pillar 3 – Deployment
-
-% ---- layout constants (~22cm landscape canvas) ----
-\def\pilAxL{0}      \def\pilAxR{4.0}
-\def\pilBxL{7.4}    \def\pilBxR{11.4}
-\def\pilCxL{15.8}   \def\pilCxR{19.8}
-
-% Row y-coordinates (generous vertical spacing)
-\def\rowI{0}        % 2024
-\def\rowII{-2.6}    % 2025
-\def\rowIII{-5.2}   % 2025–2026 transition
-\def\rowIV{-7.8}    % 2026
-\def\rowV{-10.4}    % application papers
-
-% =====================  YEAR MARKERS  =====================
-\node[yearbar] at (-2.6,\rowI)    {2024};
-\node[yearbar] at (-2.6,\rowII)   {2025};
-\node[yearbar] at (-2.6,\rowIV)   {2026};
-
-\draw[gray!15, line width=0.4pt] (-1.8,\rowI)  -- (21.6,\rowI);
-\draw[gray!15, line width=0.4pt] (-1.8,\rowII) -- (21.6,\rowII);
-\draw[gray!15, line width=0.4pt] (-1.8,\rowIV) -- (21.6,\rowIV);
-
-% =====================  PILLAR 1 — RAG  (Ch 3)  ==========================
-\node[pillarlabel=colA] at (2.0, 1.6) {Ch\,3:\; RAG Optimization};
-
-\node[paper=colA] (p1) at (\pilAxL, \rowI) {P1\; Orca\,2 RAG\\[-1pt]\small PAKDD Wksp\,'24};
-\node[paper=colA] (p2) at (\pilAxR, \rowI) {P2\; Llama\,2\\[-1pt]\small IEEE CAI\,'24};
-\node[paper=colA] (p3) at (2.0,\rowII)     {P3\; RAP Metric\\[-1pt]\small NAACL\,'25};
-
-\draw[arr=colA] (p1.south) -- (p3);
-\draw[arr=colA] (p2.south) -- (p3);
-
-% =====================  PILLAR 2 — Agentic  (Ch 4)  ======================
-\node[pillarlabel=colB] at (9.4, 1.6) {Ch\,4:\; Agentic AI};
-
-\node[paper=colB] (p4) at (\pilBxL,\rowII)  {P4\; Invoice Recon.\\[-1pt]\small ICDSAAI\,'25};
-\node[paper=colB] (p5) at (\pilBxL,\rowIII) {P5\; Tool Failures\\[-1pt]\small ICAIBD\,'26};
-\node[paper=colB] (p8) at (\pilBxL,\rowIV)  {P8\; HMASP\\[-1pt]\small PAKDD\,'26};
-
-\node[paper=colB] (p6) at (\pilBxR,\rowII)  {P6\; LLM-as-Judge\\[-1pt]\small AAAI Wksp\,'26};
-\node[paper=colB] (p7) at (\pilBxR,\rowIII) {P7\; CMAS4G2\\[-1pt]\small PAKDD Wksp\,'26};
-\node[paper=colB] (p9) at (\pilBxR,\rowIV)  {P9\; ASR Metric\\[-1pt]\small PAKDD Wksp\,'26};
-
-\draw[arr=colB] (p4) -- (p5);
-\draw[arr=colB] (p5) -- (p8);
-\draw[arr=colB] (p6) -- (p7);
-\draw[arr=colB] (p8) -- (p9);
-
-% =====================  PILLAR 3 — Enterprise  (Ch 5)  ===================
-\node[pillarlabel=colC] at (17.8, 1.6) {Ch\,5:\; Enterprise Deployment};
-
-\node[paper=colC] (p10) at (\pilCxL,\rowII)  {P10\; Edge LLMs\\[-1pt]\small IJCNN\,'25};
-\node[paper=colC] (p11) at (\pilCxL,\rowIII) {P11\; Reasoning SA\\[-1pt]\small ICDM Wksp\,'25};
-\node[paper=colC] (p14) at (\pilCxL,\rowIV)  {P14\; Task Complexity\\[-1pt]\small PAKDD\,'26};
-
-\node[paper=colC] (p12) at (\pilCxR,\rowII)  {P12\; Logic Puzzles\\[-1pt]\small IEEE SSCI\,'25};
-\node[paper=colC] (p13) at (\pilCxR,\rowIII) {P13\; DeepSeek-R1\\[-1pt]\small IEEE IS};
-\node[paper=colC] (p15) at (\pilCxR,\rowIV)  {P15\; Entity Match.\\[-1pt]\small PAKDD Wksp\,'26};
-
-\node[paper=colC] (p16) at (\pilCxL,\rowV)   {P16\; Translation\\[-1pt]\small IEEE SSCI\,'25};
-\node[paper=colC] (p17) at (\pilCxR,\rowV)   {P17\; Soccer Betting\\[-1pt]\small ICDM Wksp\,'25};
-
-\draw[arr=colC] (p10) -- (p11);
-\draw[arr=colC] (p11) -- (p14);
-\draw[arr=colC] (p13) -- (p14);
-\draw[arr=colC] (p14) -- (p15);
-
-% =====================  CROSS-PILLAR LINKS  ===============================
-% RAP → Agentic output quality — route below row II to avoid box overlap
-\draw[crossarr] (p3.south) -- ++(0,-0.5)
-    -| node[below, crosslabel, pos=0.25]{quality metrics} (p4.west);
-% Edge → Invoice (edge deployment) — route above row II to clear P6
-\draw[crossarr] (p10.north) -- ++(0,0.9)
-    -| node[above, crosslabel, pos=0.75]{edge deployment} (p4.north);
-% Task Complexity → CMAS4G2 (reasoning effectiveness: P14 shows reasoning helps
-%   complex tasks but hurts simple ones; P7 validates this in agentic context
-%   where structured reasoning enables gains for small models but excessive
-%   depth causes catastrophic degradation through context exhaustion)
-\draw[crossarr] (p14.north west) -- ++(0,0.9)
-    -| node[below, crosslabel, pos=0.75]{reasoning effectiveness} (p7.south);
-
-% =====================  LEGEND  ===========================================
-\node[font=\normalsize, anchor=west] at (-1.8,\rowV)
-    {\textcolor{gray}{\rule[0.3ex]{1cm}{0.7pt}\; within-pillar progression \qquad
-     \rule[0.3ex]{0.25cm}{0.7pt}\;\rule[0.3ex]{0.25cm}{0.7pt}\;\rule[0.3ex]{0.25cm}{0.7pt}\; cross-pillar connections}};
-
-\end{tikzpicture}
-\caption{Research progression across the 17 publications.  Papers are arranged
-chronologically (top to bottom) and grouped by research pillar (left to right).
-Solid arrows indicate within-pillar build-on relationships; dashed arrows show
-cross-pillar connections where findings from one thread informed another.}
-\label{fig:research_progression}
-\end{sidewaysfigure}
-
-\subsection{Research Journey: From Open-Weight LLMs to Enterprise AI Systems}
-\label{sec:research_journey}
-
-The research presented in this dissertation was shaped by the practical demands of deploying generative AI within a large financial services enterprise.  Figure~\ref{fig:research_progression} traces the chronological progression; the narrative below explains the motivations and industrial context that drove each phase.
-
-\paragraph{Phase~1: Securing Enterprise LLM Adoption through RAG (2023--2024).}
-When this research began in mid-2023, transmitting proprietary data to third-party API endpoints---including those of OpenAI---was deemed an unacceptable security risk for financial institutions.  The release of Llama~2 in July~2023 opened a new pathway: enterprises could deploy open-weight models on their own infrastructure, retaining full control over data residency and access.  Evaluating whether these models were usable for enterprise workloads therefore became the immediate research priority.
-
-Retrieval-Augmented Generation was the first production-ready pattern to emerge, because it allows LLMs to be grounded in proprietary knowledge bases without fine-tuning.  Papers~1 and~2 benchmarked leading open-weight models (Orca-2 and Llama-2) on RAG tasks and demonstrated that, with proper configuration, they could match or exceed proprietary alternatives on consumer-grade hardware.  A critical gap, however, was the absence of metrics that captured operational quality: models that scored well on standard benchmarks often produced repetitive or degenerate outputs in production.  Paper~3 addressed this by introducing the Repetition-Aware Performance (RAP) metric and the ReDA tuning algorithm, which reduced repetition by up to 93.1\% while preserving downstream accuracy.  RAP was subsequently adopted in the Mastercard Assistant Platform (MAP), the company's internal RAG-powered knowledge assistant, where it continues to serve as the primary output-quality metric in production.
-
-\paragraph{Phase~2: Pivoting to Agentic AI and Edge Deployment (2024--2026).}
-By late 2024, RAG applications such as MAP had matured sufficiently to transition from the R\&D team to commercialisation.  Two concurrent developments shifted the research focus.  First, the broader industry began exploring agentic architectures---systems in which LLMs autonomously orchestrate multi-step workflows by invoking tools and coordinating with other agents.  Second, edge deployment emerged as a viable strategy: Paper~10 confirmed that models up to 14B parameters could run on 16\,GB consumer GPUs with practical inference speeds, enabling privacy-preserving, cloud-independent operation.  This edge feasibility finding directly informed the hardware configuration for subsequent agentic prototypes.
-
-Three progressively complex agentic use cases were investigated, each motivated by a real operational workflow.  The first was invoice reconciliation (Papers~4 and~5): a three-agent system that automates email parsing, database lookup, and financial matching.  Deploying this system on edge hardware exposed a rich taxonomy of tool-invocation failures---twelve categories spanning OCR, database query, and database update stages---whose severity scaled inversely with model size.  The second use case was automated acceptance testing (Papers~6 and~7): an LLM-as-a-Judge framework for evaluating Gherkin test scenarios, extended into CMAS4G2, a cooperative multi-agent system for generating those tests.  The third was end-to-end payment processing (Papers~8 and~9): the Hierarchical Multi-Agent System for Payments (HMASP), whose four-level agent hierarchy required a new trajectory-level metric---the Agentic Success Rate (ASR)---to capture workflow fidelity beyond simple task success.
-
-The cross-pillar arrows in Figure~\ref{fig:research_progression} reflect how insights flowed across these streams.  Quality metrics developed for RAG evaluation (P3) informed the rubric design for agentic output assessment (P4).  Edge deployment benchmarks (P10) directly shaped the hardware strategy for the invoice reconciliation system (P4).  And findings on task-complexity-dependent reasoning effectiveness (P14) were validated in the agentic context of CMAS4G2 (P7), where structured reasoning enabled transformative gains for smaller models but excessive reasoning depth caused catastrophic degradation through context exhaustion.  Collectively, these six papers---together with their evaluation frameworks---are now feeding into an \emph{Agentic Evaluation and Optimisation} initiative within the enterprise, aimed at establishing systematic methods for assessing and improving multi-agent systems before production deployment.
-
-\paragraph{Phase~3: Reasoning, Fine-Tuning, and Cross-Domain Applications (2025--2026).}
-Two key techniques emerged as essential for leveraging open-weight models in enterprise settings: few-shot prompting and fine-tuning.  Few-shot prompting proved remarkably efficient for capable reasoning models---DeepSeek-R1 achieved 99.31\% accuracy on binary sentiment with just five examples (Paper~13), while Qwen2.5-72B surpassed GPT-4o on logical reasoning with only ten shots (Paper~12).  However, few-shot prompting has inherent scalability limitations: each additional example lengthens the input context and increases compute cost, and Paper~12 found that several models could not complete evaluation at higher shot counts due to prohibitive inference times.  Fine-tuning addresses both bottlenecks---reliability \emph{and} efficiency.  Paper~12 showed that fine-tuning improved the Valid Classification Ratio from as low as 1.17\% to 100\% within 0.2 training epochs, delivering output conformance that few-shot prompting could not guarantee across all model families, while eliminating the context-length overhead of in-context examples entirely.
-
-As reasoning-augmented models (OpenAI o1, DeepSeek-R1, Qwen3) gained prominence, understanding how reasoning affects performance, efficiency, and cost across enterprise tasks became critical.  Papers~11--14 systematically investigated these trade-offs: Paper~11 introduced the Reasoning Intensity metric, Paper~13 demonstrated that architecture matters more than scale (DeepSeek-R1:32b outperforming its 70b variant), and Paper~14 established the task-complexity hypothesis---reasoning helps complex tasks but can degrade simple ones---across 504 model--task configurations.  Papers~12, 16, and~17 applied these insights to diverse domains (logical reasoning, machine translation, and sports predictive analytics), validating the generalisability of the findings.
-
-Paper~15 (Entity Matching with LLMs at Scale) bridges the research back to immediate production impact.  Mastercard's Generative AI Merchant Enrichment (GAIME) product uses LLM-based entity matching to map raw transaction descriptors to structured merchant records at scale.  The accuracy--cost--reasoning trade-offs characterised in Paper~15 directly inform model selection and configuration decisions for GAIME's matching pipeline.  Ongoing work extends these findings through a two-stage optimisation strategy: large frontier models are first used to iteratively refine extraction prompts, and the best-performing prompt is then used to generate training data for parameter-efficient fine-tuning (LoRA/QLoRA) of sub-4B-parameter models.  Early results show that models as small as 0.8\,B parameters, after targeted fine-tuning, can approach the extraction accuracy of models orders of magnitude larger---opening a path to deployment on low-cost hardware and latency-sensitive production pipelines, and closing the loop between academic investigation and deployed enterprise AI.
-
-\section{Research Contributions}
-\label{sec:contributions}
-
-This dissertation makes the following primary contributions to the field of enterprise AI:
-
-\subsection{Novel Evaluation Metrics}
-
-A key finding across this research is that traditional accuracy metrics are insufficient for enterprise deployment---operational reliability, output quality, and efficiency require dedicated measurement frameworks. This dissertation introduces seven complementary metrics:
-
-\begin{enumerate}[leftmargin=*]
-    \item \textbf{Repetition-Aware Performance (RAP):} A metric that quantifies and integrates repetition penalty into model evaluation, computed as $\text{RAP} = P \times F(\text{RR})$ where $P$ is standard performance (F1, BERT-F1, COMET) and $F(\text{RR}) = (1-\text{RR})^3$ is the cubic penalty function. RAP enables effective tuning of the repetition penalty parameter, achieving optimal balance between repetition reduction (up to 93.1\%) and performance preservation. This addresses a critical gap in evaluating open-source LLMs, where repetition issues are prevalent but previously unquantified~\cite{huang2025rap}.
-    
-    \item \textbf{Valid Classification Ratio (VCR):} A reliability metric defined as $\text{VCR} = \frac{\text{Valid Classifications}}{\text{Total Classifications}} \times 100\%$, measuring the proportion of model outputs that match predefined labels. This metric reveals that fine-tuning dramatically improves VCR from as low as 1.17\% to 100\% within 0.2 epochs, providing practitioners with a concrete measure of deployment readiness~\cite{huang2025logical}.
-    
-    \item \textbf{Evaluation Completion Rate (ECR@1):} An operational reliability metric measuring first-attempt evaluation success, defined as $\text{ECR@1} = \frac{\text{\# successful first attempts}}{N} \times 100\%$ where $N$ is the total number of evaluations. ECR@1 reveals reliability variations from 85.4\% to 100\% across models, with direct cost implications via retry overhead---a consideration invisible to accuracy-only evaluation. Models with low ECR@1 incur substantial operational costs; for example, GPT-OSS 20B (high) at 85.4\% ECR@1 requires an average of 1.17 attempts per evaluation~\cite{huang2026judge}.
-    
-    \item \textbf{Agentic Success Rate (ASR):} A trajectory-level metric for multi-agent systems that evaluates workflow fidelity by comparing observed and expected agent execution sequences at the \emph{transition} (bigram) level, rather than focusing only on final task outcomes. Drawing on process-mining conformance checking, ASR represents each consecutive agent handoff as a transition and decomposes performance into Transition Recall (TR), which measures completeness, and Transition Precision (TP), which measures efficiency. Given expected trajectory $E = [e_1, \ldots, e_n]$ and observed trajectory $O = [o_1, \ldots, o_m]$, let $B_E$ and $B_O$ denote their respective transition multisets:
-    \[
-    \text{TR} = \frac{|B_E \cap B_O|}{|B_E|}, \quad
-    \text{TP} = \frac{|B_E \cap B_O|}{|B_O|}, \quad
-    \text{ASR} = F_1(\text{TR}, \text{TP})
-    \]
-    An ASR of 100\% indicates perfect transition alignment. Low Transition Recall signals skipped handoffs; low Transition Precision signals redundant ones. Applied to HMASP across 18~LLMs and 90{,}000 task instances (5~repeats per model--scenario pair), ASR reveals that most evaluated models systematically skip a CPA-mediated confirmation checkpoint during payment checkout---a procedural deviation invisible to both TSR and HF1, with ASR gaps ranging from 0.01\% to 6.7\%. The root cause is consistent: for unambiguous payment intents, models infer user consent and bypass the explicit confirmation step, executing 9~agent hops instead of the expected~11 (TR\,$= 80\%$, TP\,$= 100\%$, ASR\,$= 88.9\%$ per affected sample). This has regulatory significance: PCI-DSS requires auditable workflows, and bypassing confirmation checkpoints may violate compliance logging even when task outcomes are correct. Prompt refinements and deterministic routing guards guided by ASR diagnostics yield $+24.2$\,pp average TSR improvement across 11~models, demonstrating that trajectory-level evaluation is essential in regulated domains. Although introduced for multi-agent payment workflows, ASR generalises to arbitrary agentic architectures wherever expected execution trajectories can be specified~\cite{huang2026asr,huang2026hmasp}.
-    
-    \item \textbf{Reasoning Intensity (RI):} A metric quantifying the proportion of computational effort devoted to reasoning, computed as $\text{RI} = \frac{\text{MRT}}{\text{MRT} + \text{MOT}}$ where MRT is Mean Reasoning Tokens and MOT is Mean Output Tokens. RI identifies three operational regimes---minimal ($\text{RI} < 0.5$), balanced ($0.5 \leq \text{RI} \leq 0.85$), and intensive ($\text{RI} > 0.85$)---providing deployment guidance for latency-sensitive applications. Models in the balanced regime achieve optimal accuracy-efficiency trade-offs, with gpt-oss:120b (medium) achieving 86.2\% F1 with RI = 0.728~\cite{huang2025reasoning_deployment}.
-    
-    \item \textbf{Translation Completeness Ratio (TCR):} A reliability metric for machine translation defined as $\text{TCR} = \frac{\text{Complete Translations}}{\text{Total Entries}} \times 100\%$, measuring the proportion of outputs fully rendered in the target language. This metric addresses the observation that LLMs sometimes produce outputs with untranslated segments, enabling quantification of translation reliability beyond quality scores~\cite{huang2025translation}.
-    
-    \item \textbf{Characters per Second (CPS):} An efficiency metric for translation tasks measuring $\text{CPS} = \frac{\text{Source Characters}}{\text{Translation Time}}$, enabling comparison of translation throughput across models and configurations. CPS reveals that smaller fine-tuned models (Phi-3.5-mini, InternLM2.5-7B) offer 2--3$\times$ speed improvements with acceptable quality trade-offs~\cite{huang2025translation}.
-\end{enumerate}
-
-\subsection{Architectural Innovations}
-
-This research contributes reusable architectural patterns for enterprise workflow automation with quantified reliability guarantees:
-
-\begin{enumerate}[leftmargin=*]
-    \item \textbf{Multi-Agent Invoice Reconciliation System:} A three-agent architecture (Email Agent, Data Engineering Agent, Reconciliation Agent) leveraging edge-deployed LLMs with the LangGraph framework. The system achieves 99.9\% success rate while consuming only 523 J per task on RTX 4090 for smaller models, demonstrating that complex business processes can be reliably automated with accessible hardware. A comprehensive 12-category error taxonomy---spanning OCR tool failures (\texttt{OCR\_TOOL\_NOT\_INITIALIZED}, \texttt{OCR\_TOOL\_ARGS\_MISMATCH}, \texttt{OCR\_TOOL\_ERROR}, \texttt{OCR\_TOOL\_RESULT\_MISMATCH}), database query failures (\texttt{DB\_QUERY\_TOOL\_*}), and database update failures (\texttt{DB\_UPDATE\_TOOL\_*})---enables systematic diagnosis of tool invocation reliability, revealing that tool initialization failures constitute the primary reliability bottleneck with catastrophic rates in small models (89\% errors at 3B) absent at 32B scale~\cite{huang2025invoice,huang2026when}.
-    
-    \item \textbf{Hierarchical Multi-Agent System for Payments (HMASP):} The first LLM-based multi-agent system for end-to-end agentic payment workflows, featuring a four-level hierarchy: (1) Conversational Payment Agent (CPA) as the entry point handling all external requests, (2) Supervisor Agents for domain-specific workflow orchestration, (3) Routing Agents for final decision-making on workflow triggering, and (4) Process Summary Agents for outcome reporting. HMASP incorporates architectural patterns including shared state variables for information isolation, decoupled message states preventing hallucination of critical payment data, and structured handoff protocols enabling seamless agent coordination. The system achieves 97.0\% task success rate with Qwen2.5:32b matching GPT-4.1 performance, establishing a template for financial process automation~\cite{huang2026hmasp}.
-    
-    \item \textbf{Cooperative Multi-Agent System for Gherkin Generation (CMAS4G2):} A multi-agent framework for automated acceptance test generation using Microsoft's AutoGen Swarm, coordinating Supervisor, Validator, and Quality Assurance agents. CMAS4G2 demonstrates that open-weight models approach proprietary performance (GPT-OSS 20B: 87.6\% overall success, 85.4\% coverage vs.\ Claude Sonnet 4: 90.4\%, 91.6\%---a gap of only 2.8 percentage points). Critically, reasoning configuration profoundly impacts coordination: structured reasoning enables transformative gains for smaller models (Qwen3-8B: 49.9\% $\rightarrow$ 77.5\% overall success) while excessive reasoning depth causes catastrophic degradation through context exhaustion~\cite{huang2026cmas4g2}.
-    
-    \item \textbf{LLM-as-a-Judge (LAJ) Framework:} A production-ready, rubric-driven framework for evaluating Gherkin acceptance tests with structured JSON outputs. Systematic evaluation across 20 model configurations over 500 runs reveals cost spans of 175$\times$ (\$0.45--\$78.96 per 1K evaluations), enabling informed model selection based on budget constraints. GPT-4o Mini emerges as production-optimal, achieving best-in-class accuracy (6.07 MAAE), high reliability (96.6\% ECR@1), and 78$\times$ cost reduction versus GPT-5 (high reasoning)~\cite{huang2026judge}.
-
-\end{enumerate}
-
-\subsection{Empirical Findings}
-
-Systematic benchmarking across models, tasks, and hardware configurations yields actionable insights for enterprise deployment:
-
-\begin{enumerate}[leftmargin=*]
-    \item \textbf{Open-Source Competitiveness:} Properly optimized open-source models can match or exceed proprietary alternatives. Orca-2-13b achieves superior overall scores in RAG applications compared to larger proprietary models while operating efficiently on consumer-grade GPUs, reducing barriers to enterprise LLM adoption. On logical reasoning tasks, Qwen2.5-72B achieves 80.88\% F1 with only 10-shot prompting, surpassing GPT-4o's 80.36\%~\cite{huang2024orca2rag,huang2024llama2,huang2025logical}.
-    
-    \item \textbf{Architecture Over Scale:} Contrary to conventional wisdom, larger models do not always outperform smaller counterparts. DeepSeek-R1:32b (81.7\% F1) substantially outperforms DeepSeek-R1:70b (74.2\% F1), and a 32B Qwen2.5-based variant outperforms a 70B Llama-based model by 6.69 percentage points on sentiment classification. Similarly, qwen3:8b achieves the highest performance (84.8\% F1) in its family, surpassing larger 14B, 30B, and 32B variants. This finding has significant cost and deployment implications~\cite{huang2025deepseek,huang2025reasoning_deployment}.
-    
-    \item \textbf{Task Complexity Determines Reasoning Effectiveness:} Comprehensive evaluation across 504 configurations reveals that reasoning effectiveness is systematically task-dependent. Binary sentiment classification shows degradation up to -19.9 F1 percentage points when reasoning is applied, while complex 27-class emotion recognition benefits with gains up to +16.0 pp. This task-complexity hypothesis---validated across seven model families including DeepSeek-R1, Qwen3, Granite, and Magistral---provides principled guidance for model selection: base/non-thinking models dominate for simple tasks, while reasoning justifies its 2.1$\times$--54$\times$ computational overhead only for complex multi-class problems. This finding directly informs the reasoning configuration choices in agentic systems (Chapter~\ref{ch:agentic}), where CMAS4G2 demonstrates that structured reasoning enables transformative gains for smaller models while excessive depth causes catastrophic degradation~\cite{huang2026complexity}.
-    
-    \item \textbf{Quantization and Platform Optimization:} Ollama's Q4\_K\_M quantization outperforms bitsandbytes 4-bit implementation, with Llama3.1:8b achieving 3.28\% higher F1 score (92.87\% vs. 89.50\% baseline) while enabling deployment on consumer hardware. Additionally, WSL provides up to 21$\times$ speedup over native Windows for smaller models (qwen2.5:0.5b: 16,933 vs. 816 tokens/s), offering concrete deployment guidance for Windows-based enterprise environments. These platform optimization findings directly impact the edge deployment strategies employed in the invoice reconciliation system (Chapter~\ref{ch:agentic})~\cite{huang2025edge}.
-    
-    \item \textbf{Energy Efficiency Trade-offs:} Large models (70B+) achieve high F1 scores (96--97\%) but consume 1,283--1,876 Joules per inference. Small models (1.5B--3B) achieve the highest performance-to-power ratios (0.161--0.163 \%/J), with qwen2.5:3b reaching 91.00\% F1 while consuming only 558 Joules. Medium-sized models (7B--32B) offer optimal balance, with qwen2.5:32b achieving 96.75\% ($\pm$0.11\%) F1 with practical inference speeds~\cite{huang2025edge}.
-    
-    \item \textbf{Consumer Hardware Viability:} Models up to 14B parameters are feasible on 16GB consumer GPUs. For reasoning tasks, qwen3:8b offers optimal accuracy-efficiency trade-offs (84.8\% F1, 13GB VRAM, 8.35s inference), enabling privacy-preserving local deployment without significant performance penalties compared to cloud alternatives~\cite{huang2025reasoning_deployment}.
-    
-    \item \textbf{Fine-Tuning Superiority for Reliability:} Fine-tuning consistently outperforms few-shot prompting for deployment reliability, achieving 100\% VCR within 0.2 epochs while few-shot VCR varies dramatically (1.17\%--100\% depending on model). However, for capable reasoning models, few-shot learning can be remarkably efficient---DeepSeek-R1 achieves 99.31\% accuracy on binary sentiment with just 5 shots, an 8$\times$ improvement over GPT-4o's 40-shot requirement~\cite{huang2025logical,huang2025deepseek}.
-    
-    \item \textbf{Temporal Robustness Challenges:} All evaluated models exhibit consistent 10--17 percentage point F1 degradation on contemporary data compared to original benchmarks, though reasoning intensity remains stable ($\pm$0.02). This suggests that while models' reasoning processes are robust, their learned patterns require periodic updating to maintain accuracy on evolving content~\cite{huang2025reasoning_deployment}.
-    
-    \item \textbf{Reasoning Effort Has Opposite Effects Across Model Families for Entity Matching:} The largest-scale LLM entity matching evaluation to date---46 model configurations across 8 benchmark datasets---reveals that the optimal reasoning level is family-dependent rather than universal.  For GPT-5, low reasoning is optimal (93.14~F1 at \$6.25 vs.\ 92.14~F1 at \$24.50 for high); for open-weight models, high reasoning is critical (GPT-OSS:120b improves from 90.11 to 92.10~F1 with increasing effort); and for Claude models, thinking produces asymmetric effects (+10.13~F1 for Sonnet~4.5 but $-$0.25 for Opus~4.5).  Open-weight models rival proprietary APIs: GPT-OSS:120b (92.10~F1) outperforms prior-generation proprietary baselines (GPT-4.1: 90.36, GPT-4o: 89.58) at 20$\times$ lower cost than GPT-5(high).  Pareto frontier analysis identifies sharp diminishing returns beyond \$3 total cost, with the ultra-budget tier (\textless\$0.10) already achieving 87--89~F1---providing actionable model selection guidance across budget constraints~\cite{huang2026entity}.
-
-    \item \textbf{Cross-Domain Optimization Patterns:} Task-specific optimization dramatically improves practical outcomes. F1 tuning for sports betting prediction produces 2--3$\times$ higher returns than accuracy tuning (e.g., Random Forest + GPT-4.1 achieves 279.48\% return with F1 tuning vs. 112.34\% with accuracy tuning), demonstrating that metric selection must align with downstream objectives~\cite{samuel2025soccer}.
-\end{enumerate}
-
-\subsection{Industry Impact}
-
-Collectively, these contributions address real-world enterprise needs by reducing barriers to LLM adoption through validated open-source alternatives, providing scalable patterns for automating knowledge-intensive workflows with quantified reliability guarantees, and enabling privacy-preserving deployments on accessible hardware platforms (\$5,000--\$10,000). The novel metrics introduced---RAP, VCR, ECR@1, ASR, RI, TCR, and CPS---provide practitioners with tools for evaluating AI system reliability in production contexts, capturing operational dimensions invisible to traditional accuracy measures.
-
-\section{Structure of the Dissertation}
-\label{sec:structure}
-
-The remainder of this dissertation is organized as follows:
-
-\textbf{Chapter~\ref{ch:literature}: Literature Review} provides a comprehensive survey of foundational concepts in generative AI and LLMs, implementation approaches for enterprise deployment, and existing research on RAG optimization, agentic AI systems, and diverse enterprise applications.
-
-\textbf{Chapter~\ref{ch:rag}: Optimizing LLMs for Retrieval-Augmented Generation} presents our research on RAG system optimization, including comparative evaluation of LLMs demonstrating open-source competitiveness~\cite{huang2024orca2rag,huang2024llama2}, the RAP metric and ReDA algorithm for output quality assessment with up to 93.1\% repetition reduction~\cite{huang2025rap}, and practical deployment guidelines.
-
-\textbf{Chapter~\ref{ch:agentic}: Agentic AI for Business Automation} introduces our multi-agent system architectures for workflow automation, with detailed analysis of the invoice reconciliation system achieving 99.9\% success rate and the 12-category error taxonomy for systematic reliability diagnosis~\cite{huang2025invoice,huang2026when}, the HMASP four-level hierarchy for payment processing with 97.0\% task success~\cite{huang2026hmasp}, the CMAS4G2 framework demonstrating reasoning configuration impacts~\cite{huang2026open}, and the LLM-as-a-Judge framework with novel reliability metrics spanning 175$\times$ cost range~\cite{huang2026judge}.
-
-\textbf{Chapter~\ref{ch:strategies}: Enterprise Deployment and Application Strategies} examines three interconnected themes: (1) edge deployment strategies demonstrating WSL speedups of up to 21$\times$ and optimal model sizing (7B--32B) for performance-efficiency balance~\cite{huang2025edge,huang2025reasoning_deployment}; (2) reasoning enhancement techniques including few-shot prompting achieving 91.39\% F1 with transparent reasoning traces, fine-tuning for reliability~\cite{huang2025deepseek,huang2025logical}, and task-complexity-dependent reasoning effectiveness across 504 configurations~\cite{huang2026complexity}; and (3) cross-domain applications spanning machine translation with novel TCR and CPS metrics~\cite{huang2025translation} and sports predictive analytics demonstrating 279.48\% betting returns through LLM-enhanced sentiment features~\cite{samuel2025soccer}.
-
-\textbf{Chapter~\ref{ch:conclusions}: Conclusions and Future Work} synthesizes key findings across all three pillars, discusses limitations, and outlines directions for future research including extensions to additional enterprise domains and emerging model architectures.
+      \vspace{1.2in}
+      % PLACEHOLDER: Add signature image
+      \begin{figure}[!h]
+        \centering\includegraphics[height=0.6in]{images/signature.png}
+      \end{figure}
+      \vspace{-0.4in}
+      % \vspace{0.6in}
+
+    $\rule{15em}{0.15mm}$ \par
+    \vspace{.5em}
+    {\normalsize \authorname}\par
+    {\normalsize\today}\par
+    }
+\end{center}
+\vfill
+\hspace{0pt}
+
+% ============ ABSTRACT ============
+\newpage
+\thispagestyle{empty}
+\input{abstract}
+% ============ ACKNOWLEDGMENTS ============
+\newpage
+\input{Acknowledgments}
+
+% ============ TABLE OF CONTENTS ============
+\newpage
+\pagenumbering{roman}
+
+\renewcommand{\contentsname}{Table of Contents}
+\tableofcontents
+
+\newpage
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
+
+\newpage
+\listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
+
+% ============ MAIN CONTENT ============
+\newpage
+\pagenumbering{arabic}
+\sloppy
+
+\input{Chapter_1_Introduction}
+\input{Chapter_2_Literature_Review}
+\input{Chapter_3_RAG_Optimization}
+\input{Chapter_4_Agentic_AI}
+\input{Chapter_5_Strategies}
+\input{Chapter_6_Conclusions}
+
+% ============ BIBLIOGRAPHY ============
+\singlespacing\small
+\bibliography{references}
+
+% ============ APPENDICES ============
+\appendix
+\input{Appendix_A}
+
+\end{document}
