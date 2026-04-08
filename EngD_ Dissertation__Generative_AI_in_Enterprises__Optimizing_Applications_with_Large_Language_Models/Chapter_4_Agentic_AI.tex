@@ -16,12 +16,12 @@ This chapter presents the design and evaluation of autonomous, LLM-driven multi-
     \item \textbf{LLM-as-Judge Framework}~\cite{huang2026judge}: Scalable test coverage evaluation with novel Evaluation Completion Rate (ECR@1) metric for operational reliability (AAAI 2026 Workshops, accepted)
     \item \textbf{Automated Acceptance Test Generation}~\cite{huang2026open}: Cooperative multi-agent system for Gherkin test generation using AutoGen Swarm, evaluated using the LLM-as-Judge framework (PAKDD 2026 Workshops, submitted)
     \item \textbf{Hierarchical Multi-Agent System for Payments}~\cite{huang2026hmasp}: End-to-end agentic payment processing with modular architecture (PAKDD 2026, submitted)
-    \item \textbf{EdgeAgent Annotation Pipeline}~\cite{huang2026edgeagent}: Semi-automatic data labeling with edge-deployed LLMs, introducing the Agentic Success Rate (ASR) metric for fine-grained reliability evaluation (PAKDD 2026, submitted)
+    \item \textbf{Agentic Success Rate for Payment Systems}~\cite{huang2026asr,huang2026asrjournal}: Trajectory-level workflow fidelity metric for multi-agent payment systems, exposing systematic procedural deviations invisible to conventional metrics (AI4DF 2026, accepted; JAAMAS, under review)
 \end{enumerate}
 
-The chapter is organized to highlight methodological progressions: Sections~\ref{sec:invoice_reconciliation}--\ref{sec:diagnostic_framework} present invoice reconciliation and its evolution into a comprehensive diagnostic framework with the 12-category error taxonomy; Sections~\ref{sec:llm_judge}--\ref{sec:cmas4g2} demonstrate how LLM-as-Judge enables automated acceptance test generation; and Sections~\ref{sec:hmasp}--\ref{sec:edgeagent} extend these methodologies to payments and annotation domains.
+The chapter is organized to highlight methodological progressions: Sections~\ref{sec:invoice_reconciliation}--\ref{sec:diagnostic_framework} present invoice reconciliation and its evolution into a comprehensive diagnostic framework with the 12-category error taxonomy; Sections~\ref{sec:llm_judge}--\ref{sec:cmas4g2} demonstrate how LLM-as-Judge enables automated acceptance test generation; and Sections~\ref{sec:hmasp}--\ref{sec:edgeagent} extend these methodologies to payment processing, introducing trajectory-level workflow fidelity evaluation.
 
-A key contribution of this chapter is the introduction of two novel metrics that complement the Repetition-Aware Performance (RAP) metric from Chapter~\ref{ch:rag}: the \textbf{Agentic Success Rate (ASR)}, introduced in Section~\ref{sec:edgeagent}, which provides fine-grained evaluation of tool-calling precision in multi-step workflows, and the \textbf{Evaluation Completion Rate (ECR@1)}, which measures first-attempt success rates in automated evaluation systems---both addressing critical gaps in agentic AI evaluation methodology. Together with the 12-category error taxonomy, these metrics enable systematic diagnosis of failure modes impossible with traditional binary success/failure evaluation.
+A key contribution of this chapter is the introduction of two novel metrics that complement the Repetition-Aware Performance (RAP) metric from Chapter~\ref{ch:rag}: the \textbf{Agentic Success Rate (ASR)}, introduced in Section~\ref{sec:edgeagent}, which measures trajectory-level workflow fidelity by comparing observed and expected agent execution sequences, and the \textbf{Evaluation Completion Rate (ECR@1)}, which measures first-attempt success rates in automated evaluation systems---both addressing critical gaps in agentic AI evaluation methodology. Together with the 12-category error taxonomy, these metrics enable systematic diagnosis of failure modes impossible with traditional binary success/failure evaluation.
 
 \section{Foundations of Agentic AI}
 \label{sec:agentic_foundations}
@@ -807,150 +807,264 @@ To our knowledge, HMASP is the first LLM-based multi-agent system supporting ful
 \end{table}
 
 %% =============================================================================
-%% Section: EdgeAgent - Semi-Automatic Annotation Pipeline
+%% Section: Agentic Success Rate - Trajectory-Level Workflow Fidelity
 %% =============================================================================
 
-\section{EdgeAgent and Agentic Success Rate: Semi-Automatic Annotation with Reliability Metrics}
+\section{Agentic Success Rate: Measuring Workflow Fidelity in Multi-Agent Payment Systems}
 \label{sec:edgeagent}
 
-This section presents EdgeAgent~\cite{huang2026edgeagent}---a semi-automatic data labeling pipeline that orchestrates tool-using LLMs on edge devices for specialized domain annotation. A central contribution is the \textbf{Agentic Success Rate (ASR)} metric, which provides fine-grained evaluation of tool-calling precision throughout multi-step workflows, complementing the 12-category error taxonomy introduced in Section~\ref{sec:diagnostic_framework}. Using maritime risk assessment as a case study, we evaluate 14 open-source Qwen models (0.5B--72B) against GPT-4.1 variants across three hardware platforms, demonstrating that open-source models can achieve production-quality annotation while preserving privacy.
+While Section~\ref{sec:hmasp} demonstrated the feasibility of hierarchical multi-agent payment processing, the evaluation relied exclusively on Task Success Rate (TSR) and Agent Handoff F1-Score (HF1)---metrics that capture \textit{what} the system achieves but not \textit{how} it gets there. This section introduces the \textbf{Agentic Success Rate (ASR)}~\cite{huang2026asr}, a trajectory-level metric that exposes systematic procedural deviations invisible to both TSR and HF1. Applied to the HMASP architecture redesigned for inter-agent standards compliance, ASR reveals that models achieving perfect scores on conventional metrics nonetheless skip required confirmation checkpoints during payment checkout---a finding with direct regulatory significance for PCI-DSS compliance~\cite{pcisecurity2025ai}. This section extends the 6-page conference version~\cite{huang2026asr} with deeper deviation analysis, per-sample trajectory decomposition, and input-phrasing sensitivity analysis from the 18-model, 90{,}000-instance evaluation.
 
-\subsection{Motivation}
+\subsection{Motivation: Why Task Success Is Insufficient}
 
-Data labeling and annotation constitute critical bottlenecks in machine learning pipelines, particularly for specialized domains requiring expert knowledge~\cite{huang2024automating}. Maritime risk assessment exemplifies these challenges: incidents span diverse categories (weather events, accidents, cyber attacks, administrative issues), require domain expertise to classify correctly, and emerge continuously from news sources worldwide. Traditional manual annotation approaches are labor-intensive, expensive, and struggle to scale with the volume and velocity of incoming data.
+The limitations of TSR and HF1 become apparent when applied to multi-step payment workflows. TSR measures only whether the final outcome is correct---a payment completes, a card is registered---without examining intermediate steps. HF1 evaluates routing decisions in a bag-of-edges fashion, ignoring their temporal order and the overall path structure. Neither captures \textit{workflow fidelity}: whether the agent followed the expected sequence of steps efficiently and completely.
 
-Privacy concerns may prohibit sending sensitive data to cloud APIs, latency requirements demand local processing, and resource constraints on edge devices limit model selection. Furthermore, annotation pipelines require more than classification---they need tool integration for data retrieval, content extraction, multi-step reasoning, and database operations.
+In agentic payment systems, where auditability and compliance are paramount, understanding \textit{how} an agent reached an outcome is as important as the outcome itself. This concern is echoed by recent work arguing that standard benchmarks fail to capture the risks LLM agents pose in financial applications~\cite{chen2025benchmarksfail}, and by failure analyses showing that multi-agent system breakdowns often stem from procedural deviations rather than outright task failures~\cite{cemri2025multifail}. PCI-DSS requires auditable transaction workflows where each processing step is logged; bypassing expected control returns creates gaps in the audit trail even when transaction outcomes are correct.
 
-\subsection{Semi-Automatic Labeling Pipeline Architecture}
+\subsection{Architecture Adaptations for A2A and UCP Compliance}
+\label{sec:asr_architecture}
 
-The EdgeAgent pipeline implements an interactive workflow where researchers submit URLs of news articles and receive automated annotations through LLM-orchestrated tool calls. Figure~\ref{fig:edgeagent_architecture} illustrates the architecture.
+To apply ASR in a standards-compliant setting, we redesign the HMASP architecture (Section~\ref{sec:hmasp}) for inter-agent operability, spanning three subsystems and four layers (Figure~\ref{fig:asr_architecture}):
+
+\begin{enumerate}[leftmargin=*]
+    \item A \textbf{UCP-compliant gateway} that exposes discovery profiles and checkout lifecycle endpoints, built on the Unified Commerce Protocol (UCP)~\cite{ucp2026spec} achieving approximately 85\% compliance including full discovery profiles, checkout session lifecycle management, and JWS detached signatures (ES256) for request integrity.
+    \item An \textbf{A2A protocol layer} that translates JSON-RPC~2.0 calls into LangGraph invocations via the Agent-to-Agent (A2A) protocol~\cite{google2025a2a}, an open standard for inter-agent communication.
+    \item The \textbf{LangGraph agent hierarchy} implementing the HMASP agents in a consolidated three-level structure: the CPA (Level~1) routes to domain-specific Supervisors---Cards Supervisor (\textbf{CS}) and Payment Supervisor (\textbf{PS})---at Level~2, which dispatch to task-specific Workflows---Card Registration Workflow (\textbf{CRW}), Card Selection Workflow (\textbf{CSW}), and Payment Processing Workflow (\textbf{PPW})---at Level~3. An Off-Topic Handler (\textbf{OTH}) at Level~2 rejects non-payment inputs.
+    \item An \textbf{MCP payment gateway} providing card validation, OTP, 3D-Secure, and tokenization services as tool calls.
+\end{enumerate}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{images/Edge_AI_Agents_v5.drawio.pdf}
-    \caption{EdgeAgent Architecture: Semi-Automatic Data Labeling Pipeline. The system orchestrates LLM-powered agents for (1) URL submission, (2) database checking, (3) content extraction, (4) summarization, (5) classification, and (6) data storage. Open-source LLMs run locally on edge devices, enabling privacy-preserving annotation without cloud dependency.}
-    \label{fig:edgeagent_architecture}
+    \includegraphics[width=\textwidth]{figures/asr_architecture_diagram.pdf}
+    \caption{Standards-compliant HMASP architecture. External agents interact via UCP-compliant REST/MCP endpoints (top), which delegate to the A2A protocol layer (middle). The LangGraph agent hierarchy (centre) implements the HMASP agents: the CPA routes to domain supervisors (CS, PS) and the Off-Topic Handler (OTH); supervisors dispatch to task-specific workflows (CRW, CSW, PPW). Workflows invoke the MCP Payment Gateway (bottom) for card validation, OTP, 3DS, and tokenization. Solid arrows denote handoffs (LLM tool calls); dashed arrows denote returns.}
+    \label{fig:asr_architecture}
 \end{figure}
 
-The semi-automatic workflow consists of six key steps:
+A key architectural change is the replacement of LangGraph's interrupt mechanism with a multi-turn state-machine protocol. While the original HMASP relies on interrupts for human-in-the-loop interactions (e.g., collecting card details, OTP verification), this mechanism assumes direct interaction with the LangGraph runtime. In the A2A design, the agent graph returns an input-required status to the calling agent along with a session identifier; the external agent collects the needed information and re-invokes the graph with the session context. Each dialogue turn---initial request, user confirmation, and verification code entry---maps to a separate A2A message/send call. This design preserves multi-turn interaction semantics while making the CPA interoperable with any A2A-compliant client agent.
 
-\begin{enumerate}[leftmargin=*]
-    \item \textbf{URL Submission:} Researchers submit URLs through a web-based interface, initiating the annotation process.
-    \item \textbf{Database Check:} EdgeAgent queries the database to avoid duplicate labeling, retrieving existing annotations if available.
-    \item \textbf{Content Extraction:} An integrated tool extracts textual content from submitted URLs, handling diverse web formats.
-    \item \textbf{Summarization:} Selected LLMs generate concise summaries emphasizing incident details, location, and consequences.
-    \item \textbf{Classification:} LLMs classify summarized content into predefined risk categories using few-shot prompting.
-    \item \textbf{Data Storage and Retrieval:} Annotated data is stored in a structured database, enabling interactive queries and visualization.
-\end{enumerate}
+\subsection{Agentic Success Rate (ASR)}
+\label{sec:asr_definition}
 
-Beyond automated annotation, EdgeAgent's agentic architecture enables researchers to interactively query the accumulated database using natural language and manually update labels when automated classifications require refinement.
-
-\subsection{Agentic Success Rate: Evaluating Annotation Pipeline Reliability}
-
-In automated labeling systems, LLMs must correctly orchestrate multiple tools across workflow steps. Traditional binary metrics (task success/failure) can mask partial failures where some annotation steps succeed while others fail. To address this limitation, we introduce the \textbf{Agentic Success Rate (ASR)}---a fine-grained metric quantifying tool-calling precision throughout multi-step workflows.
-
-\subsubsection{Metric Definition}
-
-We formalize ASR by decomposing agentic workflows into atomic evaluation steps. For a pipeline with $n$ evaluable steps, let $S_i \in \{0, 1\}$ indicate successful completion of step $i$. The Overall Agentic Score (OAS) aggregates these indicators:
+ASR compares the full ordered trajectory of agent execution against the expected one at the \emph{transition} (bigram) level, drawing on the conformance checking paradigm from process mining~\cite{vanderaalst2012conformance,carmona2018conformance}. Each consecutive pair of agents in a trajectory is a transition; for example, the trajectory $[A, B, C]$ yields the transition multiset $\{(A{,}B),\;(B{,}C)\}$. Given expected trajectory $E = [e_1, \ldots, e_n]$ and observed trajectory $O = [o_1, \ldots, o_m]$, let $B_E$ and $B_O$ denote their respective transition multisets:
 
 \begin{equation}
-\text{OAS} = \sum_{i=1}^{n} w_i \cdot S_i
+\text{TR} = \frac{|B_E \cap B_O|}{|B_E|}, \quad
+\text{TP} = \frac{|B_E \cap B_O|}{|B_O|}, \quad
+\text{ASR} = F_1(\text{TR}, \text{TP})
 \end{equation}
 
-where $w_i$ represents developer-defined weights (default: 1). The Agentic Success Rate normalizes this score:
+An ASR of 100\% indicates perfect transition alignment. Low Transition Recall (TR) signals skipped handoffs (``model moves'' in process mining terminology); low Transition Precision (TP) signals redundant ones (``log moves''). Because ASR operates on transitions rather than individual agent visits or unordered edge sets, it directly measures whether each agent handed off control to the correct next agent---precisely the property needed for compliance auditing.
 
-\begin{equation}
-\text{ASR} = \frac{\text{OAS}}{\sum_{i=1}^{n} w_i}
-\end{equation}
+\subsubsection{Expected Trajectories}
 
-An ASR of 1.00 (100\%) indicates flawless pipeline execution; lower scores pinpoint specific failure modes. For example, a model correctly invoking both tools but mishandling URL transmission at step $S_5$ yields OAS=4, ASR=0.57---revealing partial success that binary metrics would score as complete failure.
+Table~\ref{tab:expected_trajectories} specifies the expected trajectories for each task scenario. The multi-turn structure reflects the A2A protocol design: each dialogue turn requires a full round trip through the agent hierarchy, with the CPA returning control to the external agent between turns to collect user input or deliver intermediate results.
 
-\subsubsection{Generality of the Framework}
+\begin{table}[htbp]
+    \centering
+    \caption{Expected trajectories per scenario. $\to$ denotes agent handoff; $[\cdots]^{\times 2}$ denotes two identical consecutive repetitions (one per remaining dialogue turn). CPA: Conversational Payment Agent; PS: Payment Supervisor; PPW: Payment Processing Workflow; CS: Cards Supervisor; CRW: Card Registration Workflow; CSW: Card Selection Workflow; OTH: Off-Topic Handler.}
+    \label{tab:expected_trajectories}
+    \renewcommand{\arraystretch}{1.1}
+    \footnotesize
+    \begin{tabular}{c l c l}
+        \toprule
+        \textbf{Task} & \textbf{Scenario} & \textbf{Steps} & \textbf{Expected Trajectory} \\
+        \midrule
+        T1    & Card registration  & 13 & CPA$\to$CS$\to$CRW$\to$CS$\to$CPA$\to$[CS$\to$CRW$\to$CS$\to$CPA]$^{\times 2}$ \\
+        T2    & Card retrieval     &  5 & CPA$\to$CS$\to$CSW$\to$CS$\to$CPA \\
+        T3    & Payment processing & 11 & CPA$\to$PS$\to$CPA$\to$[PS$\to$PPW$\to$PS$\to$CPA]$^{\times 2}$ \\
+        T4    & Irrelevant input   &  1 & CPA \quad \textit{(alt.:~CPA$\to$OTH$\to$CPA,~3~steps)} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-Although demonstrated with maritime annotation, ASR applies to arbitrary agentic architectures. In general, agent execution forms a directed acyclic graph (DAG) where internal nodes represent reasoning states and leaf nodes are tool calls. During execution, the LLM traverses a path through this DAG, with each edge terminating in one or more tool invocations.
+The T3 trajectory is central to our analysis. Its 11 steps encode three dialogue turns: the CPA hands off to the Payment Supervisor, which returns to the CPA to prompt for explicit user \textit{confirmation} before payment processing; after confirmation, PS invokes the Payment Processing Workflow for 3DS initiation; and a second PPW call completes the transaction. Table~\ref{tab:t3_trajectory_detail} documents the purpose of each step.
 
-Because dispatch logic is developer-controlled, every call and sub-step can be logged, time-stamped, and scored at arbitrary granularity. The framework is computed by:
-\begin{enumerate}[leftmargin=*]
-    \item Enumerating evaluable sub-steps along the observed traversal
-    \item Assigning developer-defined weights and error categories
-    \item Normalizing by the path's maximum attainable score
-\end{enumerate}
-
-This design enables consistent evaluation across chains, trees, or complex DAGs while preserving step-level diagnostics comparable across diverse architectures and domains.
-
-\subsubsection{Application to EdgeAgent}
-
-The EdgeAgent pipeline employs two tools: \texttt{search\_incident} (database lookup) and \texttt{extract\_content} (web scraping). We decompose each labeling task into seven atomic steps ($S_i$, where $i = 1, 2, \ldots, 7$):
-
-\begin{itemize}[leftmargin=*]
-    \item[$S_1$] Invocation of \texttt{search\_incident}
-    \item[$S_2$] Transmission of the URL parameter to \texttt{search\_incident}
-    \item[$S_3$] Execution of the database query
-    \item[$S_4$] Invocation of \texttt{extract\_content}
-    \item[$S_5$] Transmission of the URL parameter to \texttt{extract\_content}
-    \item[$S_6$] Completion of summarization
-    \item[$S_7$] Completion of classification (label generation)
-\end{itemize}
-
-The stepwise breakdown provides actionable insights for improving labeling pipelines. Tool invocation failures ($S_1$, $S_4$) indicate prompt engineering issues or insufficient model capacity for structured workflows. Parameter transmission errors ($S_2$, $S_5$) reveal hallucination problems where models generate invalid tool arguments. Processing failures ($S_6$, $S_7$) suggest downstream component issues or data quality problems. This granularity guides targeted improvements, distinguishing orchestration failures (fixable through better prompting) from fundamental model limitations (requiring larger models).
+\begin{table}[htbp]
+    \centering
+    \caption{T3 (Payment Processing) trajectory detail: 11 steps across 3 dialogue turns. Each step documents the agent activated and its role in the workflow.}
+    \label{tab:t3_trajectory_detail}
+    \footnotesize
+    \renewcommand{\arraystretch}{1.05}
+    \setlength{\tabcolsep}{1.5mm}
+    \begin{tabular}{c l l p{7cm}}
+        \toprule
+        \textbf{Step} & \textbf{Agent} & \textbf{Turn} & \textbf{Purpose} \\
+        \midrule
+        1  & CPA & 1 & Receives ``Complete my purchase'' request; routes to PS \\
+        2  & PS  & 1 & Retrieves cart/amount; presents payment review to user \\
+        3  & CPA & 1 & Delivers review summary; returns \texttt{input-required} for confirmation \\
+        4  & PS  & 2 & Receives user confirmation ``yes''; dispatches to PPW \\
+        5  & PPW & 2 & Initiates 3DS authentication; requests verification code \\
+        6  & PS  & 2 & Propagates 3DS prompt upward \\
+        7  & CPA & 2 & Delivers 3DS prompt; returns \texttt{input-required} \\
+        8  & PS  & 3 & Receives 3DS code; re-dispatches to PPW \\
+        9  & PPW & 3 & Processes payment transaction; confirms success \\
+        10 & PS  & 3 & Propagates completion result upward \\
+        11 & CPA & 3 & Delivers payment success message to external agent \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \subsection{Experimental Setup}
 
-\paragraph{Model Integration.} We evaluate OpenAI models (GPT-4.1-nano, GPT-4.1-mini, GPT-4.1) and open-source models (Qwen 2.5: 0.5B--72B, Qwen 3: 0.6B--32B). Qwen3 models support dual-mode reasoning: thinking mode enables complex multi-step reasoning, while non-thinking mode provides rapid responses.
+\paragraph{Models.} We evaluate 18 models spanning open-weight and proprietary LLMs: 11 from the original HMASP study~\cite{huang2026hmasp} (Qwen3 8B/14B/32B, Qwen2.5 7B/14B/32B, Mistral-Small-3.2 24B, Magistral 24B, Llama~3.1 8B/70B, GPT-4.1) plus 7 additional models (GPT-5.2, GPT-OSS 20B/120B, Llama~3.3 70B, Qwen3 30B, GLM-4.7-Flash, and Mistral 7B). Proprietary models (GPT-4.1, GPT-5.2) are accessed via the OpenAI API; all open-weight models run locally using Ollama on an Apple M3~Max with 96\,GB unified memory and 4-bit quantization (MXFP4 for GPT-OSS models; Q4\_K\_M for all others).
 
-\paragraph{Dataset.} We collected 2,232 maritime news articles, curating 1,003 articles for evaluation after filtering. Ground truth labels were obtained with GPT-4o and refined through human review.
+\paragraph{Dataset and Repeat Protocol.} We use the HMASP evaluation dataset of 1{,}000 data points across four scenarios (250 each): T1~(card registration), T2~(card retrieval), T3~(payment processing), and T4~(irrelevant input rejection). Each model--scenario pair is evaluated 5 times independently, yielding 90{,}000 total instances (18 models $\times$ 1{,}000 data points $\times$ 5 repeats). We report mean and standard deviation across repeats.
 
-\paragraph{Hardware Configurations.} Testing across three platforms: NVIDIA H100 (enterprise), NVIDIA RTX 4090 (consumer GPU), and Apple M3 Max (portable edge device).
+\paragraph{System Engineering.} We improve the HMASP system through prompt engineering (iterative refinement of agent roles, expected handoffs, and task boundaries) and two deterministic routing guards: a \textit{cart-items guard} in the payment supervisor that suppresses the payment-review path when \texttt{cart\_items} is empty, and \textit{card-view pattern matching} in the CPA for keyword-based fallback routing on ambiguous card intents.
 
 \subsection{Results}
 
-Table~\ref{tab:edgeagent_results_full} presents comprehensive evaluation results.
+\subsubsection{Effectiveness of System Engineering}
+
+Table~\ref{tab:asr_engineering} compares TSR between the original HMASP~\cite{huang2026hmasp} and our system for representative models. Across all 11 original HMASP models, system engineering raises average TSR from 74.9\% to 99.1\% (+24.2\,pp), confirming that the original failures were addressable through engineering rather than model replacement. The most dramatic improvements occur for models that originally struggled most: Magistral:24b's T3 TSR surges from 3.2\% to 99.6\% (+96.4\,pp); Llama3.1:8b's T1 TSR leaps from 6.0\% to 96.8\% (+90.8\,pp).
 
 \begin{table}[htbp]
 \centering
-\caption{EdgeAgent Model Performance for Semi-Automatic Data Labeling. For Qwen3 models, (T) denotes thinking mode and (N) denotes standard mode. All Qwen results obtained on H100 platform.}
-\label{tab:edgeagent_results_full}
-\begin{tabular}{@{}lcccc@{}}
-\toprule
-\textbf{Model} & \textbf{ASR (\%)} & \textbf{TSR (\%)} & \textbf{F1 (\%)} & \textbf{MRT (s)} \\
-\midrule
-\multicolumn{5}{l}{\textit{Qwen Models (Selected)}} \\
-qwen2.5:7b & 74.48 & 60.32 & 81.88 & 12.8 \\
-qwen2.5:14b & 76.88 & 75.57 & 83.38 & 15.3 \\
-qwen2.5:32b & 93.36 & 93.32 & 82.45 & 15.1 \\
-qwen2.5:72b & 94.99 & 93.12 & \textbf{86.19} & 38.7 \\
-qwen3:32b (T) & \textbf{98.21} & \textbf{97.21} & 82.98 & 36.0 \\
-qwen3:32b (N) & 84.29 & 74.88 & 83.17 & 28.9 \\
-\midrule
-\multicolumn{5}{l}{\textit{OpenAI Models}} \\
-GPT-4.1-nano & 98.08 & 99.40 & 65.55 & \textbf{7.3} \\
-GPT-4.1-mini & 99.49 & 99.60 & \textbf{86.17} & 13.4 \\
-GPT-4.1 & \textbf{99.91} & \textbf{100.00} & 83.61 & 14.1 \\
-\bottomrule
+\caption{HMASP vs.\ Ours: TSR (\%) for top HMASP models (GPT-4.1, Qwen2.5:32b) and most-improved open-weight models (Magistral:24b, Llama3.1:8b). H = HMASP, O = Ours, $\Delta$ = improvement. Bold: $\geq$20\,pp gains.}
+\label{tab:asr_engineering}
+\renewcommand{\arraystretch}{0.85}
+\setlength{\tabcolsep}{1.5mm}
+\scriptsize
+\begin{tabular}{l rr@{\;}r rr@{\;}r rr@{\;}r rr@{\;}r}
+    \toprule
+    & \multicolumn{3}{c}{\textbf{T1}} & \multicolumn{3}{c}{\textbf{T2}} & \multicolumn{3}{c}{\textbf{T3}} & \multicolumn{3}{c}{\textbf{T4}} \\
+    \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13}
+    \textbf{Model} & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ \\
+    \midrule
+    GPT-4.1 & 99.6 & 97.6 & \scriptsize$-$2.0 & 99.6 & 100 & \scriptsize+0.4 & 100 & 98.8 & \scriptsize$-$1.2 & 100 & 100 & \scriptsize+0.0 \\
+    Qwen2.5:32b & 96.4 & 96.4 & \scriptsize+0.0 & 98.8 & 99.6 & \scriptsize+0.8 & 95.6 & 99.6 & \scriptsize+4.0 & 100 & 100 & \scriptsize+0.0 \\
+    \midrule
+    Magistral:24b & 44.0 & 97.2 & \textbf{\scriptsize+53.2} & 18.4 & 100 & \textbf{\scriptsize+81.6} & 3.2 & 99.6 & \textbf{\scriptsize+96.4} & 100 & 100 & \scriptsize+0.0 \\
+    Llama3.1:8b & 6.0 & 96.8 & \textbf{\scriptsize+90.8} & 10.4 & 99.6 & \textbf{\scriptsize+89.2} & 4.0 & 99.6 & \textbf{\scriptsize+95.6} & 100 & 100 & \scriptsize+0.0 \\
+    \bottomrule
 \end{tabular}
 \end{table}
 
-\subsubsection{Key Findings}
+\subsubsection{ASR Reveals Hidden Workflow Deviations}
 
-\textbf{Open-Source Models Match Proprietary Quality.} qwen3:32b (T) achieves 98.21\% ASR, 97.21\% TSR, and 82.98\% F1---performance nearly matching GPT-4.1. This demonstrates that local, privacy-preserving annotation pipelines can deliver quality comparable to cloud-based proprietary alternatives.
+Table~\ref{tab:asr_combined} presents TSR, HF1, and ASR for the top 8 of 18 models on the T3 (Payment) scenario, alongside averages across T1--T3. All models achieve 100\% on T4; T1 and T2 are near-perfect ($\geq$97.7\% TSR) and omitted for brevity. The key finding: every model \textit{except} \texttt{mistral-small3.2:24b} exhibits a T3 ASR gap---from 0.01\% (\texttt{qwen2.5:32b}) to 6.7\% (\texttt{llama3.1:8b})---despite high TSR and HF1. Notably, \texttt{mistral-small3.2:24b} achieves a perfect 100\% across all three metrics, demonstrating that enforcing the confirmation checkpoint is achievable without sacrificing task performance. The highlighted cells are the sharpest examples: \texttt{qwen2.5:32b} and \texttt{qwen3:8b} achieve T3 TSR = HF1 = 100\% yet ASR $<$ 100\%, exposing skipped confirmation checkpoints invisible to conventional metrics.
 
-\textbf{Model Size Determines Annotation Reliability.} Smaller models ($<$4B) exhibit significant disparities between task completion and proper workflow execution. For example, qwen3:0.6b achieves 84.35\% TSR but only 0.10\% ASR, indicating it bypasses required database lookup steps rather than following proper annotation protocols.
+\begin{table}[htbp]
+    \centering
+    \caption{T3 (Payment) results (\%, mean $\pm$ std over 5 repeats) and average across T1--T3 for the top 8 of 18 models. Sorted by Avg ASR desc. \colorbox{yellow!30}{Yellow}: TSR = HF1 = 100\% but ASR $<$ 100\%.}
+    \label{tab:asr_combined}
+    \renewcommand{\arraystretch}{0.9}
+    \setlength{\tabcolsep}{1.5mm}
+    \scriptsize
+    \begin{tabular}{l ccc ccc}
+        \toprule
+        & \multicolumn{3}{c}{\textbf{T3 (Payment)}} & \multicolumn{3}{c}{\textbf{Avg (T1--T3)}} \\
+        \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+        \textbf{Model} & \textbf{TSR} & \textbf{HF1} & \textbf{ASR} & \textbf{TSR} & \textbf{HF1} & \textbf{ASR} \\
+        \midrule
+        MSmall3.2:24b  & 100           & 100           & 100                                   & 100.0 & 100.0 & 100.0 \\
+        Qwen2.5:32b    & 100           & 100           & \cellcolor{yellow!30}99.99$\pm$0.02   & 100.0 & 100.0 & 100.0 \\
+        Qwen3:8b       & 100           & 100           & \cellcolor{yellow!30}99.97$\pm$0.02   & 99.9  & 99.9  & 99.9 \\
+        Llama3.1:70b   & 98.9$\pm$1.2  & 98.8$\pm$1.1  & 98.8$\pm$1.2                         & 99.6  & 99.6  & 99.6 \\
+        Qwen2.5:14b    & 99.8$\pm$0.2  & 99.8$\pm$0.2  & 99.6$\pm$0.2                         & 99.1  & 99.5  & 99.4 \\
+        GPT-4.1        & 99.8$\pm$0.4  & 99.9$\pm$0.2  & 97.1$\pm$0.3                         & 99.3  & 99.7  & 98.4 \\
+        GPT-5.2        & 99.9$\pm$0.2  & 100.0$\pm$0.1 & 97.3$\pm$0.1                         & 99.3  & 99.6  & 98.4 \\
+        Llama3.1:8b    & 93.4$\pm$0.9  & 96.1$\pm$0.7  & 93.3$\pm$1.0                         & 97.4  & 98.4  & 97.4 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-\textbf{Thinking Mode Enhances Multi-Step Annotation.} qwen3:32b (T) achieves 98.21\% ASR compared to 84.29\% in non-thinking mode---a 14-point difference demonstrating the value of extended reasoning for complex workflows. This finding connects directly to the reasoning configuration analysis in Chapter~\ref{ch:strategies}, where we characterize the Reasoning Intensity (RI) metric and its relationship to task complexity.
+\subsubsection{Root Cause: The T3 Confirmation Shortcut}
 
-\textbf{Annotation Quality is Hardware-Independent.} All platforms exhibit consistent ASR and TSR patterns across models. Model selection governs annotation quality, while hardware determines throughput. qwen2.5:32b completes tasks in 15s on H100, compared to 169s on RTX 4090 and 296s on M3 Max---representing 11.3$\times$ and 19.7$\times$ speedups respectively.
+The root cause is consistent across 7 of the 8 top models. The expected T3 trajectory has 11 agent hops (10 transitions), including an intermediate return to the CPA for explicit user \textit{confirmation} before payment processing. For direct payment phrases (e.g., ``Process my payment''), models infer unambiguous intent and skip this checkpoint, executing a 9-step trajectory (8 transitions) instead. Table~\ref{tab:t3_shortcut} details the step-by-step comparison. Steps 3--4---the CPA confirmation checkpoint and the subsequent PS re-entry---are the two steps skipped. Their omission is invisible to TSR (the payment still completes) and to HF1 (every expected handoff edge type appears in the 9-step trajectory, just not in the expected order with CPA intermediation). Only ASR, which compares the full ordered sequence, detects their absence.
 
-\subsection{Diagnostic Value and Cross-Domain Applicability}
+\begin{table}[htbp]
+    \centering
+    \caption{Expected (11-step) vs.\ observed (9-step) T3 trajectory for unambiguous payment inputs. Shaded rows mark the two steps skipped by models.}
+    \label{tab:t3_shortcut}
+    \footnotesize
+    \renewcommand{\arraystretch}{1.05}
+    \setlength{\tabcolsep}{1.8mm}
+    \begin{tabular}{c l l p{7cm}}
+        \toprule
+        \textbf{Step} & \textbf{Expected} & \textbf{Observed} & \textbf{Description} \\
+        \midrule
+        1  & CPA & CPA              & User submits payment request \\
+        2  & PS  & PS               & PS receives request \\
+        \rowcolor{gray!20}
+        3  & CPA & \textit{skipped} & \textbf{CPA confirmation checkpoint} \\
+        \rowcolor{gray!20}
+        4  & PS  & \textit{skipped} & \textbf{PS re-entry after user confirms} \\
+        5  & PPW & PPW              & 3DS authentication initiated \\
+        6  & PS  & PS               & PS receives 3DS result \\
+        7  & CPA & CPA              & CPA prompts user for OTP \\
+        8  & PS  & PS               & PS receives OTP \\
+        9  & PPW & PPW              & Payment transaction completed \\
+        10 & PS  & PS               & PS receives completion result \\
+        11 & CPA & CPA              & CPA delivers success message \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-The ASR metric and its application to EdgeAgent validate the cross-domain applicability of fine-grained reliability evaluation. The same diagnostic principles apply across domains:
+Concretely, the expected trajectory has 10 transitions; the observed 9-step trajectory has 8 transitions, of which all 8 appear in the expected set:
 
 \begin{itemize}[leftmargin=*]
-    \item Tool-calling errors dominate failures for smaller models
-    \item Processing quality remains consistent once workflows are properly initiated
-    \item The three-tier deployment guidance (${<}$4B unsuitable, 7B--14B transitional, ${\geq}$32B production-ready) generalizes across applications
+    \item \textbf{Transition Recall} $= 8/10 = 80\%$ --- two expected transitions are absent
+    \item \textbf{Transition Precision} $= 8/8 = 100\%$ --- every transition taken is correct
+    \item \textbf{ASR} $= F_1(80\%, 100\%) = 88.9\%$ per affected sample
 \end{itemize}
 
-Combined with the 12-category error taxonomy from Section~\ref{sec:diagnostic_framework}, ASR provides comprehensive diagnostics for multi-agent LLM systems---enabling practitioners to systematically diagnose failure modes and guide targeted improvements.
+The task succeeds (TSR = 100\%), and all pairwise handoff edge types appear in both trajectories (HF1 = 100\%), but ASR exposes the procedural shortcut. This failure mode is consistently characterized by \textit{missing transitions} (low TR) rather than redundant ones (low TP). Payments succeed because the skipped steps serve orchestration and auditability purposes rather than functional transaction requirements. TSR and HF1 cannot detect these deviations because the final outcome is correct and all pairwise handoff edge types appear in the trajectory---just not in the expected sequence with CPA intermediation. This is precisely the kind of deviation that matters for payment compliance: the payment completes, but the audit trail is incomplete.
+
+\subsection{Deep Dive: Per-Sample Deviation Analysis}
+
+The conference version~\cite{huang2026asr} reported aggregate ASR scores; here we decompose performance at the individual sample level, revealing the full extent of hidden deviations and their triggers.
+
+\subsubsection{Hidden Deviation Rates}
+
+Table~\ref{tab:hidden_deviations} presents per-sample T3 analysis for representative models. A \textit{hidden deviation} is a sample where the task succeeds on TSR but the agent follows a deviant trajectory (ASR $<$ 100\%). The aggregate gap depends on shortcut frequency: GPT models skip the checkpoint on ${\sim}$61 of 250 samples per repeat (T3 ASR $\approx$ 97.1--97.3\%), \texttt{qwen2.5:32b} and \texttt{qwen3:8b} deviate on $<$1\% of samples, and \texttt{mistral-small3.2:24b} enforces the checkpoint on every sample (T3 ASR = 100\%).
+
+\begin{table}[htbp]
+    \centering
+    \caption{Per-sample T3 analysis for representative models: task failures vs.\ hidden deviations (samples that succeed on TSR but deviate on ASR). Hidden rate = hidden deviations / successful samples. \texttt{MSmall3.2:24b} is the only model with zero hidden deviations.}
+    \label{tab:hidden_deviations}
+    \footnotesize
+    \renewcommand{\arraystretch}{0.95}
+    \setlength{\tabcolsep}{1.2mm}
+    \begin{tabular}{l c c c c c}
+        \toprule
+        \textbf{Model} & \textbf{T3 TSR} & \textbf{Failures} & \textbf{Hidden} & \textbf{Perfect} & \textbf{Hidden Rate} \\
+        \midrule
+        MSmall3.2:24b             & 100.0\% & 0 &  0 & 250 &  0.0\% \\
+        Qwen3:32b                 & 100.0\% & 0 & 59 & 191 & 23.6\% \\
+        Qwen2.5:32b               & 100.0\% & 0 & 60 & 190 & 24.0\% (mean) \\
+        Qwen3:8b                  & 100.0\% & 0 & 59 & 191 & 23.6\% (mean) \\
+        \midrule
+        GPT-5.2                   & 99.9\% & $<$1 & ${\sim}$62 & ${\sim}$187 & 24.9\% \\
+        GPT-4.1                   & 99.8\% & $<$1 & ${\sim}$61 & ${\sim}$188 & 24.5\% \\
+        Qwen2.5:14b               & 99.8\% & $<$1 & ${\sim}$57 & ${\sim}$192 & 22.9\% \\
+        Llama3.1:70b              & 98.9\% & ${\sim}$3 & ${\sim}$60 & ${\sim}$187 & 24.3\% \\
+        Llama3.1:8b               & 93.4\% & ${\sim}$17 & ${\sim}$59 & ${\sim}$174 & 25.3\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The hidden deviation rate is remarkably stable across models that exhibit the shortcut: rates cluster in the 22--26\% range regardless of model size, model family, or overall TSR. Models with higher TSR simply have fewer outright failures but the \textit{same} proportion of hidden shortcut deviations among their successes. The sole exception---\texttt{mistral-small3.2:24b}---demonstrates that the confirmation checkpoint \textit{can} be consistently enforced, making it a useful reference point for architectural remediation.
+
+Most critically, per-sample analysis confirms that every single hidden deviation follows the \textit{identical} 9-step shortcut---there is exactly one deviant trajectory pattern across all affected samples. This uniformity is itself a significant finding: the deviation is not stochastic or model-specific but reflects a systematic interaction between input phrasing and the multi-turn protocol structure.
+
+\subsubsection{Input Phrasing as the Primary Deviation Trigger}
+\label{sec:input_phrasing}
+
+Per-sample cross-model analysis reveals that the shortcut is primarily triggered by \textit{specific input phrasings} rather than by model-specific reasoning failures. Of the 250 T3 test inputs, a subset is shortcutted by nearly all models unanimously (e.g., ``Can you Process my payment for my shopping cart'', ``I want to pay''), while the majority are never shortcutted by any model. A gradient of intermediate-ambiguity inputs accounts for the per-model variation.
+
+Inputs that are universally shortcutted share a common linguistic signature: short, imperative phrasing with unambiguous payment intent (e.g., ``Pay for my order'', ``Checkout now''). Inputs that are never shortcutted tend to use more deliberative or indirect formulations (e.g., ``Complete my purchase please''). This input-level regularity explains the tight ASR band across models: all models (except \texttt{mistral-small3.2:24b}) respond to the same phrasing cues, and the variation in per-model shortcut counts reflects only minor differences in threshold sensitivity to intermediate-ambiguity inputs.
+
+This finding has important implications for system design. The deviation is not a failure of model capability---it reflects a rational inference that direct imperatives constitute implicit confirmation. The architectural remedy is therefore not model replacement but enforcement of the CPA confirmation checkpoint through deterministic routing logic, regardless of the model's assessment of user intent.
+
+\subsection{Discussion: Regulatory and Architectural Implications}
+
+The T3 shortcut has direct regulatory significance. PCI-DSS~\cite{pcisecurity2025ai} requires auditable workflows where each processing step is logged; bypassing confirmation checkpoints creates gaps in the audit trail even when outcomes are correct. The T3 ASR gap of 0.01--6.7\% across 7 of 8 top models---spanning both proprietary (GPT-4.1, GPT-5.2) and open-weight families of varying sizes---indicates that this is a structural property of the agentic architecture rather than a deficiency correctable through model scaling. The fact that \texttt{mistral-small3.2:24b} achieves perfect scores demonstrates that explicit enforcement of the CPA confirmation checkpoint is both necessary and achievable.
+
+ASR thus serves dual roles. As an \textbf{evaluation metric}, it provides trajectory-level visibility that TSR and HF1 cannot, detecting procedural deviations that would otherwise remain invisible. As a \textbf{diagnostic signal}, it precisely localizes the source of deviation (T3 steps 3--4, triggered by imperative input phrasings), enabling targeted architectural remediation: enforcing mandatory CPA checkpoint returns before payment commitment through deterministic routing logic.
+
+Combined with the 12-category error taxonomy from Section~\ref{sec:diagnostic_framework} and the ECR@1 metric from Section~\ref{sec:llm_judge}, ASR completes a comprehensive diagnostic toolkit for multi-agent LLM systems. Each metric addresses a different evaluation dimension: the error taxonomy classifies \textit{failure types}, ECR@1 captures \textit{operational reliability}, and ASR measures \textit{workflow fidelity}---together enabling systematic diagnosis of failure modes impossible with traditional binary evaluation.
 
 %% =============================================================================
 %% Practical Guidelines and Summary
@@ -992,10 +1106,10 @@ Based on our research across six systems, we provide consolidated guidelines for
 \subsection{Evaluation Strategy}
 
 \begin{enumerate}[leftmargin=*]
-    \item \textbf{Use fine-grained metrics:} Adopt ASR or similar stepwise metrics to diagnose failure modes beyond binary success/failure
-    \item \textbf{Distinguish orchestration from processing:} Tool-calling failures require different interventions than classification errors
-    \item \textbf{Hardware-aware benchmarking:} Test on target deployment hardware to establish realistic performance expectations
-    \item \textbf{Multi-dimensional evaluation:} Assess accuracy, reliability, and cost together for production readiness
+    \item \textbf{Use trajectory-level metrics:} Adopt ASR or similar workflow-fidelity metrics to diagnose procedural deviations beyond binary success/failure---particularly critical in regulated domains where compliance requires auditable execution paths
+    \item \textbf{Distinguish orchestration from processing:} Tool-calling failures require different interventions than classification errors; trajectory shortcuts may require architectural enforcement rather than model replacement
+    \item \textbf{Hardware-aware benchmarking:} Test on target deployment hardware to establish realistic performance expectations; model-size invariance in structured architectures enables sub-billion-parameter edge deployment
+    \item \textbf{Multi-dimensional evaluation:} Assess accuracy, reliability, workflow fidelity, and cost together for production readiness
 \end{enumerate}
 
 \section{Summary}
@@ -1014,11 +1128,11 @@ This chapter demonstrated the viability and effectiveness of agentic AI for auto
     
     \item \textbf{Hierarchical Multi-Agent System for Payments (Section~\ref{sec:hmasp}):} First LLM-based multi-agent system implementing end-to-end agentic payment workflows, achieving 97.0\% task success rate with architectural patterns enabling modular payment processing
     
-    \item \textbf{EdgeAgent and Agentic Success Rate (Section~\ref{sec:edgeagent}):} Semi-automatic annotation pipeline introducing the ASR metric for fine-grained reliability evaluation, with qwen3:32b achieving 98\% ASR and 83\% F1 matching GPT-4.1 quality while enabling privacy-preserving edge deployment
+    \item \textbf{Agentic Success Rate for Payment Systems (Section~\ref{sec:edgeagent}):} Trajectory-level workflow fidelity metric that compares observed and expected agent execution sequences at the transition (bigram) level, grounded in process-mining conformance checking. Across 18 LLMs and 90{,}000 task instances, ASR exposes a universal procedural deviation---most models systematically skip CPA-mediated confirmation checkpoints during payment checkout (96.4--97.6\% T3 ASR despite near-perfect TSR and HF1)---and demonstrates that this shortcut is model-agnostic, input-driven, and requires architectural rather than model-level remediation.
 \end{enumerate}
 
-The ASR and ECR@1 metrics represent methodological contributions with broad applicability, extending the multi-dimensional evaluation philosophy established with RAP in Chapter~\ref{ch:rag}. ASR, introduced in Section~\ref{sec:edgeagent}, decomposes agentic workflows into atomic steps, enabling practitioners to systematically diagnose failure modes and guide targeted improvements. Combined with the 12-category error taxonomy from Section~\ref{sec:diagnostic_framework}, these tools provide comprehensive diagnostics for multi-agent systems. ECR@1 captures operational reliability invisible to accuracy-only evaluation, revealing cost implications crucial for production deployment. Together, these metrics complement traditional accuracy measures and enable meaningful comparison across diverse agentic architectures.
+The ASR and ECR@1 metrics represent methodological contributions with broad applicability, extending the multi-dimensional evaluation philosophy established with RAP in Chapter~\ref{ch:rag}. ASR, introduced in Section~\ref{sec:edgeagent}, compares observed and expected agent execution trajectories at the transition (bigram) level, enabling detection of procedural deviations invisible to outcome-based metrics---a capability shown to be essential for payment compliance auditing. Combined with the 12-category error taxonomy from Section~\ref{sec:diagnostic_framework}, these tools provide comprehensive diagnostics for multi-agent systems. ECR@1 captures operational reliability invisible to accuracy-only evaluation, revealing cost implications crucial for production deployment. Together, these metrics complement traditional accuracy measures and enable meaningful comparison across diverse agentic architectures.
 
-A consistent theme across all six systems is the viability of open-source models for enterprise deployment. qwen2.5:32b matches GPT-4.1 performance across invoice reconciliation (100\% vs 100\%), payment processing (97.0\% average), and annotation (93.36\% ASR) while enabling privacy-preserving edge deployment. This finding parallels the Orca-2 results from Chapter~\ref{ch:rag} and reinforces the dissertation's broader thesis that properly configured open-source models can match or exceed proprietary alternatives for specific enterprise applications.
+A consistent theme across all six systems is the viability of open-source models for enterprise deployment. qwen2.5:32b matches GPT-4.1 performance across invoice reconciliation (100\% vs 100\%), payment processing (97.0\% average TSR), and trajectory fidelity (100.0\% average ASR) while enabling privacy-preserving edge deployment. The ASR analysis further demonstrates that architectural design choices---deterministic routing guards, structured task decomposition, and prompt engineering---are the dominant performance drivers, as even small open-weight models (Llama3.1:8b at 8B parameters) achieve comparable hidden deviation rates to GPT-5.2. This finding parallels the Orca-2 results from Chapter~\ref{ch:rag} and reinforces the dissertation's broader thesis that properly configured open-source models can match or exceed proprietary alternatives for specific enterprise applications.
 
-These findings provide a foundation for enterprises seeking to automate knowledge-intensive workflows using agentic AI while maintaining accuracy, privacy, and cost-effectiveness. The reasoning configuration insights---particularly the observation that small models benefit dramatically from thinking mode while large models can degrade with excessive reasoning---directly inform Chapter~\ref{ch:strategies}, where we systematically characterize these trade-offs across 504 configurations spanning diverse sentiment analysis tasks.
+These findings provide a foundation for enterprises seeking to automate knowledge-intensive workflows using agentic AI while maintaining accuracy, privacy, and cost-effectiveness. The ASR analysis reveals that in structured multi-agent architectures, architectural design choices (deterministic routing guards, multi-turn protocol structure) dominate over model capacity---a finding that complements the reasoning configuration insights from CMAS4G2, where small models benefit dramatically from thinking mode while large models can degrade with excessive reasoning. Both observations directly inform Chapter~\ref{ch:strategies}, where we systematically characterize these trade-offs across 504 configurations spanning diverse sentiment analysis tasks.

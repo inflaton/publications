@@ -39,7 +39,7 @@ The second pillar addressed RQ2: \textit{How can multi-agent LLM architectures b
     
     \item \textbf{Hierarchical Multi-Agent System for Payments (HMASP):} We designed the first LLM-based multi-agent system for end-to-end agentic payment workflows, featuring a four-level hierarchy with architectural patterns including shared state variables, decoupled message states, and structured handoff protocols, achieving 97.0\% task success rate.
     
-    \item \textbf{EdgeAgent Annotation Pipeline:} We developed a semi-automatic interactive annotation system demonstrating that edge-deployed LLMs can achieve annotation quality matching cloud-based proprietary alternatives while preserving data privacy.
+    \item \textbf{Agentic Success Rate (ASR):} We introduced a trajectory-level workflow fidelity metric grounded in process-mining conformance checking that compares observed and expected agent execution sequences at the transition level. Across 18 LLMs and 90{,}000 task instances, ASR exposes systematic procedural deviations invisible to TSR and HF1---7 of 8 top models skip confirmation checkpoints during payment checkout despite near-perfect task success---demonstrating that trajectory-level evaluation is essential in regulated domains where compliance and auditability are paramount.
 \end{enumerate}
 
 \subsection{Enterprise Deployment and Application Contributions (Chapter~\ref{ch:strategies})}
