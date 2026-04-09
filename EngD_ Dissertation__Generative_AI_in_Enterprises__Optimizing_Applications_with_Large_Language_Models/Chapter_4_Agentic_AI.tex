@@ -917,30 +917,36 @@ The T3 trajectory is central to our analysis. Its 11 steps encode three dialogue
 \subsection{Results}
 
 \subsubsection{Effectiveness of System Engineering}
+Table~\ref{tab:tsr_top_models} compares TSR between the original HMASP~\cite{huang2026hmasp} and our system for representative models: the two strongest HMASP baselines and the three most-improved open-weight models (ranked by average $\Delta$ across all tasks). The top-baseline models, GPT-4.1 and Qwen2.5:32b, were already near-saturated and remain so under our system ($\Delta\leq+4.4$\,pp), validating that strong baselines are not regressed. Notably, Qwen2.5:32b achieves perfect TSR (100\%) with zero variance across all four task types, making it the only model to do so; GPT-4.1 shows marginal regressions on T1 ($-$1.4\,pp) and T3 ($-$0.2\,pp), likely attributable to stochastic decoding rather than systemic failure. The gains for previously struggling models are striking: Llama3.1:8b improves by an average of +67.9\,pp across tasks, Magistral:24b by +54.2\,pp, and Llama3.1:70b by +33.5\,pp---confirming that the original failures were addressable through system engineering rather than model replacement. The most dramatic single-task improvements are Llama3.1:8b's T1 TSR leap from 6.0\% to 99.8\% (+93.8\,pp) and Magistral:24b's T3 TSR surge from 3.2\% to 94.7\% (+91.5\,pp). Results are stable across 5 repeats ($\sigma\leq1.9$ for all reported cases).
 
-Table~\ref{tab:asr_engineering} compares TSR between the original HMASP~\cite{huang2026hmasp} and our system for representative models. Across all 11 original HMASP models, system engineering raises average TSR from 74.9\% to 99.1\% (+24.2\,pp), confirming that the original failures were addressable through engineering rather than model replacement. The most dramatic improvements occur for models that originally struggled most: Magistral:24b's T3 TSR surges from 3.2\% to 99.6\% (+96.4\,pp); Llama3.1:8b's T1 TSR leaps from 6.0\% to 96.8\% (+90.8\,pp).
-
-\begin{table}[htbp]
-\centering
-\caption{HMASP vs.\ Ours: TSR (\%) for top HMASP models (GPT-4.1, Qwen2.5:32b) and most-improved open-weight models (Magistral:24b, Llama3.1:8b). H = HMASP, O = Ours, $\Delta$ = improvement. Bold: $\geq$20\,pp gains.}
-\label{tab:asr_engineering}
-\renewcommand{\arraystretch}{0.85}
-\setlength{\tabcolsep}{1.5mm}
-\scriptsize
-\begin{tabular}{l rr@{\;}r rr@{\;}r rr@{\;}r rr@{\;}r}
-    \toprule
-    & \multicolumn{3}{c}{\textbf{T1}} & \multicolumn{3}{c}{\textbf{T2}} & \multicolumn{3}{c}{\textbf{T3}} & \multicolumn{3}{c}{\textbf{T4}} \\
-    \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13}
-    \textbf{Model} & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ \\
-    \midrule
-    GPT-4.1 & 99.6 & 97.6 & \scriptsize$-$2.0 & 99.6 & 100 & \scriptsize+0.4 & 100 & 98.8 & \scriptsize$-$1.2 & 100 & 100 & \scriptsize+0.0 \\
-    Qwen2.5:32b & 96.4 & 96.4 & \scriptsize+0.0 & 98.8 & 99.6 & \scriptsize+0.8 & 95.6 & 99.6 & \scriptsize+4.0 & 100 & 100 & \scriptsize+0.0 \\
-    \midrule
-    Magistral:24b & 44.0 & 97.2 & \textbf{\scriptsize+53.2} & 18.4 & 100 & \textbf{\scriptsize+81.6} & 3.2 & 99.6 & \textbf{\scriptsize+96.4} & 100 & 100 & \scriptsize+0.0 \\
-    Llama3.1:8b & 6.0 & 96.8 & \textbf{\scriptsize+90.8} & 10.4 & 99.6 & \textbf{\scriptsize+89.2} & 4.0 & 99.6 & \textbf{\scriptsize+95.6} & 100 & 100 & \scriptsize+0.0 \\
-    \bottomrule
-\end{tabular}
+\begin{table}[!ht]
+    \centering
+    \caption{HMASP vs.\ Ours: TSR (\%) for top HMASP-baseline models and most-improved models.
+    H~=~HMASP baseline, O~=~Ours (mean\,$\pm$\,std over 5 repeats), $\Delta$~=~improvement.
+    \textbf{Bold}: $\geq$20\,pp gains. HMASP-top models selected by baseline TSR; top-3 improved
+    open-weight models ranked by average $\Delta$ across all tasks.}
+    \label{tab:tsr_top_models}
+    \renewcommand{\arraystretch}{0.95}
+    \setlength{\tabcolsep}{2mm}
+    \scriptsize
+    \begin{tabular}{l rr@{\;}r rr@{\;}r rr@{\;}r rr@{\;}r}
+        \toprule
+        & \multicolumn{3}{c}{\textbf{T1}} & \multicolumn{3}{c}{\textbf{T2}} & \multicolumn{3}{c}{\textbf{T3}} & \multicolumn{3}{c}{\textbf{T4}} \\
+        \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13}
+        \textbf{Model} & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ & \textbf{H} & \textbf{O} & $\boldsymbol{\Delta}$ \\
+        \midrule
+        \multicolumn{13}{l}{\textit{HMASP Top Baseline}} \\
+        GPT-4.1              & 99.6 & 98.2$\pm$0.4 & \scriptsize$-$1.4 & 99.6 & 99.9$\pm$0.2 & \scriptsize+0.3 & 100 & 99.8$\pm$0.4 & \scriptsize$-$0.2 & 100 & 100 & \scriptsize$+$0.0 \\
+        Qwen2.5:32b          & 96.4 & 100 & \scriptsize+3.6 & 98.8 & 100 & \scriptsize+1.2 & 95.6 & 100 & \scriptsize+4.4 & 100 & 100 & \scriptsize$+$0.0 \\
+        \midrule
+        \multicolumn{13}{l}{\textit{Top-3 Improved}} \\
+        Llama3.1:8b          & 6.0 & 99.8$\pm$0.2 & \textbf{\scriptsize+93.8} & 10.4 & 98.8$\pm$0.5 & \textbf{\scriptsize+88.4} & 4.0 & 93.4$\pm$0.9 & \textbf{\scriptsize+89.4} & 100 & 100 & \scriptsize$+$0.0 \\
+        Magistral:24b        & 44.0 & 90.0$\pm$1.9 & \textbf{\scriptsize+46.0} & 18.4 & 97.7$\pm$1.0 & \textbf{\scriptsize+79.3} & 3.2 & 94.7$\pm$1.2 & \textbf{\scriptsize+91.5} & 100 & 100 & \scriptsize$+$0.0 \\
+        Llama3.1:70b         & 66.0 & 100 & \textbf{\scriptsize+34.0} & 74.0 & 100 & \textbf{\scriptsize+26.0} & 26.0 & 98.9$\pm$1.2 & \textbf{\scriptsize+72.9} & 98.8 & 100 & \scriptsize+1.2 \\
+        \bottomrule
+    \end{tabular}
 \end{table}
+
 
 \subsubsection{ASR Reveals Hidden Workflow Deviations}
 
@@ -948,7 +954,10 @@ Table~\ref{tab:asr_combined} presents TSR, HF1, and ASR for the top 8 models on 
 
 \begin{table}[htbp]
     \centering
-    \caption{T3 (Payment) results (\%, mean $\pm$ std over 5 repeats) and average across T1--T3 for the top 8 models. Sorted by Avg ASR desc. \colorbox{yellow!30}{Yellow}: TSR = HF1 = 100\% but ASR $<$ 100\%. All six open-weight models outperform both proprietary GPT models.}
+    \caption{T3 (Payment) results (\%, mean $\pm$ std over 5 repeats) and average across
+    T1--T3 for the top 8 models. Sorted by Avg ASR desc.
+    Yellow: TSR = HF1 = 100\% but ASR $<$ 100\%.
+    All six open-weight models outperform both proprietary GPT models.}
     \label{tab:asr_combined}
     \renewcommand{\arraystretch}{0.9}
     \setlength{\tabcolsep}{1.5mm}
@@ -959,15 +968,15 @@ Table~\ref{tab:asr_combined} presents TSR, HF1, and ASR for the top 8 models on 
         \cmidrule(lr){2-4} \cmidrule(lr){5-7}
         \textbf{Model} & \textbf{TSR} & \textbf{HF1} & \textbf{ASR} & \textbf{TSR} & \textbf{HF1} & \textbf{ASR} \\
         \midrule
-        MSmall3.2:24b  & 100           & 100           & 100                                   & 100.0 & 100.0 & 100.0 \\
-        Qwen2.5:32b    & 100           & 100           & \cellcolor{yellow!30}99.99$\pm$0.02   & 100.0 & 100.0 & 100.0 \\
-        Qwen3:8b       & 100           & 100           & \cellcolor{yellow!30}99.97$\pm$0.02   & 99.9  & 99.9  & 99.9 \\
-        Qwen3:14b      & 99.7$\pm$0.3  & 99.8$\pm$0.2  & 99.6$\pm$0.3                         & 99.9  & 99.9  & 99.9 \\
-        Llama3.1:70b   & 98.9$\pm$1.2  & 98.8$\pm$1.1  & 98.8$\pm$1.2                         & 99.6  & 99.6  & 99.6 \\
-        Qwen2.5:14b    & 99.8$\pm$0.2  & 99.8$\pm$0.2  & 99.6$\pm$0.2                         & 99.1  & 99.5  & 99.4 \\
+        MSmall3.2:24b    & 100 & 100 & 100 & 100.0 & 100.0 & 100.0 \\
+        Qwen2.5:32b      & 100 & 100 & \cellcolor{yellow!30}99.99$\pm$0.02 & 100.0 & 100.0 & 100.00$\pm$0.01 \\
+        Qwen3:8b         & 100 & 100 & \cellcolor{yellow!30}99.97$\pm$0.02 & 99.9$\pm$0.1 & 99.93$\pm$0.05 & 99.9$\pm$0.1 \\
+        Qwen3:14b        & 99.7$\pm$0.3 & 99.8$\pm$0.2 & 99.6$\pm$0.3 & 99.9$\pm$0.1 & 99.9$\pm$0.1 & 99.9$\pm$0.1 \\
+        Llama3.1:70b     & 98.9$\pm$1.2 & 98.8$\pm$1.1 & 98.8$\pm$1.2 & 99.6$\pm$0.4 & 99.6$\pm$0.4 & 99.6$\pm$0.4 \\
+        Qwen2.5:14b      & 99.8$\pm$0.2 & 99.8$\pm$0.2 & 99.6$\pm$0.2 & 99.1$\pm$0.5 & 99.5$\pm$0.3 & 99.4$\pm$0.3 \\
         \midrule
-        GPT-4.1        & 99.8$\pm$0.4  & 99.9$\pm$0.2  & 97.1$\pm$0.3                         & 99.3  & 99.7  & 98.4 \\
-        GPT-5.2        & 99.9$\pm$0.2  & 100.0$\pm$0.1 & 97.3$\pm$0.1                         & 99.3  & 99.6  & 98.4 \\
+        GPT-4.1          & 99.8$\pm$0.4 & 99.9$\pm$0.2 & 97.1$\pm$0.3 & 99.3$\pm$0.3 & 99.7$\pm$0.2 & 98.4$\pm$0.3 \\
+        GPT-5.2          & 99.9$\pm$0.2 & 100.0$\pm$0.1 & 97.3$\pm$0.1 & 99.3$\pm$0.2 & 99.6$\pm$0.1 & 98.4$\pm$0.2 \\
         \bottomrule
     \end{tabular}
 \end{table}
