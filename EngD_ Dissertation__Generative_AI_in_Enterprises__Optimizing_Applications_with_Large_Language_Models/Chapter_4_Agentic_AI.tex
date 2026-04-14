@@ -323,7 +323,7 @@ We extend testing to three representative edge platforms:
 \begin{itemize}[leftmargin=*]
     \item \textbf{NVIDIA RTX A6000 Ada GPU:} High-end workstation (48GB VRAM, Ubuntu 24.04, \textasciitilde\$10K)
     \item \textbf{NVIDIA GeForce RTX 4090 Laptop GPU:} Mobile workstation (16GB VRAM, Ubuntu 24.04 via WSL, \textasciitilde\$5K)
-    \item \textbf{Apple M3 Max:} Consumer-grade ARM platform (96GB unified memory, macOS 15.4.1, \textasciitilde\$4K)
+    \item \textbf{Apple M5 Max:} Consumer-grade ARM platform (128GB unified memory, macOS 26.4, \textasciitilde\$6K)
 \end{itemize}
 
 \subsubsection{Evaluation Dataset and Protocol}
@@ -374,7 +374,7 @@ functionary-medium & RTX A6000 & 53.2 & 30.8 $\pm$ 242.6 & 7.8 $\pm$ 2.8 \\
     \item \textbf{Fundamental limits:} Smaller models exhibit significant degradation---qwen2.5:7b achieves 49.3--58.5\%, while qwen2.5:3b drops to 13.1--14.9\%---highlighting fundamental capacity constraints in complex multi-agent coordination
 \end{itemize}
 
-\paragraph{Hardware Impact on Deployment Viability.} Platform selection critically affects both latency and reliability. qwen2.5:14b executes in 7.3 seconds on RTX A6000 versus 60.0 seconds on M3 Max---an 8.2$\times$ difference highlighting the importance of optimized hardware. However, hardware alone is insufficient: qwen2.5:7b on M3 Max averages 85.9 seconds despite smaller size, requiring 20.7 steps per task versus 8.6 steps for the larger 14B model. Execution logs show that qwen2.5:7b often enters cyclical decision loops, occasionally exceeding LangGraph's recursion limit (25 steps) and triggering forced termination---suggesting that planning efficiency improves with model capacity.
+\paragraph{Hardware Impact on Deployment Viability.} Platform selection critically affects both latency and reliability. qwen2.5:14b executes in 7.3 seconds on RTX A6000 versus 60.0 seconds on M5 Max---an 8.2$\times$ difference highlighting the importance of optimized hardware. However, hardware alone is insufficient: qwen2.5:7b on M5 Max averages 85.9 seconds despite smaller size, requiring 20.7 steps per task versus 8.6 steps for the larger 14B model. Execution logs show that qwen2.5:7b often enters cyclical decision loops, occasionally exceeding LangGraph's recursion limit (25 steps) and triggering forced termination---suggesting that planning efficiency improves with model capacity.
 
 \subsubsection{Diagnostic Error Analysis}
 
@@ -908,7 +908,7 @@ The T3 trajectory is central to our analysis. Its 11 steps encode three dialogue
 
 \subsection{Experimental Setup}
 
-\paragraph{Models.} We evaluate 18 models spanning open-weight and proprietary LLMs: 11 from the original HMASP study~\cite{huang2026hmasp} (Qwen3 8B/14B/32B, Qwen2.5 7B/14B/32B, Mistral-Small-3.2 24B, Magistral 24B, Llama~3.1 8B/70B, GPT-4.1) plus 7 additional models (GPT-5.2, GPT-OSS 20B/120B, Llama~3.3 70B, Qwen3 30B, GLM-4.7-Flash, and Mistral 7B). Proprietary models (GPT-4.1, GPT-5.2) are accessed via the OpenAI API; all open-weight models run locally using Ollama on an Apple M3~Max with 96\,GB unified memory and 4-bit quantization (MXFP4 for GPT-OSS models; Q4\_K\_M for all others).
+\paragraph{Models.} We evaluate 18 models spanning open-weight and proprietary LLMs: 11 from the original HMASP study~\cite{huang2026hmasp} (Qwen3 8B/14B/32B, Qwen2.5 7B/14B/32B, Mistral-Small-3.2 24B, Magistral 24B, Llama~3.1 8B/70B, GPT-4.1) plus 7 additional models (GPT-5.2, GPT-OSS 20B/120B, and Gemma4 E2B/E4B/26B/31B). Proprietary models (GPT-4.1, GPT-5.2) are accessed via the OpenAI API; all open-weight models run locally using Ollama on an Apple M5~Max with 128\,GB unified memory and 4-bit quantization (MXFP4 for GPT-OSS models; Q4\_K\_M for all others).
 
 \paragraph{Dataset and Repeat Protocol.} We use the HMASP evaluation dataset of 1{,}000 data points across four scenarios (250 each): T1~(card registration), T2~(card retrieval), T3~(payment processing), and T4~(irrelevant input rejection). Each model--scenario pair is evaluated 5 times independently, yielding 90{,}000 total instances (18 models $\times$ 1{,}000 data points $\times$ 5 repeats). We report mean and standard deviation across repeats.
 
@@ -917,7 +917,7 @@ The T3 trajectory is central to our analysis. Its 11 steps encode three dialogue
 \subsection{Results}
 
 \subsubsection{Effectiveness of System Engineering}
-Table~\ref{tab:tsr_top_models} compares TSR between the original HMASP~\cite{huang2026hmasp} and our system for representative models: the two strongest HMASP baselines and the three most-improved open-weight models (ranked by average $\Delta$ across all tasks). The top-baseline models, GPT-4.1 and Qwen2.5:32b, were already near-saturated and remain so under our system ($\Delta\leq+4.4$\,pp), validating that strong baselines are not regressed. Notably, Qwen2.5:32b achieves perfect TSR (100\%) with zero variance across all four task types, making it the only model to do so; GPT-4.1 shows marginal regressions on T1 ($-$1.4\,pp) and T3 ($-$0.2\,pp), likely attributable to stochastic decoding rather than systemic failure. The gains for previously struggling models are striking: Llama3.1:8b improves by an average of +67.9\,pp across tasks, Magistral:24b by +54.2\,pp, and Llama3.1:70b by +33.5\,pp---confirming that the original failures were addressable through system engineering rather than model replacement. The most dramatic single-task improvements are Llama3.1:8b's T1 TSR leap from 6.0\% to 99.8\% (+93.8\,pp) and Magistral:24b's T3 TSR surge from 3.2\% to 94.7\% (+91.5\,pp). Results are stable across 5 repeats ($\sigma\leq1.9$ for all reported cases).
+Table~\ref{tab:tsr_top_models} compares TSR between the original HMASP~\cite{huang2026hmasp} and our system for representative models: the two strongest HMASP baselines and the three most-improved open-weight models (ranked by average $\Delta$ across all tasks). The top-baseline models, GPT-4.1 and Qwen2.5:32b, were already near-saturated and remain so under our system ($\Delta\leq+4.4$\,pp), validating that strong baselines are not regressed. Notably, Qwen2.5:32b achieves perfect TSR (100\%) with zero variance across all four task types---one of seven models to do so in the full 18-model evaluation (Section~\ref{sec:asr_definition}); GPT-4.1 shows marginal regressions on T1 ($-$1.4\,pp) and T3 ($-$0.2\,pp), likely attributable to stochastic decoding rather than systemic failure. The gains for previously struggling models are striking: Llama3.1:8b improves by an average of +67.9\,pp across tasks, Magistral:24b by +54.2\,pp, and Llama3.1:70b by +33.5\,pp---confirming that the original failures were addressable through system engineering rather than model replacement. The most dramatic single-task improvements are Llama3.1:8b's T1 TSR leap from 6.0\% to 99.8\% (+93.8\,pp) and Magistral:24b's T3 TSR surge from 3.2\% to 94.7\% (+91.5\,pp). Results are stable across 5 repeats ($\sigma\leq1.9$ for all reported cases).
 
 \begin{table}[!ht]
     \centering
@@ -950,40 +950,48 @@ Table~\ref{tab:tsr_top_models} compares TSR between the original HMASP~\cite{hua
 
 \subsubsection{ASR Reveals Hidden Workflow Deviations}
 
-Table~\ref{tab:asr_combined} presents TSR, HF1, and ASR for the top 8 models on the T3 (Payment) scenario, alongside averages across T1--T3. All models achieve 100\% on T4; T1 and T2 are near-perfect ($\geq$97.7\% TSR) and omitted for brevity. A striking result is that \textbf{all six open-weight models outperform both proprietary GPT models} on average ASR, with the top four achieving $\geq$99.9\% compared to 98.4\% for GPT-4.1 and GPT-5.2. Every model \textit{except} \texttt{mistral-small3.2:24b} exhibits a T3 ASR gap---from 0.01\% (\texttt{qwen2.5:32b}) to 2.9\% (\texttt{GPT-4.1})---despite high TSR and HF1. Notably, \texttt{mistral-small3.2:24b} achieves a perfect 100\% across all three metrics, demonstrating that enforcing the confirmation checkpoint is achievable without sacrificing task performance. The highlighted cells are the sharpest examples: \texttt{qwen2.5:32b} and \texttt{qwen3:8b} achieve T3 TSR = HF1 = 100\% yet ASR $<$ 100\%, exposing skipped confirmation checkpoints invisible to conventional metrics.
+Table~\ref{tab:asr_combined} presents TSR, HF1, and ASR for all 18 evaluated models on the T3 (Payment) scenario, alongside averages across T1--T4. Seven models achieve a perfect 100\% on all three T3 metrics: \texttt{Gemma4:e4b}, \texttt{GPT-OSS:20b}, \texttt{MSmall3.2:24b}, \texttt{Gemma4:26b}, \texttt{Gemma4:31b}, \texttt{GPT-OSS:120b}, and \texttt{Gemma4:e2b}. Six of these also achieve perfect average ASR across T1--T4; the exception is \texttt{Gemma4:e2b}, which drops to 98.4\% on average due to weaker T2 performance (93.60$\pm$0.28\%). A striking result is that \textbf{12 models outperform the proprietary GPT-4.1 and GPT-5.2} on average ASR, including all Gemma4, Qwen, Llama, and Mistral variants. Among the remaining models that exhibit a T3 ASR gap, the range spans from 0.01\% (\texttt{Qwen2.5:32b}) to 5.45\% (\texttt{Qwen2.5:7b}); notably, \texttt{GPT-4.1} and \texttt{GPT-5.2} show the largest gaps among high-performing models at 2.66\% and 2.64\% respectively. The \colorbox{yellow!30}{highlighted} cells are the sharpest examples: \texttt{Qwen2.5:32b}, \texttt{Qwen3:32b}, and \texttt{Qwen3:8b} achieve T3 TSR = HF1 = 100\% yet ASR $<$ 100\%, exposing skipped confirmation checkpoints invisible to conventional metrics.
 
 \begin{table}[htbp]
     \centering
     \caption{T3 (Payment) results (\%, mean $\pm$ std over 5 repeats) and average across
-    T1--T3 for the top 8 models. Sorted by Avg ASR desc.
-    Yellow: TSR = HF1 = 100\% but ASR $<$ 100\%.
-    All six open-weight models outperform both proprietary GPT models.}
+    T1--T4 for all models. Sorted by Avg ASR desc.
+    Yellow: TSR = HF1 = 100\% but ASR $<$ 100\%.}
     \label{tab:asr_combined}
     \renewcommand{\arraystretch}{0.9}
     \setlength{\tabcolsep}{1.5mm}
     \scriptsize
     \begin{tabular}{l ccc ccc}
         \toprule
-        & \multicolumn{3}{c}{\textbf{T3 (Payment)}} & \multicolumn{3}{c}{\textbf{Avg (T1--T3)}} \\
+        & \multicolumn{3}{c}{\textbf{T3 (Payment)}} & \multicolumn{3}{c}{\textbf{Avg (T1--T4)}} \\
         \cmidrule(lr){2-4} \cmidrule(lr){5-7}
         \textbf{Model} & \textbf{TSR} & \textbf{HF1} & \textbf{ASR} & \textbf{TSR} & \textbf{HF1} & \textbf{ASR} \\
         \midrule
-        MSmall3.2:24b    & 100 & 100 & 100 & 100.0 & 100.0 & 100.0 \\
-        Qwen2.5:32b      & 100 & 100 & \cellcolor{yellow!30}99.99$\pm$0.02 & 100.0 & 100.0 & 100.00$\pm$0.01 \\
-        Qwen3:8b         & 100 & 100 & \cellcolor{yellow!30}99.97$\pm$0.02 & 99.9$\pm$0.1 & 99.93$\pm$0.05 & 99.9$\pm$0.1 \\
-        Qwen3:14b        & 99.7$\pm$0.3 & 99.8$\pm$0.2 & 99.6$\pm$0.3 & 99.9$\pm$0.1 & 99.9$\pm$0.1 & 99.9$\pm$0.1 \\
-        Llama3.1:70b     & 98.9$\pm$1.2 & 98.8$\pm$1.1 & 98.8$\pm$1.2 & 99.6$\pm$0.4 & 99.6$\pm$0.4 & 99.6$\pm$0.4 \\
-        Qwen2.5:14b      & 99.8$\pm$0.2 & 99.8$\pm$0.2 & 99.6$\pm$0.2 & 99.1$\pm$0.5 & 99.5$\pm$0.3 & 99.4$\pm$0.3 \\
-        \midrule
-        GPT-4.1          & 99.8$\pm$0.4 & 99.9$\pm$0.2 & 97.1$\pm$0.3 & 99.3$\pm$0.3 & 99.7$\pm$0.2 & 98.4$\pm$0.3 \\
-        GPT-5.2          & 99.9$\pm$0.2 & 100.0$\pm$0.1 & 97.3$\pm$0.1 & 99.3$\pm$0.2 & 99.6$\pm$0.1 & 98.4$\pm$0.2 \\
+        Gemma4:e4b       & 100 & 100 & 100 & 100 & 100 & 100 \\
+        GPT-OSS:20b      & 100 & 100 & 100 & 100 & 100 & 100 \\
+        MSmall3.2:24b    & 100 & 100 & 100 & 100 & 100 & 100 \\
+        Gemma4:26b       & 100 & 100 & 100 & 100 & 100 & 100 \\
+        Gemma4:31b       & 100 & 100 & 100 & 100 & 100 & 100 \\
+        GPT-OSS:120b     & 100 & 100 & 100 & 100 & 100 & 100 \\
+        Qwen2.5:32b      & 100 & 100 & \cellcolor{yellow!30}99.99$\pm$0.02 & 100 & 100 & 99.998$\pm$0.005 \\
+        Qwen3:32b        & 100 & 100 & \cellcolor{yellow!30}99.97$\pm$0.04 & 99.980$\pm$0.045 & 99.990$\pm$0.022 & 99.973$\pm$0.055 \\
+        Qwen3:14b        & 99.68$\pm$0.33 & 99.84$\pm$0.17 & 99.64$\pm$0.31 & 99.920$\pm$0.084 & 99.960$\pm$0.042 & 99.909$\pm$0.077 \\
+        Qwen3:8b         & 100 & 100 & \cellcolor{yellow!30}99.97$\pm$0.02 & 99.900$\pm$0.071 & 99.950$\pm$0.035 & 99.893$\pm$0.077 \\
+        Llama3.1:70b     & 98.88$\pm$1.21 & 98.78$\pm$1.09 & 98.81$\pm$1.17 & 99.720$\pm$0.303 & 99.695$\pm$0.273 & 99.704$\pm$0.292 \\
+        Qwen2.5:14b      & 99.76$\pm$0.22 & 99.80$\pm$0.20 & 99.56$\pm$0.16 & 99.320$\pm$0.387 & 99.640$\pm$0.216 & 99.561$\pm$0.235 \\
+        GPT-4.1          & 99.76$\pm$0.36 & 99.88$\pm$0.18 & 97.10$\pm$0.33 & 99.480$\pm$0.224 & 99.738$\pm$0.113 & 98.816$\pm$0.217 \\
+        GPT-5.2          & 99.92$\pm$0.18 & 99.96$\pm$0.09 & 97.28$\pm$0.10 & 99.440$\pm$0.134 & 99.718$\pm$0.067 & 98.780$\pm$0.114 \\
+        Gemma4:e2b       & 100 & 100 & 100 & 98.400$\pm$0.071 & 98.795$\pm$0.047 & 98.400$\pm$0.071 \\
+        Llama3.1:8b      & 93.44$\pm$0.92 & 96.05$\pm$0.72 & 93.31$\pm$0.97 & 98.020$\pm$0.407 & 98.813$\pm$0.280 & 98.028$\pm$0.362 \\
+        Magistral:24b    & 94.72$\pm$1.18 & 97.05$\pm$0.63 & 93.88$\pm$1.04 & 95.600$\pm$1.008 & 97.651$\pm$0.540 & 95.521$\pm$0.949 \\
+        Qwen2.5:7b       & 53.28$\pm$2.05 & 64.16$\pm$2.28 & 47.83$\pm$1.96 & 77.540$\pm$0.908 & 85.124$\pm$0.788 & 77.087$\pm$0.707 \\
         \bottomrule
     \end{tabular}
 \end{table}
 
 \subsubsection{Root Cause: The T3 Confirmation Shortcut}
 
-The root cause is consistent across 7 of the 8 top models. The expected T3 trajectory has 11 agent hops (10 transitions), including an intermediate return to the CPA for explicit user \textit{confirmation} before payment processing. For direct payment phrases (e.g., ``Process my payment''), models infer unambiguous intent and skip this checkpoint, executing a 9-step trajectory (8 transitions) instead. Table~\ref{tab:t3_shortcut} details the step-by-step comparison. Steps 3--4---the CPA confirmation checkpoint and the subsequent PS re-entry---are the two steps skipped. Their omission is invisible to TSR (the payment still completes) and to HF1 (every expected handoff edge type appears in the 9-step trajectory, just not in the expected order with CPA intermediation). Only ASR, which compares the full ordered sequence, detects their absence.
+The root cause is consistent across all 11 models that exhibit a T3 ASR gap. The expected T3 trajectory has 11 agent hops (10 transitions), including an intermediate return to the CPA for explicit user \textit{confirmation} before payment processing. For direct payment phrases (e.g., ``Process my payment''), models infer unambiguous intent and skip this checkpoint, executing a 9-step trajectory (8 transitions) instead. Table~\ref{tab:t3_shortcut} details the step-by-step comparison. Steps 3--4---the CPA confirmation checkpoint and the subsequent PS re-entry---are the two steps skipped. Their omission is invisible to TSR (the payment still completes) and to HF1 (every expected handoff edge type appears in the 9-step trajectory, just not in the expected order with CPA intermediation). Only ASR, which compares the full ordered sequence, detects their absence.
 
 \begin{table}[htbp]
     \centering
@@ -1029,51 +1037,66 @@ The conference version~\cite{huang2026asr} reported aggregate ASR scores; here w
 
 \subsubsection{Hidden Deviation Rates}
 
-Table~\ref{tab:hidden_deviations} presents per-sample T3 analysis for representative models. A \textit{hidden deviation} is a sample where the task succeeds on TSR but the agent follows a deviant trajectory (ASR $<$ 100\%). The aggregate gap depends on shortcut frequency: GPT models skip the checkpoint on ${\sim}$61 of 250 samples per repeat (T3 ASR $\approx$ 97.1--97.3\%), \texttt{qwen2.5:32b} and \texttt{qwen3:8b} deviate on $<$1\% of samples, and \texttt{mistral-small3.2:24b} enforces the checkpoint on every sample (T3 ASR = 100\%).
+Table~\ref{tab:hidden_deviations} presents per-sample T3 analysis for all 18 evaluated models from a single representative repeat (250~unique inputs each). A \textit{hidden deviation} is a sample where the task succeeds on TSR but the agent follows a deviant trajectory (ASR $<$ 100\%). The models fall into three distinct groups. \textbf{Seven models exhibit zero hidden deviations}: all four Gemma4 variants, both GPT-OSS models, and \texttt{MSmall3.2:24b}---each achieving 250/250 perfect trajectories. \textbf{Seven models show minimal deviations} ($\leq$2 of 250 samples, $<$1\% hidden rate): the three Qwen3 variants, \texttt{Qwen2.5:32b}, \texttt{Qwen2.5:14b}, and both Llama3.1 models. \textbf{Four models show significant shortcut rates}: \texttt{GPT-4.1} (62 hidden, 24.8\%), \texttt{GPT-5.2} (54 hidden, 21.7\%), \texttt{Magistral:24b} (22 hidden, 9.3\%), and \texttt{Qwen2.5:7b} (118 hidden, 90.1\%).
 
 \begin{table}[htbp]
     \centering
-    \caption{Per-sample T3 analysis for representative models: task failures vs.\ hidden deviations (samples that succeed on TSR but deviate on ASR). Hidden rate = hidden deviations / successful samples. \texttt{MSmall3.2:24b} is the only model with zero hidden deviations.}
+    \caption{Per-sample T3 hidden deviation analysis (single representative repeat, 250~samples per model).
+    A \textit{hidden deviation} is a sample where TSR succeeds but ASR $<$ 100\%.
+    Hidden rate = hidden deviations / successful samples.}
     \label{tab:hidden_deviations}
     \footnotesize
     \renewcommand{\arraystretch}{0.95}
     \setlength{\tabcolsep}{1.2mm}
-    \begin{tabular}{l c c c c c}
+    \begin{tabular}{l c c c c c c}
         \toprule
-        \textbf{Model} & \textbf{T3 TSR} & \textbf{Failures} & \textbf{Hidden} & \textbf{Perfect} & \textbf{Hidden Rate} \\
+        \textbf{Model} & \textbf{TSR} & \textbf{ASR} & \textbf{Failures} & \textbf{Hidden} & \textbf{Perfect} & \textbf{Hidden Rate} \\
         \midrule
-        MSmall3.2:24b             & 100.0\% & 0 &  0 & 250 &  0.0\% \\
-        Qwen3:32b                 & 100.0\% & 0 & 59 & 191 & 23.6\% \\
-        Qwen2.5:32b               & 100.0\% & 0 & 60 & 190 & 24.0\% (mean) \\
-        Qwen3:8b                  & 100.0\% & 0 & 59 & 191 & 23.6\% (mean) \\
+        \multicolumn{7}{l}{\textit{Zero hidden deviations}} \\
+        Gemma4:e2b            & 100.0\% & 100.00\% &  0 &   0 & 250 &  0.0\% \\
+        Gemma4:e4b            & 100.0\% & 100.00\% &  0 &   0 & 250 &  0.0\% \\
+        Gemma4:26b            & 100.0\% & 100.00\% &  0 &   0 & 250 &  0.0\% \\
+        Gemma4:31b            & 100.0\% & 100.00\% &  0 &   0 & 250 &  0.0\% \\
+        GPT-OSS:20b           & 100.0\% & 100.00\% &  0 &   0 & 250 &  0.0\% \\
+        GPT-OSS:120b          & 100.0\% & 100.00\% &  0 &   0 & 250 &  0.0\% \\
+        MSmall3.2:24b         & 100.0\% & 100.00\% &  0 &   0 & 250 &  0.0\% \\
         \midrule
-        GPT-5.2                   & 99.9\% & $<$1 & ${\sim}$62 & ${\sim}$187 & 24.9\% \\
-        GPT-4.1                   & 99.8\% & $<$1 & ${\sim}$61 & ${\sim}$188 & 24.5\% \\
-        Qwen2.5:14b               & 99.8\% & $<$1 & ${\sim}$57 & ${\sim}$192 & 22.9\% \\
-        Llama3.1:70b              & 98.9\% & ${\sim}$3 & ${\sim}$60 & ${\sim}$187 & 24.3\% \\
-        Llama3.1:8b               & 93.4\% & ${\sim}$17 & ${\sim}$59 & ${\sim}$174 & 25.3\% \\
+        \multicolumn{7}{l}{\textit{Minimal hidden deviations ($\leq$2)}} \\
+        Qwen2.5:32b           & 100.0\% &  99.96\% &  0 &   1 & 249 &  0.4\% \\
+        Qwen3:32b             & 100.0\% &  99.96\% &  0 &   1 & 249 &  0.4\% \\
+        Qwen3:8b              & 100.0\% &  99.96\% &  0 &   1 & 249 &  0.4\% \\
+        Qwen3:14b             &  99.6\% &  99.56\% &  1 &   1 & 248 &  0.4\% \\
+        Llama3.1:70b          &  99.6\% &  99.38\% &  1 &   2 & 247 &  0.8\% \\
+        Qwen2.5:14b           &  99.6\% &  99.51\% &  1 &   2 & 247 &  0.8\% \\
+        Llama3.1:8b           &  94.8\% &  94.64\% & 13 &   2 & 235 &  0.8\% \\
+        \midrule
+        \multicolumn{7}{l}{\textit{Significant hidden deviations}} \\
+        Magistral:24b         &  94.4\% &  93.42\% & 14 &  22 & 214 &  9.3\% \\
+        GPT-5.2               &  99.6\% &  97.20\% &  1 &  54 & 195 & 21.7\% \\
+        GPT-4.1               & 100.0\% &  97.24\% &  0 &  62 & 188 & 24.8\% \\
+        Qwen2.5:7b            &  52.4\% &  47.09\% &119 & 118 &  13 & 90.1\% \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-The hidden deviation rate is remarkably stable across models that exhibit the shortcut: rates cluster in the 22--26\% range regardless of model size, model family, or overall TSR. Models with higher TSR simply have fewer outright failures but the \textit{same} proportion of hidden shortcut deviations among their successes. The sole exception---\texttt{mistral-small3.2:24b}---demonstrates that the confirmation checkpoint \textit{can} be consistently enforced, making it a useful reference point for architectural remediation.
+The three-tier pattern reveals that the shortcut is \textit{not} an inevitable property of multi-agent payment processing. The seven zero-deviation models---spanning Gemma4 (2B--31B), GPT-OSS (20B--120B), and Mistral-Small-3.2 (24B)---demonstrate that the confirmation checkpoint can be consistently enforced across diverse architectures and scales. The concentration of deviations in GPT-4.1/5.2 (the two proprietary models) and the smallest Qwen2.5 variant suggests that the shortcut correlates with specific model reasoning patterns rather than architectural limitations.
 
-Most critically, per-sample analysis confirms that every single hidden deviation follows the \textit{identical} 9-step shortcut---there is exactly one deviant trajectory pattern across all affected samples. This uniformity is itself a significant finding: the deviation is not stochastic or model-specific but reflects a systematic interaction between input phrasing and the multi-turn protocol structure.
+Most critically, per-sample analysis confirms that every single hidden deviation across all affected models follows the \textit{identical} 9-step shortcut---there is exactly one deviant trajectory pattern. This uniformity is itself a significant finding: the deviation reflects a systematic interaction between input phrasing and model-specific reasoning about user intent, not stochastic variation.
 
-\subsubsection{Input Phrasing as the Primary Deviation Trigger}
+\subsubsection{Input Phrasing and Model Reasoning as Joint Deviation Triggers}
 \label{sec:input_phrasing}
 
-Per-sample cross-model analysis reveals that the shortcut is primarily triggered by \textit{specific input phrasings} rather than by model-specific reasoning failures. Of the 250 T3 test inputs, a subset is shortcutted by nearly all models unanimously (e.g., ``Can you Process my payment for my shopping cart'', ``I want to pay''), while the majority are never shortcutted by any model. A gradient of intermediate-ambiguity inputs accounts for the per-model variation.
+Per-sample cross-model analysis reveals that the shortcut is triggered by an interaction between \textit{input phrasing} and \textit{model-specific reasoning patterns}, not by either factor alone.
 
-Inputs that are universally shortcutted share a common linguistic signature: short, imperative phrasing with unambiguous payment intent (e.g., ``Pay for my order'', ``Checkout now''). Inputs that are never shortcutted tend to use more deliberative or indirect formulations (e.g., ``Complete my purchase please''). This input-level regularity explains the tight ASR band across models: all models (except \texttt{mistral-small3.2:24b}) respond to the same phrasing cues, and the variation in per-model shortcut counts reflects only minor differences in threshold sensitivity to intermediate-ambiguity inputs.
+The three-tier pattern demonstrates that input phrasing alone is insufficient to trigger the shortcut---model reasoning plays a decisive role. Seven models (all four Gemma4 variants, both GPT-OSS models, and \texttt{MSmall3.2:24b}) achieve zero hidden deviations across all 250~samples, indicating that these models consistently enforce the CPA confirmation checkpoint regardless of phrasing. By contrast, \texttt{GPT-4.1} and \texttt{GPT-5.2} exhibit 62 and 54~hidden-deviation samples respectively, suggesting that their reasoning processes are prone to treating direct imperatives as implicit confirmation---a rational but non-compliant inference. The intermediate tier (seven models with $\leq$2~deviations) demonstrates near-complete robustness with only sporadic sensitivity to borderline inputs.
 
-This finding has important implications for system design. The deviation is not a failure of model capability---it reflects a rational inference that direct imperatives constitute implicit confirmation. The architectural remedy is therefore not model replacement but enforcement of the CPA confirmation checkpoint through deterministic routing logic, regardless of the model's assessment of user intent.
+This finding has important implications for system design. The concentration of shortcuts in specific model families---rather than uniform distribution across all models---indicates that the deviation reflects model-specific reasoning about user intent rather than an inherent architectural limitation. Nevertheless, the architectural remedy remains enforcement of the CPA confirmation checkpoint through deterministic routing logic, ensuring compliance regardless of which model is deployed.
 
 \subsection{Discussion: Regulatory and Architectural Implications}
 
-The T3 shortcut has direct regulatory significance. PCI-DSS~\cite{pcisecurity2025ai} requires auditable workflows where each processing step is logged; bypassing confirmation checkpoints creates gaps in the audit trail even when outcomes are correct. The T3 ASR gap of 0.01--2.9\% across 7 of 8 top models---spanning both proprietary (GPT-4.1, GPT-5.2) and open-weight families of varying sizes (8B--70B parameters)---indicates that this is a structural property of the agentic architecture rather than a deficiency correctable through model scaling. The fact that \texttt{mistral-small3.2:24b} achieves perfect scores demonstrates that explicit enforcement of the CPA confirmation checkpoint is both necessary and achievable.
+The T3 shortcut has direct regulatory significance. PCI-DSS~\cite{pcisecurity2025ai} requires auditable workflows where each processing step is logged; bypassing confirmation checkpoints creates gaps in the audit trail even when outcomes are correct. The three-tier pattern in Table~\ref{tab:hidden_deviations} reveals that this shortcut is \textit{not} a structural property of the agentic architecture: seven models achieve zero hidden deviations across all 250~samples, proving that the CPA confirmation checkpoint can be consistently preserved. Rather, the shortcut concentrates in specific model families---\texttt{GPT-4.1} (24.8\%) and \texttt{GPT-5.2} (21.7\%) account for the majority of deviations---suggesting that their reasoning processes systematically treat imperative inputs as implicit confirmation. This model-specificity means the risk is \textit{predictable and mitigatable}: deploying models from families with zero deviation rates eliminates the shortcut entirely without architectural changes, while deterministic enforcement of the CPA checkpoint provides defence-in-depth for any model.
 
-ASR thus serves dual roles. As an \textbf{evaluation metric}, it provides trajectory-level visibility that TSR and HF1 cannot, detecting procedural deviations that would otherwise remain invisible. As a \textbf{diagnostic signal}, it precisely localizes the source of deviation (T3 steps 3--4, triggered by imperative input phrasings), enabling targeted architectural remediation: enforcing mandatory CPA checkpoint returns before payment commitment through deterministic routing logic.
+ASR thus serves dual roles. As an \textbf{evaluation metric}, it provides trajectory-level visibility that TSR and HF1 cannot, detecting procedural deviations that would otherwise remain invisible. As a \textbf{diagnostic signal}, it precisely localizes both the source of deviation (T3 steps 3--4) and its distribution across models, enabling targeted remediation: either model selection guided by per-model hidden deviation rates, or enforcement of mandatory CPA checkpoint returns through deterministic routing logic.
 
 Combined with the structured error taxonomy from Section~\ref{sec:diagnostic_framework} and the ECR@1 metric from Section~\ref{sec:llm_judge}, ASR completes a comprehensive diagnostic toolkit for multi-agent LLM systems. Each metric addresses a different evaluation dimension: the error taxonomy classifies \textit{failure types}, ECR@1 captures \textit{operational reliability}, and ASR measures \textit{workflow fidelity}---together enabling systematic diagnosis of failure modes impossible with traditional binary evaluation.
 
