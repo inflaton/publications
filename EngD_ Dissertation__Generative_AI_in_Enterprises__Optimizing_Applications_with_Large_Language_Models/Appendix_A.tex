@@ -147,9 +147,8 @@ NVIDIA RTX 4090 Laptop & 16GB GDDR6 VRAM, 9,728 CUDA cores, 304 Tensor cores, In
 \midrule
 \multicolumn{2}{c}{\textit{Apple Silicon}} \\
 \midrule
-M3 Max MacBook Pro & 96GB Unified Memory, 16-core CPU, 40-core GPU, 16-core Neural Engine, macOS Sequoia 15.4, Ollama 0.5.4 \\
+M3 Max MacBook Pro & 96GB Unified Memory, 16-core CPU, 40-core GPU, 16-core Neural Engine, macOS Sequoia 15.4, MLX 0.12.0, Ollama 0.5.4 \\
 M4 Max MacBook Pro & 48GB Unified Memory, 16-core CPU, 40-core GPU, 16-core Neural Engine, macOS Sequoia 15.1, Ollama 0.5.4 \\
-M5 Max MacBook Pro & 128GB Unified Memory, 18-core CPU, 40-core GPU, 16-core Neural Engine, macOS Tahoe 26.4, Ollama 0.20.0 \\
 \midrule
 \multicolumn{2}{c}{\textit{Edge Device}} \\
 \midrule
@@ -348,7 +347,7 @@ max_tokens: 256
 # Hardware
 primary: NVIDIA H100 (96GB)
 validation: NVIDIA RTX 4090 (24GB)
-cross_platform: [M5 Max, RTX 4090 Laptop]  # temporal robustness
+cross_platform: [M3 Max, RTX 4090 Laptop]  # temporal robustness
 
 # Metrics Computed
 performance: [F1, Accuracy, Weighted-F1]
@@ -465,23 +464,23 @@ Agent Trace:
    - Amount: $15,000
    - Status: Unpaid
    - Customer: ABC Corp
-   - ASR Step 1: PASS (tool initialization)
-   - ASR Step 2: PASS (parameter handling)
-   - ASR Step 3: PASS (query execution)
+   - Step 1: PASS (tool initialization)
+   - Step 2: PASS (parameter handling)
+   - Step 3: PASS (query execution)
 
 2. Email Agent: Processed 3 relevant emails
    - Email 1: Payment confirmation mention
    - Email 2: Wire transfer receipt attachment
    - Attachment OCR: Amount $15,000, Ref: INV-2024-001
-   - ASR Step 4: PASS (email retrieval)
-   - ASR Step 5: PASS (OCR extraction)
+   - Step 4: PASS (email retrieval)
+   - Step 5: PASS (OCR extraction)
 
 3. Reconciliation Agent: Match confirmed
    - Invoice amount matches payment
    - Reference numbers align
    - Status updated to: Paid
-   - ASR Step 6: PASS (matching logic)
-   - ASR Step 7: PASS (status update)
+   - Step 6: PASS (matching logic)
+   - Step 7: PASS (status update)
 
 Output:
 {
@@ -504,18 +503,18 @@ Agent Trace:
 1. Data Engineering Agent: Query executed
    - SQL: SELECT * FROM invoices WHERE id = 'INV-2024-999'
    - Result: No rows returned
-   - ASR Step 1: PASS (tool initialization)
-   - ASR Step 2: PASS (parameter handling)
-   - ASR Step 3: PASS (query execution - valid empty result)
+   - Step 1: PASS (tool initialization)
+   - Step 2: PASS (parameter handling)
+   - Step 3: PASS (query execution - valid empty result)
 
 2. Email Agent: Searched for related emails
    - Found 0 matching emails
-   - ASR Step 4: PASS (search completed)
+   - Step 4: PASS (search completed)
 
 3. Reconciliation Agent: Unable to proceed
    - No invoice data available
    - No email evidence found
-   - ASR Step 5: PASS (correct termination)
+   - Step 5: PASS (correct termination)
 
 Output:
 {
@@ -537,18 +536,18 @@ Agent Trace:
 1. Data Engineering Agent: Attempted batch query
    - Error: Query timeout after 30 seconds
    - Reason: Too many records requested
-   - ASR Step 1: PASS (tool initialization)
-   - ASR Step 2: FAIL (parameter handling - unbounded query)
+   - Step 1: PASS (tool initialization)
+   - Step 2: FAIL (parameter handling - unbounded query)
    - Error Category: "Parameter Validation" (from structured error taxonomy)
 
 2. System: Agent retry triggered (attempt 2/3)
    - Error persisted
-   - ASR Step 3: FAIL (retry unsuccessful)
+   - Step 3: FAIL (retry unsuccessful)
 
 3. Reconciliation Agent: Task failed
    - Unable to retrieve invoice data
    - Workflow terminated
-   - ASR Step 4: PASS (graceful termination)
+   - Step 4: PASS (graceful termination)
 
 Output:
 {
