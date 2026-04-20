@@ -323,7 +323,7 @@ We extend testing to three representative edge platforms:
 \begin{itemize}[leftmargin=*]
     \item \textbf{NVIDIA RTX A6000 Ada GPU:} High-end workstation (48GB VRAM, Ubuntu 24.04, \textasciitilde\$10K)
     \item \textbf{NVIDIA GeForce RTX 4090 Laptop GPU:} Mobile workstation (16GB VRAM, Ubuntu 24.04 via WSL, \textasciitilde\$5K)
-    \item \textbf{Apple M5 Max:} Consumer-grade ARM platform (128GB unified memory, macOS 26.4, \textasciitilde\$6K)
+    \item \textbf{Apple M3 Max:} Consumer-grade ARM platform (96GB unified memory, macOS 15.4.1, \textasciitilde\$4K)
 \end{itemize}
 
 \subsubsection{Evaluation Dataset and Protocol}
@@ -374,7 +374,7 @@ functionary-medium & RTX A6000 & 53.2 & 30.8 $\pm$ 242.6 & 7.8 $\pm$ 2.8 \\
     \item \textbf{Fundamental limits:} Smaller models exhibit significant degradation---qwen2.5:7b achieves 49.3--58.5\%, while qwen2.5:3b drops to 13.1--14.9\%---highlighting fundamental capacity constraints in complex multi-agent coordination
 \end{itemize}
 
-\paragraph{Hardware Impact on Deployment Viability.} Platform selection critically affects both latency and reliability. qwen2.5:14b executes in 7.3 seconds on RTX A6000 versus 60.0 seconds on M5 Max---an 8.2$\times$ difference highlighting the importance of optimized hardware. However, hardware alone is insufficient: qwen2.5:7b on M5 Max averages 85.9 seconds despite smaller size, requiring 20.7 steps per task versus 8.6 steps for the larger 14B model. Execution logs show that qwen2.5:7b often enters cyclical decision loops, occasionally exceeding LangGraph's recursion limit (25 steps) and triggering forced termination---suggesting that planning efficiency improves with model capacity.
+\paragraph{Hardware Impact on Deployment Viability.} Platform selection critically affects both latency and reliability. qwen2.5:14b executes in 7.3 seconds on RTX A6000 versus 60.0 seconds on M3 Max---an 8.2$\times$ difference highlighting the importance of optimized hardware. However, hardware alone is insufficient: qwen2.5:7b on M3 Max averages 85.9 seconds despite smaller size, requiring 20.7 steps per task versus 8.6 steps for the larger 14B model. Execution logs show that qwen2.5:7b often enters cyclical decision loops, occasionally exceeding LangGraph's recursion limit (25 steps) and triggering forced termination---suggesting that planning efficiency improves with model capacity.
 
 \subsubsection{Diagnostic Error Analysis}
 
@@ -908,7 +908,7 @@ The T3 trajectory is central to our analysis. Its 11 steps encode three dialogue
 
 \subsection{Experimental Setup}
 
-\paragraph{Models.} We evaluate 18 models spanning open-weight and proprietary LLMs: 11 from the original HMASP study~\cite{huang2026hmasp} (Qwen3 8B/14B/32B, Qwen2.5 7B/14B/32B, Mistral-Small-3.2 24B, Magistral 24B, Llama~3.1 8B/70B, GPT-4.1) plus 7 additional models (GPT-5.2, GPT-OSS 20B/120B, and Gemma4 E2B/E4B/26B/31B). Proprietary models (GPT-4.1, GPT-5.2) are accessed via the OpenAI API; all open-weight models run locally using Ollama on an Apple M5~Max with 128\,GB unified memory and 4-bit quantization (MXFP4 for GPT-OSS models; Q4\_K\_M for all others).
+\paragraph{Models.} We evaluate 18 models spanning open-weight and proprietary LLMs: 11 from the original HMASP study~\cite{huang2026hmasp} (Qwen3 8B/14B/32B, Qwen2.5 7B/14B/32B, Mistral-Small-3.2 24B, Magistral 24B, Llama~3.1 8B/70B, GPT-4.1) plus 7 additional models (GPT-5.2, GPT-OSS 20B/120B, and Gemma4 E2B/E4B/26B/31B). Proprietary models (GPT-4.1, GPT-5.2) are accessed via the OpenAI API; all open-weight models run locally using Ollama on an Apple M3~Max with 96\,GB unified memory and 4-bit quantization (MXFP4 for GPT-OSS models; Q4\_K\_M for all others).
 
 \paragraph{Dataset and Repeat Protocol.} We use the HMASP evaluation dataset of 1{,}000 data points across four scenarios (250 each): T1~(card registration), T2~(card retrieval), T3~(payment processing), and T4~(irrelevant input rejection). Each model--scenario pair is evaluated 5 times independently, yielding 90{,}000 total instances (18 models $\times$ 1{,}000 data points $\times$ 5 repeats). We report mean and standard deviation across repeats.
 
