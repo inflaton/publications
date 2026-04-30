@@ -30,7 +30,7 @@ Zhaoxia WANG \inst{1,\thanks{Corresponding author: zxwang@smu.edu.sg}}\orcidID{0
 \maketitle
 
 \begin{abstract}
-LLM-based multi-agent systems are increasingly deployed for payment workflows, yet prevailing metrics---Task Success Rate (TSR) and Agent Handoff F1-Score (HF1)---capture only final outcomes or unordered routing decisions. We introduce the \emph{Agentic Success Rate} (ASR), a trajectory-fidelity metric that compares observed and expected agent execution sequences at the \emph{transition} (bigram) level, decomposing performance into Transition Recall (completeness) and Transition Precision (efficiency). Applied to the Hierarchical Multi-Agent System for Payments (HMASP) across 18 LLMs and 90{,}000 task instances (5 repeats per model--scenario pair), ASR reveals that 11 of 18 models systematically skip a confirmation checkpoint during payment checkout---invisible to both TSR and HF1---while 7 models enforce the checkpoint perfectly. Notably, 12 open-weight models outperform both proprietary GPT models on average ASR. Prompt refinements and deterministic routing guards guided by ASR diagnostics yield substantial TSR improvements, with gains up to +93.8\,pp for previously struggling models, demonstrating that trajectory-level evaluation is essential in regulated domains.
+LLM-based multi-agent systems are increasingly deployed for payment workflows, yet prevailing metrics---Task Success Rate (TSR) and Agent Handoff F1-Score (HF1)---capture only final outcomes or unordered routing decisions. We introduce the \emph{Agentic Success Rate} (ASR), a trajectory-fidelity metric that compares observed and expected agent execution sequences at the \emph{transition} (bigram) level, decomposing performance into Transition Recall (completeness) and Transition Precision (efficiency). Applied to the Hierarchical Multi-Agent System for Payments (HMASP) across 18 LLMs and 90{,}000 task instances (5 repeats per model--scenario pair), ASR reveals that 10 of 18 models systematically skip a confirmation checkpoint during payment checkout---invisible to both TSR and HF1---while 8 models enforce the checkpoint perfectly. Notably, \texttt{GPT-4.1} exhibits hidden workflow shortcuts despite achieving perfect TSR and HF1, while \texttt{GPT-5.2} achieves perfect ASR. Prompt refinements and deterministic routing guards guided by ASR diagnostics yield substantial TSR improvements, with gains up to +93.8\,pp for previously struggling models, demonstrating that trajectory-level evaluation is essential in regulated domains.
 
 \keywords{Agentic Success Rate \and Agentic Payments \and LLM Multi-Agent Systems \and Evaluation Metrics \and Digital Finance}
 \end{abstract}
@@ -114,7 +114,7 @@ Table~\ref{tab:paper_vs_latest} compares TSR between HMASP~\cite{chua2025hmasp} 
 
 \subsection{ASR Reveals Hidden Workflow Deviations}
 
-Table~\ref{tab:combined} reports T3 metrics (mean\,$\pm$\,std over 5 repeats) and average across T1--T4 for all 18 models, sorted by average ASR. Seven models achieve a perfect 100\% on all three T3 metrics: all four Gemma4 variants, both GPT-OSS models, and \texttt{MSmall3.2:24b}. A striking result is that \textbf{12 open-weight models outperform the proprietary GPT-4.1 and GPT-5.2} on average ASR. Among the 11 models that exhibit a T3 ASR gap, the range spans from 0.01\% (\texttt{Qwen2.5:32b}) to 5.45\% (\texttt{Qwen2.5:7b}); notably, \texttt{GPT-4.1} and \texttt{GPT-5.2} show the largest gaps among high-performing models at 2.90\% and 2.72\% respectively. The \colorbox{yellow!30}{highlighted} cells are the sharpest examples: \texttt{Qwen2.5:32b}, \texttt{Qwen3:32b}, and \texttt{Qwen3:8b} achieve T3 TSR\,=\,HF1\,=\,100\% yet ASR\,$<$\,100\%, exposing skipped confirmation checkpoints invisible to conventional metrics.
+Table~\ref{tab:combined} reports T3 metrics (mean\,$\pm$\,std over 5 repeats) and average across T1--T4 for all 18 models, sorted by average ASR. Eight models achieve a perfect 100\% on all three T3 metrics: all four Gemma4 variants, both GPT-OSS models, \texttt{MSmall3.2:24b}, and \texttt{GPT-5.2}. Among the 10 models that exhibit a T3 ASR gap, the range spans from 0.01\% (\texttt{Qwen2.5:32b}) to 5.45\% (\texttt{Qwen2.5:7b}). The \colorbox{yellow!30}{highlighted} cells are the sharpest examples: \texttt{Qwen2.5:32b}, \texttt{GPT-4.1}, \texttt{Qwen3:32b}, and \texttt{Qwen3:8b} achieve T3 TSR\,=\,HF1\,=\,100\% yet ASR\,$<$\,100\%, exposing skipped confirmation checkpoints invisible to conventional metrics.
 
 \begin{table}[!ht]
     \centering
@@ -129,32 +129,30 @@ Table~\ref{tab:combined} reports T3 metrics (mean\,$\pm$\,std over 5 repeats) an
         \cmidrule(lr){2-4} \cmidrule(lr){5-7}
         \textbf{Model} & \textbf{TSR} & \textbf{HF1} & \textbf{ASR} & \textbf{TSR} & \textbf{HF1} & \textbf{ASR} \\
         \midrule
-        \textit{6 models}$^\dagger$ & 100 & 100 & 100 & 100.0 & 100.0 & 100.0 \\
-        Qwen2.5:32b      & 100 & 100 & \cellcolor{yellow!30}99.99$\pm$0.02 & 100.0 & 100.0 & 100.0 \\
-        Qwen3:32b        & 100 & 100 & \cellcolor{yellow!30}99.97$\pm$0.04 & 100.0 & 100.0 & 100.0 \\
-        Qwen3:14b        & 99.7$\pm$0.3  & 99.8$\pm$0.2  & 99.6$\pm$0.3  & 99.9  & 100.0 & 99.9 \\
-        Qwen3:8b         & 100 & 100 & \cellcolor{yellow!30}99.97$\pm$0.02 & 99.9  & 100.0 & 99.9 \\
-        Llama3.1:70b     & 98.9$\pm$1.2  & 98.8$\pm$1.1  & 98.8$\pm$1.2  & 99.7  & 99.7  & 99.7 \\
-        Qwen2.5:14b      & 99.8$\pm$0.2  & 99.8$\pm$0.2  & 99.6$\pm$0.2  & 99.3  & 99.6  & 99.6 \\
-        GPT-4.1          & 99.8$\pm$0.4  & 99.9$\pm$0.2  & 97.1$\pm$0.3  & 99.5  & 99.7  & 98.8 \\
-        GPT-5.2          & 99.9$\pm$0.2  & 100.0$\pm$0.1 & 97.3$\pm$0.1  & 99.4  & 99.7  & 98.8 \\
-        Gemma4:e2b       & 100 & 100 & 100 & 98.4  & 98.8  & 98.4 \\
-        Llama3.1:8b      & 93.4$\pm$0.9  & 96.1$\pm$0.7  & 93.3$\pm$1.0  & 98.0  & 98.8  & 98.0 \\
-        Magistral:24b    & 94.7$\pm$1.2  & 97.1$\pm$0.6  & 93.9$\pm$1.0  & 95.6  & 97.7  & 95.5 \\
-        Qwen2.5:7b       & 53.3$\pm$2.1  & 64.2$\pm$2.3  & 47.8$\pm$2.0  & 77.5  & 85.1  & 77.1 \\
+        \textit{8 models}$^\dagger$ & 100 & 100 & 100 & 100 & 100 & 100 \\
+        Qwen2.5:32b      & 100 & 100 & \cellcolor{yellow!30}99.99$\pm$0.02 & 100 & 100 & 100.00$\pm$0.00 \\
+        GPT-4.1          & 100 & 100 & \cellcolor{yellow!30}99.96$\pm$0.03 & 100 & 100 & 99.99$\pm$0.01 \\
+        Qwen3:32b        & 100 & 100 & \cellcolor{yellow!30}99.97$\pm$0.04 & 99.98$\pm$0.04 & 99.99$\pm$0.02 & 99.97$\pm$0.05 \\
+        Qwen3:14b        & 99.68$\pm$0.33 & 99.84$\pm$0.17 & 99.64$\pm$0.31 & 99.92$\pm$0.08 & 99.96$\pm$0.04 & 99.91$\pm$0.08 \\
+        Qwen3:8b         & 100 & 100 & \cellcolor{yellow!30}99.97$\pm$0.02 & 99.90$\pm$0.07 & 99.95$\pm$0.04 & 99.89$\pm$0.08 \\
+        Llama3.1:70b     & 98.88$\pm$1.21 & 98.78$\pm$1.09 & 98.81$\pm$1.17 & 99.72$\pm$0.30 & 99.69$\pm$0.27 & 99.70$\pm$0.29 \\
+        Qwen2.5:14b      & 99.76$\pm$0.22 & 99.80$\pm$0.20 & 99.56$\pm$0.16 & 99.32$\pm$0.39 & 99.64$\pm$0.22 & 99.56$\pm$0.23 \\
+        Llama3.1:8b      & 93.44$\pm$0.92 & 96.05$\pm$0.72 & 93.31$\pm$0.97 & 98.02$\pm$0.41 & 98.81$\pm$0.28 & 98.03$\pm$0.36 \\
+        Magistral:24b    & 94.72$\pm$1.18 & 97.05$\pm$0.63 & 93.88$\pm$1.04 & 95.60$\pm$1.01 & 97.65$\pm$0.54 & 95.52$\pm$0.95 \\
+        Qwen2.5:7b       & 53.28$\pm$2.05 & 64.16$\pm$2.28 & 47.83$\pm$1.96 & 77.54$\pm$0.91 & 85.12$\pm$0.79 & 77.09$\pm$0.71 \\
         \bottomrule
         \multicolumn{7}{l}
-        {\scriptsize $^\dagger$Gemma4:e4b/26b/31b, GPT-OSS:20b/120b, MSmall3.2:24b.} \\
+        {\scriptsize $^\dagger$Gemma4:e4b/26b/31b, GPT-OSS:20b/120b, MSmall3.2:24b, GPT-5.2.} \\
     \end{tabular}
 \end{table}
 
-The root cause is consistent across all 11 models exhibiting a T3 ASR gap. The expected T3 trajectory has 11 agent hops (10 transitions), including an intermediate return to the CPA for explicit user \emph{confirmation} before payment processing. For direct payment phrases (e.g., ``Process my payment''), models infer unambiguous intent and skip this checkpoint, executing 9 hops (8 transitions). Of 10 expected transitions, 8 appear: TR\,$= 8/10 = 80\%$, TP\,$= 8/8 = 100\%$, ASR\,$= F_1(80\%, 100\%) = 88.9\%$ per affected sample. Crucially, every single hidden deviation across all affected models follows this \textit{identical} 9-step shortcut---there is exactly one deviant trajectory pattern, reflecting a systematic interaction between input phrasing and model reasoning rather than stochastic variation.
+The root cause is consistent across all 10 models exhibiting a T3 ASR gap. The expected T3 trajectory has 11 agent hops (10 transitions), including an intermediate return to the CPA for explicit user \emph{confirmation} before payment processing. For direct payment phrases (e.g., ``Process my payment''), models infer unambiguous intent and skip this checkpoint, executing 9 hops (8 transitions). Of 10 expected transitions, 8 appear: TR\,$= 8/10 = 80\%$, TP\,$= 8/8 = 100\%$, ASR\,$= F_1(80\%, 100\%) = 88.9\%$ per affected sample. Crucially, every single hidden deviation across all affected models follows this \textit{identical} 9-step shortcut---there is exactly one deviant trajectory pattern, reflecting a systematic interaction between input phrasing and model reasoning rather than stochastic variation.
 % This failure mode reflects \textit{missing transitions} (low TR) rather than redundant ones. Payments still succeed because the skipped steps serve orchestration and compliance rather than functional transaction requirements; TSR and HF1 miss the deviation because the correct handoff types all appear, just not in the expected order. 
 This has regulatory significance: PCI-DSS~\cite{pcisecurity2025ai} requires auditable workflows, and bypassing confirmation checkpoints creates gaps in the audit trail even when outcomes are correct.% The seven zero-deviation models prove that the CPA confirmation checkpoint can be consistently enforced without sacrificing task performance.
 
 \section{Conclusion}
 
-We introduced ASR as a trajectory-level evaluation metric for LLM-based multi-agent payment systems. Across 18 LLMs and 90{,}000 instances, ASR exposes a systematic procedural deviation: 11 of 18 models skip a CPA-mediated confirmation checkpoint during payment checkout (T3 ASR gaps of 0.01--6.7\%) despite near-perfect TSR and HF1, while 7 models enforce the checkpoint perfectly. Notably, 12 open-weight models outperform both proprietary GPT models on average ASR, with \texttt{GPT-4.1} and \texttt{GPT-5.2} showing the largest gaps among high-performing models. ASR-guided system engineering yields dramatic improvements for previously struggling models (up to +93.8\,pp). As payment networks deploy agentic capabilities at scale~\cite{mastercard2025agentpay,visa2025intelligentcommerce}, ASR provides the visibility needed to ensure procedural fidelity---essential where compliance, auditability, and liability attribution are at stake. Future work includes validating ASR in production systems, weighted variants for security-critical transitions, architectural enforcement of the T3 checkpoint, and cross-architecture evaluations~\cite{visa2025intelligentcommerce}.
+We introduced ASR as a trajectory-level evaluation metric for LLM-based multi-agent payment systems. Across 18 LLMs and 90{,}000 instances, ASR exposes a systematic procedural deviation: 10 of 18 models skip a CPA-mediated confirmation checkpoint during payment checkout (T3 ASR gaps of 0.01--5.45\%) despite near-perfect TSR and HF1, while 8 models enforce the checkpoint perfectly. Notably, \texttt{GPT-4.1} exhibits hidden workflow shortcuts despite achieving perfect TSR and HF1, while \texttt{GPT-5.2} achieves perfect ASR. ASR-guided system engineering yields dramatic improvements for previously struggling models (up to +93.8\,pp). As payment networks deploy agentic capabilities at scale~\cite{mastercard2025agentpay,visa2025intelligentcommerce}, ASR provides the visibility needed to ensure procedural fidelity---essential where compliance, auditability, and liability attribution are at stake. Future work includes validating ASR in production systems, weighted variants for security-critical transitions, architectural enforcement of the T3 checkpoint, and cross-architecture evaluations~\cite{visa2025intelligentcommerce}.
 
 \bibliographystyle{splncs04}
 \bibliography{references}
